@@ -3,51 +3,56 @@ import Foundation
 // MARK: - Item Priority
 
 /// Unified priority enum for TimelineItem
-/// Replaces the old TaskPriority with added .critical level for ASAP-style items
+/// All items are TASKs, styled by priority color
 enum ItemPriority: String, Codable, Comparable, Sendable, CaseIterable {
-    case low
-    case normal
-    case high
-    case critical       // ASAP-style urgent items (red UI)
+    case critical   // 🔴 Red - Urgent, must-do-now
+    case ai         // 🟣 Purple - AI-generated (sorted after critical)
+    case high       // 🟡 Amber - High priority
+    case normal     // 🟢 Lime - Standard priority
+    case low        // 🔵 Cyan - Low priority
     
     // MARK: - Comparable
     
     static func < (lhs: ItemPriority, rhs: ItemPriority) -> Bool {
-        let order: [ItemPriority] = [.low, .normal, .high, .critical]
-        guard let lhsIndex = order.firstIndex(of: lhs),
-              let rhsIndex = order.firstIndex(of: rhs) else { return false }
-        return lhsIndex < rhsIndex
+        return lhs.sortOrder < rhs.sortOrder
+    }
+    
+    /// Sort order (lower = higher priority)
+    var sortOrder: Int {
+        switch self {
+        case .critical: return 0
+        case .ai: return 1
+        case .high: return 2
+        case .normal: return 3
+        case .low: return 4
+        }
     }
     
     // MARK: - Display
     
     var displayName: String {
         switch self {
-        case .low: return "Low"
-        case .normal: return "Normal"
-        case .high: return "High"
-        case .critical: return "Critical"
+        case .critical: return "CRITICAL"
+        case .ai: return "AI"
+        case .high: return "HIGH"
+        case .normal: return "NORMAL"
+        case .low: return "LOW"
         }
     }
     
-    // MARK: - Badge
+    // MARK: - Badge (all are TASK now)
     
-    /// Returns the badge text for UI display
     var badgeText: String {
-        switch self {
-        case .critical: return "ASAP"
-        case .high: return "TASK"
-        case .normal: return "TASK"
-        case .low: return "INFO"
-        }
+        return "TASK"
     }
     
     // MARK: - Conversion
     
-    /// Convert from old TaskPriority strings (for migration/AI parsing)
+    /// Convert from strings (for AI parsing)
     init(from string: String) {
         switch string.lowercased() {
         case "critical", "asap", "urgent": self = .critical
+        case "ai", "insight", "suggestion": self = .ai
         case "high": self = .high
         case "low": self = .low
         default: self = .normal

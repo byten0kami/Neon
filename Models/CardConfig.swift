@@ -104,91 +104,25 @@ struct CardConfig {
             timeString = nil
         }
         
-        // Build actions based on Card Type
+        // Build actions - all tasks get Done + Defer/Skip based on isRecurring
         var actions: [TimelineCardAction] = []
         if !task.isCompleted {
-            switch cardType {
-            case .task:
-                // TASK: DONE, SKIP
-                actions = [
-                    TimelineCardAction(
-                        title: "Done",
-                        color: cardType.color,
-                        icon: "checkmark",
-                        isFilled: true,
-                        action: onComplete
-                    ),
-                    TimelineCardAction(
-                        title: "Skip",
-                        color: Theme.slate500,
-                        icon: "arrow.turn.up.right",
-                        isFilled: false,
-                        action: onDelete
-                    )
-                ]
-                
-            case .reminder:
-                // RMD: DONE, DEFER
-                actions = [
-                    TimelineCardAction(
-                        title: "Done",
-                        color: cardType.color,
-                        icon: "checkmark",
-                        isFilled: true,
-                        action: onComplete
-                    ),
-                    TimelineCardAction(
-                        title: "Defer",
-                        color: Theme.slate500,
-                        icon: "clock.arrow.circlepath",
-                        isFilled: false,
-                        action: onDefer
-                    )
-                ]
-                
-            case .info:
-                // INFO: ACK
-                actions = [
-                    TimelineCardAction(
-                        title: "Ack",
-                        color: cardType.color,
-                        icon: "hand.thumbsup",
-                        isFilled: false,
-                        action: onComplete // Ack usually treats as done/dismissed
-                    )
-                ]
-                
-            case .insight:
-                // INSIGHT: ACCEPT, KILL
-                actions = [
-                    TimelineCardAction(
-                        title: "Accept",
-                        color: cardType.color,
-                        icon: "star.fill",
-                        isFilled: true,
-                        action: onComplete
-                    ),
-                    TimelineCardAction(
-                        title: "Kill",
-                        color: Theme.slate500,
-                        icon: "xmark",
-                        isFilled: false,
-                        action: onDelete
-                    )
-                ]
-                
-            case .asap:
-                // ASAP: EXECUTE
-                actions = [
-                    TimelineCardAction(
-                        title: "EXECUTE",
-                        color: cardType.color,
-                        icon: "exclamationmark.triangle.fill",
-                        isFilled: true,
-                        action: onComplete
-                    )
-                ]
-            }
+            actions = [
+                TimelineCardAction(
+                    title: "Done",
+                    color: cardType.color,
+                    icon: "checkmark",
+                    isFilled: true,
+                    action: onComplete
+                ),
+                TimelineCardAction(
+                    title: task.isRecurring ? "Defer" : "Skip",
+                    color: Theme.slate500,
+                    icon: task.isRecurring ? "clock.arrow.circlepath" : "arrow.turn.up.right",
+                    isFilled: false,
+                    action: task.isRecurring ? onDefer : onDelete
+                )
+            ]
         }
         
         return CardConfig(
@@ -231,53 +165,27 @@ struct CardConfig {
             timeString = formatTime(item.effectiveTime)
         }
         
-        // Build actions based on priority/category
+        // Build actions based on mustBeCompleted flag
         var actions: [TimelineCardAction] = []
         if !item.isCompleted {
-            switch item.priority {
-            case .critical:
-                // ASAP: EXECUTE only
-                actions = [
-                    TimelineCardAction(
-                        title: "EXECUTE",
-                        color: accentColor,
-                        icon: "exclamationmark.triangle.fill",
-                        isFilled: true,
-                        action: onComplete
-                    )
-                ]
-                
-            case .high, .normal:
-                // Standard: DONE, DEFER/SKIP
-                actions = [
-                    TimelineCardAction(
-                        title: "Done",
-                        color: accentColor,
-                        icon: "checkmark",
-                        isFilled: true,
-                        action: onComplete
-                    ),
-                    TimelineCardAction(
-                        title: item.mustBeCompleted ? "Defer" : "Skip",
-                        color: Theme.slate500,
-                        icon: item.mustBeCompleted ? "clock.arrow.circlepath" : "arrow.turn.up.right",
-                        isFilled: false,
-                        action: item.mustBeCompleted ? onDefer : onDelete
-                    )
-                ]
-                
-            case .low:
-                // INFO: ACK only
-                actions = [
-                    TimelineCardAction(
-                        title: "Ack",
-                        color: accentColor,
-                        icon: "hand.thumbsup",
-                        isFilled: false,
-                        action: onComplete
-                    )
-                ]
-            }
+            // All priorities get the same actions: Done + Defer/Skip
+            // Second button depends on mustBeCompleted, not recurrence
+            actions = [
+                TimelineCardAction(
+                    title: "Done",
+                    color: accentColor,
+                    icon: "checkmark",
+                    isFilled: true,
+                    action: onComplete
+                ),
+                TimelineCardAction(
+                    title: item.mustBeCompleted ? "Defer" : "Skip",
+                    color: Theme.slate500,
+                    icon: item.mustBeCompleted ? "clock.arrow.circlepath" : "arrow.turn.up.right",
+                    isFilled: false,
+                    action: item.mustBeCompleted ? onDefer : onDelete
+                )
+            ]
         }
         
         return CardConfig(
@@ -294,32 +202,20 @@ struct CardConfig {
         )
     }
     
-    /// Get badge text and accent color based on priority and category
+    /// Get badge text and accent color based on priority only
     private static func priorityStyle(for priority: ItemPriority, category: String) -> (String, Color) {
-        // Check if category overrides (insight, info, reminder)
-        let lowerCategory = category.lowercased()
-        
-        switch lowerCategory {
-        case "insight", "suggestion":
-            return ("INSIGHT", Theme.purple)
-        case "reminder", "remind":
-            return ("RMD", Theme.amber)
-        case "info", "log", "config":
-            return ("INFO", Theme.cyan)
-        default:
-            break
-        }
-        
-        // Use priority-based styling
+        // All cards are TASK, colored by priority
         switch priority {
         case .critical:
-            return ("ASAP", Theme.red)
+            return ("TASK", Theme.red)
+        case .ai:
+            return ("TASK", Theme.purple)
         case .high:
             return ("TASK", Theme.amber)
         case .normal:
             return ("TASK", Theme.lime)
         case .low:
-            return ("INFO", Theme.cyan)
+            return ("TASK", Theme.cyan)
         }
     }
     

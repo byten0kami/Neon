@@ -6,43 +6,21 @@ import SwiftUI
 // MARK: - Timeline Card Type Enum
 
 /// Formalized card types for the timeline
-/// Formalized card types for the timeline
+/// Simplified: Everything is a TASK, styled by priority
 enum TimelineCardType {
-    case task       // Standard Task (Blue/Cyan)
-    case reminder   // Reminder (Amber)
-    case info       // Info (Slate/Gray)
-    case insight    // Insight (Purple)
-    case asap       // Urgent / ASAP (Red)
+    case task  // The only type - color comes from priority
     
     var color: Color {
-        switch self {
-        case .task: return Theme.lime
-        case .reminder: return Theme.amber
-        case .info: return Theme.cyan
-        case .insight: return Theme.purple
-        case .asap: return Theme.red
-        }
+        return Theme.lime  // Default, overridden by priority
     }
     
     var label: String {
-        switch self {
-        case .task: return "TASK"
-        case .reminder: return "RMD"
-        case .info: return "INFO"
-        case .insight: return "INSIGHT"
-        case .asap: return "ASAP"
-        }
+        return "TASK"
     }
     
-    /// Map categories to new formal types
+    /// All categories map to task now
     static func from(category: String) -> TimelineCardType {
-        switch category.lowercased() {
-        case "reminder", "remind": return .reminder
-        case "insight", "suggestion", "proto": return .insight
-        case "info", "log", "config": return .info
-        case "asap", "urgent": return .asap
-        default: return .task
-        }
+        return .task
     }
 }
 

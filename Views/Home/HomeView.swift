@@ -217,6 +217,7 @@ struct TimelineItemActionsSheet: View {
     private var priorityColor: Color {
         switch item.priority {
         case .critical: return Theme.red
+        case .ai: return Theme.purple
         case .high: return Theme.amber
         case .normal: return Theme.lime
         case .low: return Theme.cyan
