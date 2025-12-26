@@ -10,31 +10,36 @@ struct NyanTheme: Theme {
     let description = "Rainbow Neural Link"
     
     // MARK: - Theme Colors
-    static let rainbowPink = Color(hex: "FF69B4")
-    static let rainbowOrange = Color(hex: "FFA500")
-    static let rainbowYellow = Color(hex: "FFD700")
-    static let rainbowGreen = Color(hex: "32CD32")
-    static let rainbowBlue = Color(hex: "1E90FF")
+    private static let rainbowPink = Color(hex: "FF69B4")
+    private static let rainbowOrange = Color(hex: "FFA500")
+    private static let rainbowYellow = Color(hex: "FFD700")
+    private static let rainbowGreen = Color(hex: "32CD32")
+    private static let rainbowBlue = Color(hex: "1E90FF")
+    private static let rainbowPurple = Color(hex: "9B30FF")
+    private static let rainbowRed = Color(hex: "FF4500")
     
     // MARK: - Core Visual
     var mainAccent: Color { Self.rainbowYellow }
+    
+    /// AI accent - Rainbow blue for playful AI
+    var aiAccent: Color { Self.rainbowBlue }
     
     /// Future rail: yellow at top (NOW), red at bottom (edge)
     var railGradient: LinearGradient {
         LinearGradient(
             colors: [
                 Self.rainbowYellow,
+                Self.rainbowGreen,
+                Self.rainbowBlue,
+                Self.rainbowPurple,
+                Self.rainbowPink,
+                Self.rainbowRed,
                 Self.rainbowYellow,
-                DesignSystem.green,
-                DesignSystem.green,
-                DesignSystem.blue,
-                DesignSystem.blue,
-                DesignSystem.purple,
-                DesignSystem.purple,
+                Self.rainbowGreen,
+                Self.rainbowBlue,
+                Self.rainbowPurple,
                 Self.rainbowPink,
-                Self.rainbowPink,
-                DesignSystem.red,
-                DesignSystem.red
+                Self.rainbowRed
             ],
             startPoint: .top,
             endPoint: .bottom
@@ -45,17 +50,17 @@ struct NyanTheme: Theme {
     var pastRailGradient: LinearGradient {
         LinearGradient(
             colors: [
-                DesignSystem.red,
-                DesignSystem.red,
+                Self.rainbowRed,
                 Self.rainbowPink,
-                Self.rainbowPink,
-                DesignSystem.purple,
-                DesignSystem.purple,
-                DesignSystem.blue,
-                DesignSystem.blue,
-                DesignSystem.green,
-                DesignSystem.green,
+                Self.rainbowPurple,
+                Self.rainbowBlue,
+                Self.rainbowGreen,
                 Self.rainbowYellow,
+                Self.rainbowRed,
+                Self.rainbowPink,
+                Self.rainbowPurple,
+                Self.rainbowBlue,
+                Self.rainbowGreen,
                 Self.rainbowYellow
             ],
             startPoint: .top,
@@ -76,7 +81,7 @@ struct NyanTheme: Theme {
         case .ai:
             return PriorityTagStyle(
                 text: "NYAN",
-                color: DesignSystem.aiAccent,
+                color: aiAccent,
                 hasGlow: true,
                 glowRadius: 4
             )

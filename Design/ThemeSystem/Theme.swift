@@ -12,21 +12,17 @@ protocol Theme: Identifiable, Sendable {
     
     // MARK: - Core Visual
     var mainAccent: Color { get }
+    var aiAccent: Color { get }
     var railGradient: LinearGradient { get }
     var pastRailGradient: LinearGradient { get }
     
-    // MARK: - Extended Visual
-    var cardBackground: Color { get }
-    var cardTexture: Image? { get }
-    var tabBarTint: Color { get }
-    var backgroundPrimary: Color { get }
-    var backgroundSecondary: Color { get }
-    
-    // MARK: - Typography
-    var headerFont: String { get }
-    var bodyFont: String { get }
-    var monoFont: String { get }
-    
     // MARK: - Priority Styling
     func priorityTagStyle(for priority: ItemPriority) -> PriorityTagStyle
+}
+
+// MARK: - Theme Default Implementations
+
+extension Theme {
+    /// By default, past rail mirrors future rail
+    var pastRailGradient: LinearGradient { railGradient }
 }

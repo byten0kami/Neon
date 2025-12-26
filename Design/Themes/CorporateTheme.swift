@@ -12,11 +12,16 @@ struct CorporateTheme: Theme {
     // MARK: - Theme Colors
     private static let crimson = Color(hex: "DC143C")
     private static let burntOrange = Color(hex: "CC5500")
-    static let steelBlue = Color(hex: "4682B4")
+    private static let steelBlue = Color(hex: "4682B4")
     private static let coolGrey = Color(hex: "8E9AAF")
+    private static let aiPurple = Color(hex: "7B1FA2")
+    private static let artifactPurple = Color(hex: "9932CC")
     
     // MARK: - Core Visual
     var mainAccent: Color { Self.steelBlue }
+    
+    /// AI accent - Artifact purple for AI distinction
+    var aiAccent: Color { Self.artifactPurple }
     
     var railGradient: LinearGradient {
         LinearGradient(
@@ -39,7 +44,7 @@ struct CorporateTheme: Theme {
         case .ai:
             return PriorityTagStyle(
                 text: "AI",
-                color: DesignSystem.aiAccent,
+                color: aiAccent,
                 useSystemFont: true,
                 borderRadius: 6
             )

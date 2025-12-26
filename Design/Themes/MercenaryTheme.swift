@@ -14,13 +14,19 @@ struct MercenaryTheme: Theme {
     private static let neonOrange = Color(hex: "FF5F1F")
     private static let laserBlue = Color(hex: "00D4FF")
     private static let midnight = Color(hex: "191970")
+    private static let cyan = Color(hex: "00FFFF")
+    private static let magenta = Color(hex: "FF00FF")
+    private static let artifactPurple = Color(hex: "9932CC")
     
     // MARK: - Core Visual
-    var mainAccent: Color { DesignSystem.cyan }
+    var mainAccent: Color { Self.cyan }
+    
+    /// AI accent - Cyberpunk artifact purple
+    var aiAccent: Color { Self.artifactPurple }
     
     var railGradient: LinearGradient {
         LinearGradient(
-            colors: [DesignSystem.cyan, DesignSystem.cyan.opacity(0.5)],
+            colors: [Self.cyan, Self.cyan.opacity(0.5)],
             startPoint: .top,
             endPoint: .bottom
         )
@@ -39,7 +45,7 @@ struct MercenaryTheme: Theme {
         case .ai:
             return PriorityTagStyle(
                 text: "CMD",
-                color: DesignSystem.aiAccent,
+                color: aiAccent,
                 hasGlow: true,
                 glowRadius: 4
             )

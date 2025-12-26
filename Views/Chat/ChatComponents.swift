@@ -5,6 +5,7 @@ import SwiftUI
 /// Chat message bubble for displaying user and AI messages
 struct ChatBubble: View {
     let message: ChatMessage
+    @ObservedObject private var themeManager = ThemeManager.shared
     
     private var isUser: Bool {
         message.role == .user
@@ -27,7 +28,7 @@ struct ChatBubble: View {
                 .padding(12)
                 .background(
                     CardBackground(
-                        accentColor: isUser ? DesignSystem.slate400 : DesignSystem.purple
+                        accentColor: isUser ? DesignSystem.slate400 : themeManager.currentTheme.aiAccent
                     )
                 )
                 .frame(maxWidth: UIScreen.main.bounds.width * 0.75, alignment: isUser ? .trailing : .leading)
@@ -44,6 +45,7 @@ struct ChatBubble: View {
 /// Animated typing indicator for AI responses
 struct TypingBubble: View {
     @State private var dotCount = 0
+    @ObservedObject private var themeManager = ThemeManager.shared
     
     var body: some View {
         HStack {
@@ -51,16 +53,16 @@ struct TypingBubble: View {
                 HStack(spacing: 4) {
                     Text("PROCESSING")
                         .font(.custom(DesignSystem.monoFont, size: 10))
-                        .foregroundColor(DesignSystem.purple)
+                        .foregroundColor(themeManager.currentTheme.aiAccent)
                         
                     Text(String(repeating: ".", count: dotCount + 1))
                         .font(.custom(DesignSystem.monoFont, size: 10))
-                        .foregroundColor(DesignSystem.purple)
+                        .foregroundColor(themeManager.currentTheme.aiAccent)
                         .frame(width: 20, alignment: .leading)
                 }
             }
             .padding(12)
-            .background(CardBackground(accentColor: DesignSystem.purple))
+            .background(CardBackground(accentColor: themeManager.currentTheme.aiAccent))
             
             Spacer()
         }

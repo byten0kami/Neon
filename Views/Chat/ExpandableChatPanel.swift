@@ -6,6 +6,7 @@ struct ExpandableChatPanel: View {
     @StateObject private var brain = AIBrain.shared
     @StateObject private var knowledge = AIKnowledgeBase.shared
     @StateObject private var taskStore = TaskStore.shared
+    @ObservedObject private var themeManager = ThemeManager.shared
     
     @State private var messages: [ChatMessage] = []
     @State private var inputText: String = ""
@@ -35,7 +36,7 @@ struct ExpandableChatPanel: View {
             inputArea
         }
         .frame(height: UIScreen.main.bounds.height * 0.6)
-        .background(CardBackground(accentColor: DesignSystem.purple))
+        .background(CardBackground(accentColor: themeManager.currentTheme.aiAccent))
         .padding(.horizontal, 8)
         .padding(.bottom, 90)
         .onAppear {
@@ -51,7 +52,7 @@ struct ExpandableChatPanel: View {
     private var header: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
-                PriorityTag(text: "AI-CORE", color: DesignSystem.purple)
+                PriorityTag(text: "AI-CORE", color: themeManager.currentTheme.aiAccent)
                 
                 Text(Date.now.formatted(date: .numeric, time: .shortened))
                     .font(.custom(DesignSystem.monoFont, size: 10))
@@ -74,7 +75,7 @@ struct ExpandableChatPanel: View {
         .background(DesignSystem.backgroundSecondary.opacity(0.5))
         .overlay(
             Rectangle()
-                .fill(DesignSystem.purple.opacity(0.2))
+                    .fill(themeManager.currentTheme.aiAccent.opacity(0.2))
                 .frame(height: 1),
             alignment: .bottom
         )
@@ -125,7 +126,7 @@ struct ExpandableChatPanel: View {
         HStack(spacing: 12) {
             Text(">")
                 .font(.custom(DesignSystem.monoFont, size: 18))
-                .foregroundColor(DesignSystem.purple)
+                .foregroundColor(themeManager.currentTheme.aiAccent)
             
             TextField("Enter command...", text: $inputText)
                 .focused($isInputFocused)
@@ -150,7 +151,7 @@ struct ExpandableChatPanel: View {
             // Send Button
             CardActionButton(
                 label: "SEND",
-                color: inputText.isEmpty ? DesignSystem.slate600 : DesignSystem.purple,
+                color: inputText.isEmpty ? DesignSystem.slate600 : themeManager.currentTheme.aiAccent,
                 icon: "arrow.up",
                 isFilled: true
             ) {
@@ -162,7 +163,7 @@ struct ExpandableChatPanel: View {
         .background(DesignSystem.backgroundSecondary)
         .overlay(
             Rectangle()
-                .fill(DesignSystem.purple.opacity(0.2))
+                .fill(themeManager.currentTheme.aiAccent.opacity(0.2))
                 .frame(height: 1),
             alignment: .top
         )

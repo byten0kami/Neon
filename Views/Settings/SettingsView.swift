@@ -57,12 +57,12 @@ struct SettingsView: View {
             // Header styled like [LOGS]
             Text("[CFG]")
                 .font(.custom(DesignSystem.monoFont, size: 28))
-                .foregroundColor(DesignSystem.cyan)
+                .foregroundColor(themeManager.currentTheme.mainAccent)
             
             Text("CONFIGURATION")
                 .font(.custom(DesignSystem.displayFont, size: 32))
                 .foregroundColor(.white)
-                .shadow(color: DesignSystem.cyan.opacity(0.6), radius: 6) // Glow effect
+                .shadow(color: themeManager.currentTheme.mainAccent.opacity(0.6), radius: 6)
         }
         .padding(.top, 8)
     }
@@ -94,13 +94,13 @@ struct SettingsView: View {
                 .cornerRadius(CardStyle.cornerRadius)
                 .overlay(
                     RoundedRectangle(cornerRadius: CardStyle.cornerRadius)
-                        .stroke(DesignSystem.cyan.opacity(0.3), lineWidth: 1)
+                        .stroke(themeManager.currentTheme.mainAccent.opacity(0.3), lineWidth: 1)
                 )
-                .shadow(color: DesignSystem.cyan.opacity(0.2), radius: 10, x: 0, y: 0)
+                .shadow(color: themeManager.currentTheme.mainAccent.opacity(0.2), radius: 10, x: 0, y: 0)
                 
                 // Left accent border
                 Rectangle()
-                    .fill(DesignSystem.cyan)
+                    .fill(themeManager.currentTheme.mainAccent)
                     .frame(width: CardStyle.borderWidth)
                     .cornerRadius(CardStyle.cornerRadius)
             }
@@ -132,7 +132,7 @@ struct SettingsView: View {
                     set: { apiSettings.setUseCustomKey($0) }
                 ))
                 .labelsHidden()
-                .tint(DesignSystem.cyan)
+                .tint(themeManager.currentTheme.mainAccent)
             }
         }
     }
@@ -147,7 +147,7 @@ struct SettingsView: View {
                     Button(action: openOpenRouter) {
                         Text("Get Personal Key ↗")
                             .font(.custom(DesignSystem.monoFont, size: 16))
-                            .foregroundColor(DesignSystem.cyan)
+                            .foregroundColor(themeManager.currentTheme.mainAccent)
                             .underline()
                     }
                     
@@ -191,7 +191,7 @@ struct SettingsView: View {
                             .padding(.horizontal, CardStyle.buttonPaddingH)
                             .padding(.vertical, CardStyle.buttonPaddingV)
                             .frame(height: CardStyle.buttonHeight)
-                            .background(DesignSystem.cyan)
+                            .background(themeManager.currentTheme.mainAccent)
                             .cornerRadius(CardStyle.cornerRadius)
                     }
                 }
@@ -238,18 +238,18 @@ struct SettingsView: View {
                             
                             Image(systemName: "chevron.down")
                                 .font(.system(size: 16))
-                                .foregroundColor(DesignSystem.cyan)
+                                .foregroundColor(themeManager.currentTheme.mainAccent)
                                 .rotationEffect(.degrees(isModelDropdownExpanded ? 180 : 0))
                         }
                         .padding(.vertical, 12)
                         .padding(.horizontal, 16)
-                        .background(DesignSystem.cyan.opacity(0.1))
+                        .background(themeManager.currentTheme.mainAccent.opacity(0.1))
                     }
                     
                     // Expanded Options
                     if isModelDropdownExpanded {
                         Rectangle()
-                            .fill(DesignSystem.cyan.opacity(0.3))
+                            .fill(themeManager.currentTheme.mainAccent.opacity(0.3))
                             .frame(height: 1)
                         
                         VStack(spacing: 0) {
@@ -275,7 +275,7 @@ struct SettingsView: View {
                                             // Tooltip info
                                             Text(model.tooltip)
                                                 .font(.custom(DesignSystem.lightFont, size: 12))
-                                                .foregroundColor(DesignSystem.cyan.opacity(0.8))
+                                                .foregroundColor(themeManager.currentTheme.mainAccent.opacity(0.8))
                                                 .fixedSize(horizontal: false, vertical: true)
                                                 .padding(.top, 2)
                                         }
@@ -289,14 +289,14 @@ struct SettingsView: View {
                                         } else if apiSettings.settings.selectedModel == model.id {
                                             Image(systemName: "checkmark")
                                                 .font(.system(size: 16))
-                                                .foregroundColor(DesignSystem.cyan)
+                                                .foregroundColor(themeManager.currentTheme.mainAccent)
                                         }
                                     }
                                     .padding(.vertical, 12)
                                     .padding(.horizontal, 16)
                                     .background(
                                         apiSettings.settings.selectedModel == model.id
-                                            ? DesignSystem.cyan.opacity(0.05)
+                                            ? themeManager.currentTheme.mainAccent.opacity(0.05)
                                             : Color.clear
                                     )
                                 }
@@ -315,7 +315,7 @@ struct SettingsView: View {
                 .cornerRadius(CardStyle.cornerRadius)
                 .overlay(
                     RoundedRectangle(cornerRadius: CardStyle.cornerRadius)
-                        .stroke(DesignSystem.cyan.opacity(0.3), lineWidth: 1)
+                        .stroke(themeManager.currentTheme.mainAccent.opacity(0.3), lineWidth: 1)
                 )
             }
         }
@@ -474,13 +474,13 @@ struct SettingsView: View {
                 .cornerRadius(CardStyle.cornerRadius)
                 .overlay(
                     RoundedRectangle(cornerRadius: CardStyle.cornerRadius)
-                        .stroke(DesignSystem.cyan.opacity(0.3), lineWidth: 1)
+                        .stroke(themeManager.currentTheme.mainAccent.opacity(0.3), lineWidth: 1)
                 )
-                .shadow(color: DesignSystem.cyan.opacity(0.2), radius: 10, x: 0, y: 0)
+                .shadow(color: themeManager.currentTheme.mainAccent.opacity(0.2), radius: 10, x: 0, y: 0)
                 
                 // Left accent border
                 Rectangle()
-                    .fill(DesignSystem.cyan)
+                    .fill(themeManager.currentTheme.mainAccent)
                     .frame(width: CardStyle.borderWidth)
                     .cornerRadius(CardStyle.cornerRadius)
             }
@@ -492,7 +492,7 @@ struct SettingsView: View {
     private func sectionHeader(_ title: String) -> some View {
         Text(title)
             .font(.custom(DesignSystem.monoFont, size: 16))
-            .foregroundColor(DesignSystem.purple)
+            .foregroundColor(themeManager.currentTheme.mainAccent)
             .tracking(2)
     }
     

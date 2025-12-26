@@ -16,7 +16,7 @@ class ThemeManager: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     private init() {
-        self.currentTheme = ThemeRegistry.defaultTheme
+        self.currentTheme = ThemeID.default.theme
         self.availableThemes = []
         
         // Load saved theme and available themes
@@ -38,7 +38,7 @@ class ThemeManager: ObservableObject {
         refreshAvailableThemes()
         
         if availableThemes.contains(where: { $0.id == themeID }) {
-            currentTheme = ThemeRegistry.theme(for: themeID)
+            currentTheme = themeID.theme
             UserDefaults.standard.set(themeID.rawValue, forKey: selectedThemeKey)
         }
     }
@@ -52,29 +52,29 @@ class ThemeManager: ObservableObject {
     // MARK: - Private
     
     private func loadTheme() {
-        let savedRaw = UserDefaults.standard.string(forKey: selectedThemeKey) ?? ThemeID.mercenary.rawValue
+        let savedRaw = UserDefaults.standard.string(forKey: selectedThemeKey) ?? ThemeID.default.rawValue
         
         if let savedID = ThemeID(rawValue: savedRaw),
            availableThemes.contains(where: { $0.id == savedID }) {
-            currentTheme = ThemeRegistry.theme(for: savedID)
+            currentTheme = savedID.theme
         } else {
-            currentTheme = ThemeRegistry.defaultTheme
+            currentTheme = ThemeID.default.theme
         }
     }
     
     private func refreshAvailableThemes() {
         var themes: [any Theme] = []
         
-        for theme in ThemeRegistry.all {
-            if UnlockConfig.requiresUnlock(theme.id) {
+        for themeID in ThemeID.allCases {
+            if UnlockConfig.requiresUnlock(themeID) {
                 // Check if unlocked via RewardManager
-                if let rewardID = UnlockConfig.unlockRewardID(for: theme.id),
+                if let rewardID = UnlockConfig.unlockRewardID(for: themeID),
                    RewardManager.shared.isUnlocked(id: rewardID) {
-                    themes.append(theme)
+                    themes.append(themeID.theme)
                 }
             } else {
                 // Always available
-                themes.append(theme)
+                themes.append(themeID.theme)
             }
         }
         
@@ -82,7 +82,7 @@ class ThemeManager: ObservableObject {
         
         // Validate current theme is still available
         if !themes.contains(where: { $0.id == currentTheme.id }) {
-            currentTheme = ThemeRegistry.defaultTheme
+            currentTheme = ThemeID.default.theme
         }
     }
 }

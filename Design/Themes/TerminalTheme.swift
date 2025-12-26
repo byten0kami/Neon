@@ -10,12 +10,18 @@ struct TerminalTheme: Theme {
     let description = "Netrunner Console"
     
     // MARK: - Theme Colors
-    static let consoleGreen = Color(hex: "00FF00")
+    private static let consoleGreen = Color(hex: "00FF00")
     private static let amberMonitor = Color(hex: "FFB000")
     private static let dimGrey = Color(hex: "666666")
+    private static let criticalRed = Color(hex: "FF0000")
+    private static let aiTurquoise = Color(hex: "00CED1")
+    private static let artifactPurple = Color(hex: "9932CC")
     
     // MARK: - Core Visual
     var mainAccent: Color { Self.consoleGreen }
+    
+    /// AI accent - Artifact purple for AI commands
+    var aiAccent: Color { Self.artifactPurple }
     
     var railGradient: LinearGradient {
         LinearGradient(
@@ -32,15 +38,15 @@ struct TerminalTheme: Theme {
             // Inverted: red bg, black text
             return PriorityTagStyle(
                 text: "CRIT",
-                color: DesignSystem.red,
+                color: Self.criticalRed,
                 textColor: .black,
-                backgroundColor: DesignSystem.red,
+                backgroundColor: Self.criticalRed,
                 borderRadius: 0
             )
         case .ai:
             return PriorityTagStyle(
                 text: "SYS",
-                color: DesignSystem.aiAccent,
+                color: aiAccent,
                 borderRadius: 0
             )
         case .high:

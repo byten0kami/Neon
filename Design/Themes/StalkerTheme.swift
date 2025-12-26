@@ -12,11 +12,15 @@ struct StalkerTheme: Theme {
     // MARK: - Theme Colors
     private static let biohazardYellow = Color(hex: "FFD700")
     private static let rustOrange = Color(hex: "B7410E")
-    static let oliveDrab = Color(hex: "6B8E23")
+    private static let oliveDrab = Color(hex: "6B8E23")
     private static let fadedCyan = Color(hex: "4A8C8C")
+    private static let artifactPurple = Color(hex: "9932CC") // Dark orchid - anomaly color
     
     // MARK: - Core Visual
     var mainAccent: Color { Self.oliveDrab }
+    
+    /// AI accent - Anomaly/artifact purple glow
+    var aiAccent: Color { Self.artifactPurple }
     
     var railGradient: LinearGradient {
         LinearGradient(
@@ -30,24 +34,24 @@ struct StalkerTheme: Theme {
     func priorityTagStyle(for priority: ItemPriority) -> PriorityTagStyle {
         switch priority {
         case .critical:
-            // Biohazard warning: yellow on black
+            // Rust danger warning: orange/red
             return PriorityTagStyle(
                 text: "FATAL",
-                color: Self.biohazardYellow,
+                color: Self.rustOrange,
                 textColor: .black,
-                backgroundColor: Self.biohazardYellow,
+                backgroundColor: Self.rustOrange,
                 borderRadius: 2
             )
         case .ai:
             return PriorityTagStyle(
                 text: "SIGNAL",
-                color: DesignSystem.aiAccent,
+                color: aiAccent,
                 borderRadius: 2
             )
         case .high:
             return PriorityTagStyle(
                 text: "HAZARD",
-                color: Self.rustOrange,
+                color: Self.biohazardYellow,
                 borderRadius: 2
             )
         case .normal:
