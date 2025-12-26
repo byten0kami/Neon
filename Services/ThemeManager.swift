@@ -1,74 +1,88 @@
 import SwiftUI
 import Combine
 
+// MARK: - Theme Manager
+
 /// Manages the application's visual theme
+/// Single source of truth for current theme and available themes
 @MainActor
 class ThemeManager: ObservableObject {
     static let shared = ThemeManager()
     
-    @Published var currentTheme: ThemeConfig
-    
-    // Available themes based on unlock status
-    @Published var availableThemes: [ThemeConfig] = []
+    @Published var currentTheme: any Theme
+    @Published var availableThemes: [any Theme] = []
     
     private let selectedThemeKey = "neon_selected_theme_id"
     private var cancellables = Set<AnyCancellable>()
     
     private init() {
-        // Initialize with default
-        self.currentTheme = ThemeConfig.cyberpunk
-        self.availableThemes = [ThemeConfig.cyberpunk]
+        self.currentTheme = ThemeRegistry.defaultTheme
+        self.availableThemes = []
         
-        // Load saved theme
+        // Load saved theme and available themes
+        refreshAvailableThemes()
         loadTheme()
         
-        // Listen to RewardManager to update available themes
+        // Listen to RewardManager to update available themes when unlocks change
         RewardManager.shared.$unlockedRewardIDs
             .sink { [weak self] _ in
                 self?.refreshAvailableThemes()
             }
             .store(in: &cancellables)
-            
-        refreshAvailableThemes()
     }
     
-    // MARK: - Logic
+    // MARK: - Theme Selection
     
-    func setTheme(_ themeID: String) {
+    func setTheme(_ themeID: ThemeID) {
         // Refresh first to pick up any newly unlocked themes
         refreshAvailableThemes()
         
-        if let theme = availableThemes.first(where: { $0.id == themeID }) {
-            currentTheme = theme
-            UserDefaults.standard.set(themeID, forKey: selectedThemeKey)
+        if availableThemes.contains(where: { $0.id == themeID }) {
+            currentTheme = ThemeRegistry.theme(for: themeID)
+            UserDefaults.standard.set(themeID.rawValue, forKey: selectedThemeKey)
         }
     }
     
+    // MARK: - Priority Style (delegates to current theme)
+    
+    func priorityTagStyle(for priority: ItemPriority) -> PriorityTagStyle {
+        currentTheme.priorityTagStyle(for: priority)
+    }
+    
+    // MARK: - Private
+    
     private func loadTheme() {
-        _ = UserDefaults.standard.string(forKey: selectedThemeKey) ?? "default"
+        let savedRaw = UserDefaults.standard.string(forKey: selectedThemeKey) ?? ThemeID.mercenary.rawValue
         
-        // We can only load it if it's available (or default)
-        // Since availability depends on rewards, we might need to defer until after refresh
-        // For now, if savedID is nyan but not unlocked, we fall back to default
-        // checks happen in refreshAvailableThemes
+        if let savedID = ThemeID(rawValue: savedRaw),
+           availableThemes.contains(where: { $0.id == savedID }) {
+            currentTheme = ThemeRegistry.theme(for: savedID)
+        } else {
+            currentTheme = ThemeRegistry.defaultTheme
+        }
     }
     
     private func refreshAvailableThemes() {
-        var themes = [ThemeConfig.cyberpunk]
+        var themes: [any Theme] = []
         
-        if RewardManager.shared.isUnlocked(id: "theme_nyan") {
-            themes.append(ThemeConfig.nyan)
+        for theme in ThemeRegistry.all {
+            if UnlockConfig.requiresUnlock(theme.id) {
+                // Check if unlocked via RewardManager
+                if let rewardID = UnlockConfig.unlockRewardID(for: theme.id),
+                   RewardManager.shared.isUnlocked(id: rewardID) {
+                    themes.append(theme)
+                }
+            } else {
+                // Always available
+                themes.append(theme)
+            }
         }
         
         self.availableThemes = themes
         
-        // Restore saved theme if valid
-        let savedID = UserDefaults.standard.string(forKey: selectedThemeKey) ?? "default"
-        if let matchedTheme = themes.first(where: { $0.id == savedID }) {
-            self.currentTheme = matchedTheme
-        } else {
-            // Fallback if saved theme is no longer valid (shouldn't happen strictly)
-            self.currentTheme = ThemeConfig.cyberpunk
+        // Validate current theme is still available
+        if !themes.contains(where: { $0.id == currentTheme.id }) {
+            currentTheme = ThemeRegistry.defaultTheme
         }
     }
 }

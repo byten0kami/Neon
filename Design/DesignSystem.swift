@@ -1,7 +1,8 @@
 import SwiftUI
 
 /// Cyberpunk design system with neon colors and dark backgrounds
-enum Theme {
+/// Global constants used across the application
+enum DesignSystem {
     // MARK: - Background Colors
     static let backgroundPrimary = Color(hex: "050818")
     static let backgroundSecondary = Color(hex: "0a0e1a")
@@ -22,6 +23,7 @@ enum Theme {
     static let orange = Color(hex: "f97316")
     static let yellow = Color(hex: "eab308")
     static let blue = Color(hex: "3b82f6")
+    static let aiAccent = Color(hex: "2962FF") // Electric Blue (Exclusive to AI)
     
     // MARK: - Slate Colors
     static let slate200 = Color(hex: "e2e8f0")

@@ -1,26 +1,17 @@
 import SwiftUI
 
-// MARK: - Timeline Line Past
+// MARK: - Timeline Rail Past
 
 /// Vertical line for the past section (ABOVE NOW)
-/// Matches future line style but with scanline overlay
-// MARK: - Timeline Line Past
-
-/// Vertical line for the past section (ABOVE NOW)
-/// Cyan at bottom (Now), Purple at top (Past)
-// MARK: - Timeline Line Past
-
-/// Vertical line for the past section (ABOVE NOW)
-/// Repeating Rainbow Gradient (Purple -> Cyan)
-/// Resolves to Cyan at the bottom (Now)
-struct TimelineLinePast: View {
+/// Uses pastRailGradient for symmetric effects (e.g., Nyan rainbow)
+struct TimelineRailPast: View {
     @ObservedObject private var themeManager = ThemeManager.shared
     
     var body: some View {
         GeometryReader { geometry in
             ZStack {
                 Rectangle()
-                    .fill(themeManager.currentTheme.railGradient)
+                    .fill(themeManager.currentTheme.pastRailGradient)
                     .frame(width: 2)
             }
             .frame(maxHeight: .infinity)
@@ -29,20 +20,20 @@ struct TimelineLinePast: View {
     }
 }
 
-// MARK: - Timeline Line Future (Rainbow)
+// MARK: - Timeline Rail Future (Rainbow)
 
 /// Rainbow vertical line for the future section (BELOW NOW)
 /// Features a colorful gradient with glow effect
-// MARK: - Timeline Line Future (Rainbow)
+// MARK: - Timeline Rail Future (Rainbow)
 
 /// Rainbow vertical line for the future section (BELOW NOW)
 /// Cyan at top (Now), Purple at bottom (Future)
-// MARK: - Timeline Line Future (Rainbow)
+// MARK: - Timeline Rail Future (Rainbow)
 
 /// Rainbow vertical line for the future section (BELOW NOW)
 /// Repeating Rainbow Gradient (Cyan -> Purple)
 /// Starts with Cyan at the top (Now)
-struct TimelineLineFuture: View {
+struct TimelineRailFuture: View {
     var contentHeight: CGFloat?
     @State private var glowIntensity: Double = 0.5
     @ObservedObject private var themeManager = ThemeManager.shared
@@ -97,13 +88,13 @@ struct TimelineRails: View {
             ZStack {
                 // Top Rail (Past) - Goes UP from center
                 // We offset it so its bottom is at the center
-                TimelineLinePast()
+                TimelineRailPast()
                     .frame(height: 3000) // Long enough to cover scroll
                     .position(x: 35, y: center - 1500) // Center of 3000 is 1500. We want Bottom (3000) at Center.
                     // Y = Center - (Height/2) = Center - 1500. Correct.
                 
                 // Bottom Rail (Future) - Goes DOWN from center
-                TimelineLineFuture()
+                TimelineRailFuture()
                     .frame(height: 3000) // Long enough to cover scroll
                     .position(x: 35, y: center + 1500) // Center of 3000 is 1500. We want Top (0) at Center.
                     // Y = Center + (Height/2) = Center + 1500. Correct.
@@ -114,7 +105,7 @@ struct TimelineRails: View {
 
 // Backward compatibility alias
 // Backward compatibility alias (deprecated)
-typealias TimelineLine = TimelineLineFuture
+typealias TimelineRail = TimelineRailFuture
 
 // MARK: - Now Card
 
@@ -181,28 +172,28 @@ struct NowCard: View {
             VStack(alignment: .leading, spacing: 2) {
                 HStack {
                     Text("[NOW]")
-                        .font(.custom(Theme.monoFont, size: 16))
+                        .font(.custom(DesignSystem.monoFont, size: 16))
                         .tracking(4)
                         .foregroundColor(themeManager.currentTheme.mainAccent)
                     
                     Spacer()
                     
                     Text(dateString)
-                        .font(.custom(Theme.monoFont, size: 16))
+                        .font(.custom(DesignSystem.monoFont, size: 16))
                         .tracking(2)
                         .foregroundColor(themeManager.currentTheme.mainAccent.opacity(0.8))
                 }
                 
                 HStack(alignment: .lastTextBaseline, spacing: 2) {
                     Text(timeString)
-                        .font(.custom(Theme.monoFont, size: 44))
+                        .font(.custom(DesignSystem.monoFont, size: 44))
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                     
                     Text(secondsString)
-                        .font(.custom(Theme.monoFont, size: 24))
+                        .font(.custom(DesignSystem.monoFont, size: 24))
                         .fontWeight(.bold)
-                        .foregroundColor(Theme.slate500)
+                        .foregroundColor(DesignSystem.slate500)
                 }
             }
             .padding(.trailing) // Add trailing padding since we removed the Spacer

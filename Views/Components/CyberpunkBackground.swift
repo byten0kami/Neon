@@ -9,7 +9,7 @@ struct CyberpunkBackground: View {
     
     var body: some View {
         ZStack {
-            Theme.backgroundSecondary
+            DesignSystem.backgroundSecondary
             
             if showGrid {
                 GridPattern()
@@ -33,7 +33,7 @@ struct CyberpunkBackground: View {
     }
     
     private var lowStabilityOverlay: some View {
-        Theme.red.opacity(0.2)
+        DesignSystem.red.opacity(0.2)
             .ignoresSafeArea()
             .opacity(0.3)
             .animation(
@@ -44,7 +44,7 @@ struct CyberpunkBackground: View {
     
     private var vignetteOverlay: some View {
         RadialGradient(
-            colors: [.clear, Theme.backgroundSecondary],
+            colors: [.clear, DesignSystem.backgroundSecondary],
             center: .center,
             startRadius: 100,
             endRadius: 400
@@ -62,7 +62,7 @@ struct BackgroundScanlineEffect: View {
             
             while y < size.height {
                 let rect = CGRect(x: 0, y: y + (lineSpacing / 2), width: size.width, height: lineSpacing / 2)
-                context.fill(Path(rect), with: .color(Theme.cyan.opacity(0.08)))
+                context.fill(Path(rect), with: .color(DesignSystem.cyan.opacity(0.08)))
                 y += lineSpacing
             }
         }
@@ -73,7 +73,7 @@ struct BackgroundScanlineEffect: View {
 /// Grid pattern for cyberpunk aesthetic
 struct GridPattern: View {
     let spacing: CGFloat = 40
-    let lineColor = Theme.cyan
+    let lineColor = DesignSystem.cyan
     
     var body: some View {
         Canvas { context, size in
@@ -113,7 +113,7 @@ struct GlobalScanlineOverlay: View {
                 while y < size.height {
                     // Draw semi-transparent cyan line at 50% mark of each 3px segment
                     let rect = CGRect(x: 0, y: y + (lineSpacing / 2), width: size.width, height: lineSpacing / 2)
-                    context.fill(Path(rect), with: .color(Theme.cyan.opacity(0.1)))
+                    context.fill(Path(rect), with: .color(DesignSystem.cyan.opacity(0.1)))
                     y += lineSpacing
                 }
             }
@@ -132,7 +132,7 @@ struct ScanlineEffect: View {
             Rectangle()
                 .fill(
                     LinearGradient(
-                        colors: [.clear, Theme.red.opacity(0.3), .clear],
+                        colors: [.clear, DesignSystem.red.opacity(0.3), .clear],
                         startPoint: .top,
                         endPoint: .bottom
                     )

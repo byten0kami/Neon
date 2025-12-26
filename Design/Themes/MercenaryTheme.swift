@@ -1,0 +1,67 @@
+import SwiftUI
+
+// MARK: - Mercenary Theme (Edgerunner)
+
+/// Flashy, aggressive, "Style over Substance" - high contrast neons with glow
+struct MercenaryTheme: Theme {
+    // MARK: - Identity
+    let id: ThemeID = .mercenary
+    let name = "Mercenary"
+    let description = "Edgerunner Neon Style"
+    
+    // MARK: - Theme Colors
+    private static let hotPink = Color(hex: "FF0099")
+    private static let neonOrange = Color(hex: "FF5F1F")
+    private static let laserBlue = Color(hex: "00D4FF")
+    private static let midnight = Color(hex: "191970")
+    
+    // MARK: - Core Visual
+    var mainAccent: Color { DesignSystem.cyan }
+    
+    var railGradient: LinearGradient {
+        LinearGradient(
+            colors: [DesignSystem.cyan, DesignSystem.cyan.opacity(0.5)],
+            startPoint: .top,
+            endPoint: .bottom
+        )
+    }
+    
+    // MARK: - Priority Tag Styles
+    func priorityTagStyle(for priority: ItemPriority) -> PriorityTagStyle {
+        switch priority {
+        case .critical:
+            return PriorityTagStyle(
+                text: "LETHAL",
+                color: Self.hotPink,
+                hasGlow: true,
+                glowRadius: 6
+            )
+        case .ai:
+            return PriorityTagStyle(
+                text: "CMD",
+                color: DesignSystem.aiAccent,
+                hasGlow: true,
+                glowRadius: 4
+            )
+        case .high:
+            return PriorityTagStyle(
+                text: "URGENT",
+                color: Self.neonOrange,
+                hasGlow: true,
+                glowRadius: 4
+            )
+        case .normal:
+            return PriorityTagStyle(
+                text: "GIG",
+                color: Self.laserBlue,
+                hasGlow: true,
+                glowRadius: 4
+            )
+        case .low:
+            return PriorityTagStyle(
+                text: "DATA",
+                color: Self.midnight
+            )
+        }
+    }
+}

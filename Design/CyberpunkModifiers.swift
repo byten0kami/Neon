@@ -2,7 +2,7 @@ import SwiftUI
 
 /// Reusable view modifiers for cyberpunk aesthetic
 struct HUDCornersModifier: ViewModifier {
-    var color: Color = Theme.slate700
+    var color: Color = DesignSystem.slate700
     var opacity: Double = 0.5
     
     func body(content: Content) -> some View {
@@ -60,7 +60,7 @@ struct GlowModifier: ViewModifier {
 }
 
 struct CyberpunkBorderModifier: ViewModifier {
-    var color: Color = Theme.slate700
+    var color: Color = DesignSystem.slate700
     var leftAccent: Color? = nil
     
     func body(content: Content) -> some View {
@@ -85,7 +85,7 @@ struct CyberpunkBorderModifier: ViewModifier {
 struct SkewedBarModifier: ViewModifier {
     var filled: Bool
     var filledColor: Color
-    var emptyColor: Color = Theme.slate800
+    var emptyColor: Color = DesignSystem.slate800
     
     func body(content: Content) -> some View {
         content
@@ -98,7 +98,7 @@ struct SkewedBarModifier: ViewModifier {
 // MARK: - View Extensions
 
 extension View {
-    func hudCorners(color: Color = Theme.slate700, opacity: Double = 0.5) -> some View {
+    func hudCorners(color: Color = DesignSystem.slate700, opacity: Double = 0.5) -> some View {
         modifier(HUDCornersModifier(color: color, opacity: opacity))
     }
     
@@ -106,7 +106,7 @@ extension View {
         modifier(GlowModifier(color: color, radius: radius))
     }
     
-    func cyberpunkBorder(color: Color = Theme.slate700, leftAccent: Color? = nil) -> some View {
+    func cyberpunkBorder(color: Color = DesignSystem.slate700, leftAccent: Color? = nil) -> some View {
         modifier(CyberpunkBorderModifier(color: color, leftAccent: leftAccent))
     }
 }

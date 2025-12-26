@@ -35,7 +35,7 @@ struct ExpandableChatPanel: View {
             inputArea
         }
         .frame(height: UIScreen.main.bounds.height * 0.6)
-        .background(CardBackground(accentColor: Theme.purple))
+        .background(CardBackground(accentColor: DesignSystem.purple))
         .padding(.horizontal, 8)
         .padding(.bottom, 90)
         .onAppear {
@@ -51,11 +51,11 @@ struct ExpandableChatPanel: View {
     private var header: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
-                CardBadge(text: "AI-CORE", color: Theme.purple)
+                PriorityTag(text: "AI-CORE", color: DesignSystem.purple)
                 
                 Text(Date.now.formatted(date: .numeric, time: .shortened))
-                    .font(.custom(Theme.monoFont, size: 10))
-                    .foregroundColor(Theme.slate600)
+                    .font(.custom(DesignSystem.monoFont, size: 10))
+                    .foregroundColor(DesignSystem.slate600)
             }
             
             Spacer()
@@ -63,7 +63,7 @@ struct ExpandableChatPanel: View {
             // Close button styled as card action
             CardActionButton(
                 label: "CLOSE",
-                color: Theme.slate500,
+                color: DesignSystem.slate500,
                 icon: "xmark",
                 isFilled: false
             ) {
@@ -71,10 +71,10 @@ struct ExpandableChatPanel: View {
             }
         }
         .padding(16)
-        .background(Theme.backgroundSecondary.opacity(0.5))
+        .background(DesignSystem.backgroundSecondary.opacity(0.5))
         .overlay(
             Rectangle()
-                .fill(Theme.purple.opacity(0.2))
+                .fill(DesignSystem.purple.opacity(0.2))
                 .frame(height: 1),
             alignment: .bottom
         )
@@ -124,13 +124,13 @@ struct ExpandableChatPanel: View {
     private var inputArea: some View {
         HStack(spacing: 12) {
             Text(">")
-                .font(.custom(Theme.monoFont, size: 18))
-                .foregroundColor(Theme.purple)
+                .font(.custom(DesignSystem.monoFont, size: 18))
+                .foregroundColor(DesignSystem.purple)
             
             TextField("Enter command...", text: $inputText)
                 .focused($isInputFocused)
                 .textFieldStyle(.plain)
-                .font(.custom(Theme.monoFont, size: 14))
+                .font(.custom(DesignSystem.monoFont, size: 14))
                 .foregroundColor(.white)
                 .submitLabel(.send)
                 .onSubmit {
@@ -143,14 +143,14 @@ struct ExpandableChatPanel: View {
             } label: {
                 Image(systemName: "mic.fill")
                     .font(.system(size: 16))
-                    .foregroundColor(Theme.slate600)
+                    .foregroundColor(DesignSystem.slate600)
             }
             .padding(.trailing, 4)
             
             // Send Button
             CardActionButton(
                 label: "SEND",
-                color: inputText.isEmpty ? Theme.slate600 : Theme.purple,
+                color: inputText.isEmpty ? DesignSystem.slate600 : DesignSystem.purple,
                 icon: "arrow.up",
                 isFilled: true
             ) {
@@ -159,10 +159,10 @@ struct ExpandableChatPanel: View {
             .disabled(inputText.isEmpty || isLoading)
         }
         .padding(16)
-        .background(Theme.backgroundSecondary)
+        .background(DesignSystem.backgroundSecondary)
         .overlay(
             Rectangle()
-                .fill(Theme.purple.opacity(0.2))
+                .fill(DesignSystem.purple.opacity(0.2))
                 .frame(height: 1),
             alignment: .top
         )
@@ -196,7 +196,7 @@ struct ExpandableChatPanel: View {
 
 #Preview {
     ZStack {
-        Theme.backgroundPrimary.ignoresSafeArea()
+        DesignSystem.backgroundPrimary.ignoresSafeArea()
         ExpandableChatPanel(isPresented: .constant(true))
     }
 }

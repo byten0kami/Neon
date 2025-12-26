@@ -2,7 +2,7 @@ import SwiftUI
 
 /// Decorative HUD corners for cards and containers
 struct HUDCorners: View {
-    var color: Color = Theme.slate700
+    var color: Color = DesignSystem.slate700
     var size: CGFloat = 8
     
     var body: some View {
@@ -40,7 +40,7 @@ struct CornerShape: Shape {
 
 /// Full frame HUD corners (all 4 corners)
 struct FullHUDCorners: View {
-    var color: Color = Theme.cyan
+    var color: Color = DesignSystem.cyan
     var size: CGFloat = 12
     var opacity: Double = 0.5
     
@@ -90,11 +90,11 @@ struct LCorner: Shape {
 
 #Preview {
     ZStack {
-        Theme.backgroundPrimary.ignoresSafeArea()
+        DesignSystem.backgroundPrimary.ignoresSafeArea()
         
         RoundedRectangle(cornerRadius: 0)
-            .fill(Theme.backgroundCard)
+            .fill(DesignSystem.backgroundCard)
             .frame(width: 200, height: 100)
-            .overlay(FullHUDCorners(color: Theme.cyan))
+            .overlay(FullHUDCorners(color: DesignSystem.cyan))
     }
 }

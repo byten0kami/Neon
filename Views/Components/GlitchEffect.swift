@@ -36,13 +36,13 @@ struct GlitchEffect: View {
             ZStack {
                 // Red channel offset
                 Rectangle()
-                    .fill(Theme.red.opacity(0.1 * intensity))
+                    .fill(DesignSystem.red.opacity(0.1 * intensity))
                     .offset(x: offset1)
                     .blendMode(.screen)
                 
                 // Cyan channel offset
                 Rectangle()
-                    .fill(Theme.cyan.opacity(0.1 * intensity))
+                    .fill(DesignSystem.cyan.opacity(0.1 * intensity))
                     .offset(x: -offset2)
                     .blendMode(.screen)
             }
@@ -56,7 +56,7 @@ struct GlitchEffect: View {
                 ForEach(0..<10, id: \.self) { index in
                     if Bool.random() && intensity > 0.3 {
                         Rectangle()
-                            .fill(Theme.slate700.opacity(Double.random(in: 0.3...0.8)))
+                            .fill(DesignSystem.slate700.opacity(Double.random(in: 0.3...0.8)))
                             .frame(height: CGFloat.random(in: 2...8))
                             .offset(x: CGFloat.random(in: -20...20))
                     } else {
@@ -76,18 +76,18 @@ struct GlitchEffect: View {
             
             HStack {
                 Image(systemName: "exclamationmark.triangle.fill")
-                    .foregroundColor(Theme.red)
+                    .foregroundColor(DesignSystem.red)
                 
                 Text("SYSTEM REBOOT REQUIRED")
-                    .font(.custom(Theme.displayFont, size: 14))
-                    .foregroundColor(Theme.red)
-                    .shadow(color: Theme.red.opacity(0.8), radius: 4)
+                    .font(.custom(DesignSystem.displayFont, size: 14))
+                    .foregroundColor(DesignSystem.red)
+                    .shadow(color: DesignSystem.red.opacity(0.8), radius: 4)
             }
             .padding()
-            .background(Theme.backgroundSecondary.opacity(0.9))
+            .background(DesignSystem.backgroundSecondary.opacity(0.9))
             .overlay(
                 Rectangle()
-                    .stroke(Theme.red, lineWidth: 2)
+                    .stroke(DesignSystem.red, lineWidth: 2)
             )
             
             Spacer()
@@ -133,12 +133,12 @@ struct GlitchEffect: View {
 
 #Preview {
     ZStack {
-        Theme.backgroundPrimary.ignoresSafeArea()
+        DesignSystem.backgroundPrimary.ignoresSafeArea()
         
         VStack {
             Text("NEURAL STABILITY: 35%")
-                .font(.custom(Theme.displayFont, size: 18))
-                .foregroundColor(Theme.red)
+                .font(.custom(DesignSystem.displayFont, size: 18))
+                .foregroundColor(DesignSystem.red)
         }
         
         GlitchEffect(intensity: 0.7)

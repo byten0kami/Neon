@@ -36,10 +36,10 @@ enum TabItem: String, CaseIterable {
     
     var color: Color {
         switch self {
-        case .home: return Theme.cyan
-        case .protocols: return Theme.purple
-        case .history: return Theme.amber
-        case .settings: return Theme.slate400
+        case .home: return DesignSystem.cyan
+        case .protocols: return DesignSystem.purple
+        case .history: return DesignSystem.amber
+        case .settings: return DesignSystem.slate400
         }
     }
 }
@@ -67,13 +67,13 @@ struct CyberpunkTabBar: View {
         .padding(.top, 8)
         .padding(.bottom, 40)
         .background(
-            Theme.backgroundSecondary.opacity(0.9)
+            DesignSystem.backgroundSecondary.opacity(0.9)
                 .background(.ultraThinMaterial)
         )
         .overlay(
             Rectangle()
                 .frame(height: 1)
-                .foregroundColor(Theme.slate800),
+                .foregroundColor(DesignSystem.slate800),
             alignment: .top
         )
         .onChange(of: activeTab) { _, newTab in
@@ -117,15 +117,15 @@ struct CyberpunkTabBar: View {
                     
                     Image(systemName: TabItem.home.icon)
                         .font(.system(size: 20, weight: isActive ? .bold : .regular))
-                        .foregroundColor(isActive ? TabItem.home.color : Theme.slate600)
+                        .foregroundColor(isActive ? TabItem.home.color : DesignSystem.slate600)
                         .offset(y: isActive ? -2 : 0)
                         .opacity(isActive && isBlinking ? cmdBlinkOpacity : 1.0)
                 }
                 .frame(height: 32)
                 
                 Text(TabItem.home.label)
-                    .font(.custom(Theme.headlineFont, size: 9))
-                    .foregroundColor(isActive ? TabItem.home.color : Theme.slate700)
+                    .font(.custom(DesignSystem.headlineFont, size: 9))
+                    .foregroundColor(isActive ? TabItem.home.color : DesignSystem.slate700)
                     .shadow(color: isActive ? TabItem.home.color.opacity(0.5) : .clear, radius: 2)
                     .opacity(isActive && isBlinking ? cmdBlinkOpacity : 1.0)
                 
@@ -212,14 +212,14 @@ struct CyberpunkTabBar: View {
                     
                     Image(systemName: tab.icon)
                         .font(.system(size: 20, weight: isActive ? .bold : .regular))
-                        .foregroundColor(isActive ? tab.color : Theme.slate600)
+                        .foregroundColor(isActive ? tab.color : DesignSystem.slate600)
                         .offset(y: isActive ? -2 : 0)
                 }
                 .frame(height: 32)
                 
                 Text(tab.label)
-                    .font(.custom(Theme.headlineFont, size: 9))
-                    .foregroundColor(isActive ? tab.color : Theme.slate700)
+                    .font(.custom(DesignSystem.headlineFont, size: 9))
+                    .foregroundColor(isActive ? tab.color : DesignSystem.slate700)
                     .shadow(color: isActive ? tab.color.opacity(0.5) : .clear, radius: 2)
                 
                 if isActive {
@@ -244,7 +244,7 @@ struct CyberpunkTabBar: View {
 
 #Preview {
     ZStack {
-        Theme.backgroundPrimary.ignoresSafeArea()
+        DesignSystem.backgroundPrimary.ignoresSafeArea()
         VStack {
             Spacer()
             CyberpunkTabBar(activeTab: .constant(.home), showChatPanel: .constant(false))

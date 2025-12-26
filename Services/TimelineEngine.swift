@@ -428,7 +428,23 @@ class TimelineEngine: ObservableObject {
             mustBeCompleted: true
         )
         
-        instances = [completed1, completed2, future1, future2, overdueDebt]
+        // AI Insight - Scheduling conflict
+        let aiInsight = TimelineItem.oneOff(
+            title: "Schedule Conflict Detected",
+            description: "Upload Data Packet overlaps with Server Status Check. Consider moving one task by 30 minutes.",
+            priority: .ai,
+            scheduledTime: now.addingTimeInterval(3600 * 1.5)
+        )
+        
+        // Low priority task
+        let lowPriority = TimelineItem.oneOff(
+            title: "Read Tech Article",
+            description: "Optional: New Swift features overview",
+            priority: .low,
+            scheduledTime: now.addingTimeInterval(3600 * 6)
+        )
+        
+        instances = [completed1, completed2, future1, future2, overdueDebt, aiInsight, lowPriority]
         
         save()
         print("[TimelineEngine] Mock data injected: \(masters.count) masters, \(instances.count) instances")

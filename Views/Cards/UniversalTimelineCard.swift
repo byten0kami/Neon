@@ -14,7 +14,7 @@ struct UniversalTimelineCard: View {
     // Computed property to determine the display color
     // Completed tasks are usually grayed out (Slate)
     private var displayColor: Color {
-        config.isCompleted ? Theme.slate600 : config.accentColor
+        config.isCompleted ? DesignSystem.slate600 : config.accentColor
     }
     
     var body: some View {
@@ -42,7 +42,7 @@ struct UniversalTimelineCard: View {
                 // Header: Badge + Recurrence Flag on left, Time with clock icon on right
             HStack(alignment: .center, spacing: 8) {
                 // Left side: Badge and recurrence flag
-                CardBadge(text: config.badgeText, color: config.accentColor) // Badge always keeps original color
+                PriorityTag(text: config.badgeText, color: config.accentColor, style: config.priorityTagStyle)
                 
                 // Recurrence flag next to badge (styled as grey text)
                 if let recurrence = config.recurrence {
@@ -51,7 +51,7 @@ struct UniversalTimelineCard: View {
                         .padding(.vertical, 2)
                         .background(config.accentColor.opacity(0.1))
                         .cornerRadius(4)
-                        .font(.custom(Theme.monoFont, size: 12))
+                        .font(.custom(DesignSystem.monoFont, size: 12))
                         .foregroundColor(config.accentColor)
                 }
                 
@@ -62,13 +62,13 @@ struct UniversalTimelineCard: View {
                     HStack(spacing: 4) {
                         Image(systemName: config.isDeferred ? "arrow.clockwise" : "clock")
                             .font(.system(size: 14))
-                            .foregroundColor(config.isDeferred ? Theme.amber : .white) // Amber if deferred
+                            .foregroundColor(config.isDeferred ? DesignSystem.amber : .white) // Amber if deferred
                             .shadow(color: config.accentColor.opacity(0.8), radius: 5) // Glow
                         
                         Text(time)
-                            .font(.custom(Theme.monoFont, size: 16))
+                            .font(.custom(DesignSystem.monoFont, size: 16))
                             .fontWeight(.bold)
-                            .foregroundColor(config.isDeferred ? Theme.amber : .white) // Amber if deferred
+                            .foregroundColor(config.isDeferred ? DesignSystem.amber : .white) // Amber if deferred
                             .shadow(color: config.accentColor.opacity(0.8), radius: 5) // Glow
                     }
                 }
@@ -76,17 +76,17 @@ struct UniversalTimelineCard: View {
             
             // Title (white text for active, grey for completed)
             Text(config.title)
-                .font(.custom(Theme.displayFont, size: 18))
+                .font(.custom(DesignSystem.displayFont, size: 18))
                 //.fontWeight(.bold)
-                .foregroundColor(config.isCompleted ? Theme.slate500 : .white)
+                .foregroundColor(config.isCompleted ? DesignSystem.slate500 : .white)
                 .shadow(color: config.isCompleted ? .clear : config.accentColor.opacity(0.6), radius: 6) // Glow for title
                 .padding(.top, 4)
             
             // Description (grey text - slate400 to match reference)
             if let description = config.description, !description.isEmpty {
                 Text(description)
-                    .font(.custom(Theme.lightFont, size: 14))
-                    .foregroundColor(Theme.slate400)
+                    .font(.custom(DesignSystem.lightFont, size: 14))
+                    .foregroundColor(DesignSystem.slate400)
             }
             
             }

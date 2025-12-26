@@ -17,17 +17,17 @@ struct ChatBubble: View {
                 
                 VStack(alignment: .leading, spacing: 6) {
                     Text(message.content)
-                        .font(.custom(Theme.lightFont, size: 14))
-                        .foregroundColor(isUser ? .white : Theme.slate300)
+                        .font(.custom(DesignSystem.lightFont, size: 14))
+                        .foregroundColor(isUser ? .white : DesignSystem.slate300)
                         
                     Text(message.timestamp)
-                        .font(.custom(Theme.monoFont, size: 9))
-                        .foregroundColor(Theme.slate600)
+                        .font(.custom(DesignSystem.monoFont, size: 9))
+                        .foregroundColor(DesignSystem.slate600)
                 }
                 .padding(12)
                 .background(
                     CardBackground(
-                        accentColor: isUser ? Theme.slate400 : Theme.purple
+                        accentColor: isUser ? DesignSystem.slate400 : DesignSystem.purple
                     )
                 )
                 .frame(maxWidth: UIScreen.main.bounds.width * 0.75, alignment: isUser ? .trailing : .leading)
@@ -50,17 +50,17 @@ struct TypingBubble: View {
             VStack(alignment: .leading, spacing: 6) {
                 HStack(spacing: 4) {
                     Text("PROCESSING")
-                        .font(.custom(Theme.monoFont, size: 10))
-                        .foregroundColor(Theme.purple)
+                        .font(.custom(DesignSystem.monoFont, size: 10))
+                        .foregroundColor(DesignSystem.purple)
                         
                     Text(String(repeating: ".", count: dotCount + 1))
-                        .font(.custom(Theme.monoFont, size: 10))
-                        .foregroundColor(Theme.purple)
+                        .font(.custom(DesignSystem.monoFont, size: 10))
+                        .foregroundColor(DesignSystem.purple)
                         .frame(width: 20, alignment: .leading)
                 }
             }
             .padding(12)
-            .background(CardBackground(accentColor: Theme.purple))
+            .background(CardBackground(accentColor: DesignSystem.purple))
             
             Spacer()
         }

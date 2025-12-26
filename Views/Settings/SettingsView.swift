@@ -24,13 +24,11 @@ struct SettingsView: View {
                 // Header
                 header
                 
+                // Theme Section
+                themeSection
+                
                 // AI Engine Section
                 aiEngineSection
-                
-                // Theme Section (Only visible if themes besides default are available)
-                if themeManager.availableThemes.count > 0 {
-                    themeSection
-                }
                 
                 // About Section
                 aboutSection
@@ -58,13 +56,13 @@ struct SettingsView: View {
         VStack(spacing: 8) {
             // Header styled like [LOGS]
             Text("[CFG]")
-                .font(.custom(Theme.monoFont, size: 28))
-                .foregroundColor(Theme.cyan)
+                .font(.custom(DesignSystem.monoFont, size: 28))
+                .foregroundColor(DesignSystem.cyan)
             
             Text("CONFIGURATION")
-                .font(.custom(Theme.displayFont, size: 32))
+                .font(.custom(DesignSystem.displayFont, size: 32))
                 .foregroundColor(.white)
-                .shadow(color: Theme.cyan.opacity(0.6), radius: 6) // Glow effect
+                .shadow(color: DesignSystem.cyan.opacity(0.6), radius: 6) // Glow effect
         }
         .padding(.top, 8)
     }
@@ -96,13 +94,13 @@ struct SettingsView: View {
                 .cornerRadius(CardStyle.cornerRadius)
                 .overlay(
                     RoundedRectangle(cornerRadius: CardStyle.cornerRadius)
-                        .stroke(Theme.cyan.opacity(0.3), lineWidth: 1)
+                        .stroke(DesignSystem.cyan.opacity(0.3), lineWidth: 1)
                 )
-                .shadow(color: Theme.cyan.opacity(0.2), radius: 10, x: 0, y: 0)
+                .shadow(color: DesignSystem.cyan.opacity(0.2), radius: 10, x: 0, y: 0)
                 
                 // Left accent border
                 Rectangle()
-                    .fill(Theme.cyan)
+                    .fill(DesignSystem.cyan)
                     .frame(width: CardStyle.borderWidth)
                     .cornerRadius(CardStyle.cornerRadius)
             }
@@ -122,11 +120,11 @@ struct SettingsView: View {
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Use Custom API Key")
-                        .font(.custom(Theme.monoFont, size: 20))
+                        .font(.custom(DesignSystem.monoFont, size: 20))
                         .foregroundColor(.white)
                     Text("Override built-in key")
-                        .font(.custom(Theme.lightFont, size: 16))
-                        .foregroundColor(Theme.slate500)
+                        .font(.custom(DesignSystem.lightFont, size: 16))
+                        .foregroundColor(DesignSystem.slate500)
                 }
                 Spacer()
                 Toggle("", isOn: Binding(
@@ -134,7 +132,7 @@ struct SettingsView: View {
                     set: { apiSettings.setUseCustomKey($0) }
                 ))
                 .labelsHidden()
-                .tint(Theme.cyan)
+                .tint(DesignSystem.cyan)
             }
         }
     }
@@ -144,20 +142,20 @@ struct SettingsView: View {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     Text("API Key")
-                        .font(.custom(Theme.monoFont, size: 20))
+                        .font(.custom(DesignSystem.monoFont, size: 20))
                         .foregroundColor(.white)
                     Button(action: openOpenRouter) {
                         Text("Get Personal Key ↗")
-                            .font(.custom(Theme.monoFont, size: 16))
-                            .foregroundColor(Theme.cyan)
+                            .font(.custom(DesignSystem.monoFont, size: 16))
+                            .foregroundColor(DesignSystem.cyan)
                             .underline()
                     }
                     
                     Spacer()
                     if saveStatus == .saved {
                         Text("Saved ✓")
-                            .font(.custom(Theme.monoFont, size: 16))
-                            .foregroundColor(Theme.green)
+                            .font(.custom(DesignSystem.monoFont, size: 16))
+                            .foregroundColor(DesignSystem.green)
                     }
                 }
                 
@@ -169,31 +167,31 @@ struct SettingsView: View {
                             SecureField("sk-or-v1-...", text: $apiKeyInput)
                         }
                     }
-                    .font(.custom(Theme.monoFont, size: 18))
+                    .font(.custom(DesignSystem.monoFont, size: 18))
                     .foregroundColor(.white)
                     .padding(10)
-                    .background(Theme.backgroundPrimary)
+                    .background(DesignSystem.backgroundPrimary)
                     .cornerRadius(CardStyle.cornerRadius)
                     .overlay(
                         RoundedRectangle(cornerRadius: CardStyle.cornerRadius)
-                            .stroke(Theme.slate700, lineWidth: 1)
+                            .stroke(DesignSystem.slate700, lineWidth: 1)
                     )
                     
                     Button(action: { showingAPIKey.toggle() }) {
                         Image(systemName: showingAPIKey ? "eye.slash" : "eye")
-                            .foregroundColor(Theme.slate400)
+                            .foregroundColor(DesignSystem.slate400)
                             .frame(width: 44, height: 44)
                     }
                     
                     Button(action: saveAPIKey) {
                         Text("Save")
-                            .font(.custom(Theme.monoFont, size: 16))
+                            .font(.custom(DesignSystem.monoFont, size: 16))
                             .fontWeight(.bold)
                             .foregroundColor(.black)
                             .padding(.horizontal, CardStyle.buttonPaddingH)
                             .padding(.vertical, CardStyle.buttonPaddingV)
                             .frame(height: CardStyle.buttonHeight)
-                            .background(Theme.cyan)
+                            .background(DesignSystem.cyan)
                             .cornerRadius(CardStyle.cornerRadius)
                     }
                 }
@@ -205,12 +203,12 @@ struct SettingsView: View {
         settingsRow {
             VStack(alignment: .leading, spacing: 8) {
                 Text("AI Model")
-                    .font(.custom(Theme.monoFont, size: 20))
+                    .font(.custom(DesignSystem.monoFont, size: 20))
                     .foregroundColor(.white)
                 
                 Text("Limited access. Use your own key or upgrade for full access.")
-                    .font(.custom(Theme.lightFont, size: 14))
-                    .foregroundColor(Theme.slate500)
+                    .font(.custom(DesignSystem.lightFont, size: 14))
+                    .foregroundColor(DesignSystem.slate500)
                 
                 // Custom Accordion Dropdown
                 VStack(spacing: 0) {
@@ -224,14 +222,14 @@ struct SettingsView: View {
                             VStack(alignment: .leading, spacing: 2) {
                                 if let currentModel = APISettings.availableModels.first(where: { $0.id == apiSettings.settings.selectedModel }) {
                                     Text(currentModel.name)
-                                        .font(.custom(Theme.monoFont, size: 18))
+                                        .font(.custom(DesignSystem.monoFont, size: 18))
                                         .foregroundColor(.white)
                                     Text(currentModel.description)
-                                        .font(.custom(Theme.monoFont, size: 15))
-                                        .foregroundColor(Theme.slate500)
+                                        .font(.custom(DesignSystem.monoFont, size: 15))
+                                        .foregroundColor(DesignSystem.slate500)
                                 } else {
                                     Text("Select Model")
-                                        .font(.custom(Theme.monoFont, size: 18))
+                                        .font(.custom(DesignSystem.monoFont, size: 18))
                                         .foregroundColor(.white)
                                 }
                             }
@@ -240,18 +238,18 @@ struct SettingsView: View {
                             
                             Image(systemName: "chevron.down")
                                 .font(.system(size: 16))
-                                .foregroundColor(Theme.cyan)
+                                .foregroundColor(DesignSystem.cyan)
                                 .rotationEffect(.degrees(isModelDropdownExpanded ? 180 : 0))
                         }
                         .padding(.vertical, 12)
                         .padding(.horizontal, 16)
-                        .background(Theme.cyan.opacity(0.1))
+                        .background(DesignSystem.cyan.opacity(0.1))
                     }
                     
                     // Expanded Options
                     if isModelDropdownExpanded {
                         Rectangle()
-                            .fill(Theme.cyan.opacity(0.3))
+                            .fill(DesignSystem.cyan.opacity(0.3))
                             .frame(height: 1)
                         
                         VStack(spacing: 0) {
@@ -269,15 +267,15 @@ struct SettingsView: View {
                                     HStack {
                                         VStack(alignment: .leading, spacing: 4) {
                                             Text(model.name)
-                                                .font(.custom(Theme.monoFont, size: 18))
+                                                .font(.custom(DesignSystem.monoFont, size: 18))
                                                 .foregroundColor(.white)
                                             Text(model.description)
-                                                .font(.custom(Theme.monoFont, size: 15))
-                                                .foregroundColor(Theme.slate500)
+                                                .font(.custom(DesignSystem.monoFont, size: 15))
+                                                .foregroundColor(DesignSystem.slate500)
                                             // Tooltip info
                                             Text(model.tooltip)
-                                                .font(.custom(Theme.lightFont, size: 12))
-                                                .foregroundColor(Theme.cyan.opacity(0.8))
+                                                .font(.custom(DesignSystem.lightFont, size: 12))
+                                                .foregroundColor(DesignSystem.cyan.opacity(0.8))
                                                 .fixedSize(horizontal: false, vertical: true)
                                                 .padding(.top, 2)
                                         }
@@ -287,18 +285,18 @@ struct SettingsView: View {
                                         if model.id.contains("sonnet") {
                                             Image(systemName: "lock.fill")
                                                 .font(.system(size: 16))
-                                                .foregroundColor(Theme.amber)
+                                                .foregroundColor(DesignSystem.amber)
                                         } else if apiSettings.settings.selectedModel == model.id {
                                             Image(systemName: "checkmark")
                                                 .font(.system(size: 16))
-                                                .foregroundColor(Theme.cyan)
+                                                .foregroundColor(DesignSystem.cyan)
                                         }
                                     }
                                     .padding(.vertical, 12)
                                     .padding(.horizontal, 16)
                                     .background(
                                         apiSettings.settings.selectedModel == model.id
-                                            ? Theme.cyan.opacity(0.05)
+                                            ? DesignSystem.cyan.opacity(0.05)
                                             : Color.clear
                                     )
                                 }
@@ -306,7 +304,7 @@ struct SettingsView: View {
                                 // Divider between items (except last)
                                 if model.id != APISettings.availableModels.last?.id {
                                     Rectangle()
-                                        .fill(Theme.slate700.opacity(0.3))
+                                        .fill(DesignSystem.slate700.opacity(0.3))
                                         .frame(height: 1)
                                 }
                             }
@@ -317,7 +315,7 @@ struct SettingsView: View {
                 .cornerRadius(CardStyle.cornerRadius)
                 .overlay(
                     RoundedRectangle(cornerRadius: CardStyle.cornerRadius)
-                        .stroke(Theme.cyan.opacity(0.3), lineWidth: 1)
+                        .stroke(DesignSystem.cyan.opacity(0.3), lineWidth: 1)
                 )
             }
         }
@@ -327,7 +325,7 @@ struct SettingsView: View {
     
     private var themeSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            sectionHeader("UI THEME")
+            sectionHeader("UI")
             
             ZStack(alignment: .leading) {
                 VStack(spacing: 0) {
@@ -353,13 +351,13 @@ struct SettingsView: View {
     private var themeSelectionRow: some View {
         settingsRow {
             VStack(alignment: .leading, spacing: 8) {
-                Text("Interface Skin")
-                    .font(.custom(Theme.monoFont, size: 20))
+                Text("Skin")
+                    .font(.custom(DesignSystem.monoFont, size: 20))
                     .foregroundColor(.white)
                 
                 Text("Select your preferred neural interface visualization.")
-                    .font(.custom(Theme.lightFont, size: 14))
-                    .foregroundColor(Theme.slate500)
+                    .font(.custom(DesignSystem.lightFont, size: 14))
+                    .foregroundColor(DesignSystem.slate500)
                 
                 // Custom Accordion Dropdown
                 VStack(spacing: 0) {
@@ -372,11 +370,11 @@ struct SettingsView: View {
                         HStack {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(themeManager.currentTheme.name)
-                                    .font(.custom(Theme.monoFont, size: 18))
+                                    .font(.custom(DesignSystem.monoFont, size: 18))
                                     .foregroundColor(.white)
                                 Text(themeManager.currentTheme.description)
-                                    .font(.custom(Theme.monoFont, size: 15))
-                                    .foregroundColor(Theme.slate500)
+                                    .font(.custom(DesignSystem.monoFont, size: 15))
+                                    .foregroundColor(DesignSystem.slate500)
                             }
                             
                             Spacer()
@@ -398,7 +396,7 @@ struct SettingsView: View {
                             .frame(height: 1)
                         
                         VStack(spacing: 0) {
-                            ForEach(themeManager.availableThemes) { theme in
+                            ForEach(themeManager.availableThemes, id: \.id) { theme in
                                 Button(action: {
                                     themeManager.setTheme(theme.id)
                                     withAnimation {
@@ -408,11 +406,11 @@ struct SettingsView: View {
                                     HStack {
                                         VStack(alignment: .leading, spacing: 2) {
                                             Text(theme.name)
-                                                .font(.custom(Theme.monoFont, size: 18))
+                                                .font(.custom(DesignSystem.monoFont, size: 18))
                                                 .foregroundColor(.white)
                                             Text(theme.description)
-                                                .font(.custom(Theme.monoFont, size: 15))
-                                                .foregroundColor(Theme.slate500)
+                                                .font(.custom(DesignSystem.monoFont, size: 15))
+                                                .foregroundColor(DesignSystem.slate500)
                                         }
                                         
                                         Spacer()
@@ -435,7 +433,7 @@ struct SettingsView: View {
                                 // Divider between items (except last)
                                 if theme.id != themeManager.availableThemes.last?.id {
                                     Rectangle()
-                                        .fill(Theme.slate700.opacity(0.3))
+                                        .fill(DesignSystem.slate700.opacity(0.3))
                                         .frame(height: 1)
                                 }
                             }
@@ -463,12 +461,12 @@ struct SettingsView: View {
                     settingsRow {
                         HStack {
                             Text("Version")
-                                .font(.custom(Theme.monoFont, size: 20))
+                                .font(.custom(DesignSystem.monoFont, size: 20))
                                 .foregroundColor(.white)
                             Spacer()
                             Text("1.0.0")
-                                .font(.custom(Theme.monoFont, size: 18))
-                                .foregroundColor(Theme.slate400)
+                                .font(.custom(DesignSystem.monoFont, size: 18))
+                                .foregroundColor(DesignSystem.slate400)
                         }
                     }
                 }
@@ -476,13 +474,13 @@ struct SettingsView: View {
                 .cornerRadius(CardStyle.cornerRadius)
                 .overlay(
                     RoundedRectangle(cornerRadius: CardStyle.cornerRadius)
-                        .stroke(Theme.cyan.opacity(0.3), lineWidth: 1)
+                        .stroke(DesignSystem.cyan.opacity(0.3), lineWidth: 1)
                 )
-                .shadow(color: Theme.cyan.opacity(0.2), radius: 10, x: 0, y: 0)
+                .shadow(color: DesignSystem.cyan.opacity(0.2), radius: 10, x: 0, y: 0)
                 
                 // Left accent border
                 Rectangle()
-                    .fill(Theme.cyan)
+                    .fill(DesignSystem.cyan)
                     .frame(width: CardStyle.borderWidth)
                     .cornerRadius(CardStyle.cornerRadius)
             }
@@ -493,8 +491,8 @@ struct SettingsView: View {
     
     private func sectionHeader(_ title: String) -> some View {
         Text(title)
-            .font(.custom(Theme.monoFont, size: 16))
-            .foregroundColor(Theme.purple)
+            .font(.custom(DesignSystem.monoFont, size: 16))
+            .foregroundColor(DesignSystem.purple)
             .tracking(2)
     }
     
@@ -506,7 +504,7 @@ struct SettingsView: View {
     
     private var divider: some View {
         Rectangle()
-            .fill(Theme.slate700.opacity(0.3))
+            .fill(DesignSystem.slate700.opacity(0.3))
             .frame(height: 1)
     }
     

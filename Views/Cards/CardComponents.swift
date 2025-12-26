@@ -11,7 +11,7 @@ enum TimelineCardType {
     case task  // The only type - color comes from priority
     
     var color: Color {
-        return Theme.lime  // Default, overridden by priority
+        return DesignSystem.lime  // Default, overridden by priority
     }
     
     var label: String {
@@ -71,7 +71,7 @@ struct CardBackground: View {
         ZStack(alignment: .leading) {
             // Background matches tab background - outlined by glow/grid, not color
             Rectangle()
-                .fill(Theme.backgroundSecondary)
+                .fill(DesignSystem.backgroundSecondary)
             
 
             
@@ -96,24 +96,45 @@ struct CardBackground: View {
     }
 }
 
-// MARK: - Card Action Button
+// MARK: - Priority Tag
 
-/// Reusable action button for cards - FILLED style matching card accent color
-/// Styled badge with frame (matching button style)
-struct CardBadge: View {
+/// Reusable priority tag for cards - displays priority with theme-aware styling
+struct PriorityTag: View {
     let text: String
     let color: Color
+    let style: PriorityTagStyle?
+    
+    init(text: String, color: Color, style: PriorityTagStyle? = nil) {
+        self.text = text
+        self.color = color
+        self.style = style
+    }
     
     var body: some View {
-        Text(text)
-            .font(.custom(Theme.monoFont, size: 11))
+        let effectiveText = style?.text ?? text
+        let effectiveColor = style?.color ?? color
+        let textColor = style?.textColor ?? effectiveColor
+        let bgColor = style?.backgroundColor
+        let borderRadius = style?.borderRadius ?? CardStyle.cornerRadius
+        let hasGlow = style?.hasGlow ?? false
+        let glowRadius = style?.glowRadius ?? 0
+        let useSystemFont = style?.useSystemFont ?? false
+        
+        Text(effectiveText)
+            .font(useSystemFont ? .system(size: 11, weight: .bold) : .custom(DesignSystem.monoFont, size: 11))
             .fontWeight(.bold)
-            .foregroundColor(color)
+            .foregroundColor(textColor)
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
+            .background(bgColor ?? Color.clear)
+            .cornerRadius(borderRadius)
             .overlay(
-                RoundedRectangle(cornerRadius: CardStyle.cornerRadius)
-                    .stroke(color, lineWidth: 1)
+                RoundedRectangle(cornerRadius: borderRadius)
+                    .stroke(effectiveColor, lineWidth: 1)
+            )
+            .shadow(
+                color: hasGlow ? effectiveColor.opacity(0.8) : .clear,
+                radius: glowRadius
             )
     }
 }
@@ -123,7 +144,7 @@ struct CardBadge: View {
 /// Reusable action button for cards
 struct CardActionButton: View {
     let label: String
-    var color: Color = Theme.cyan
+    var color: Color = DesignSystem.cyan
     var icon: String? = nil  // SF Symbol name
     var isFilled: Bool = false
     var action: () -> Void
@@ -136,7 +157,7 @@ struct CardActionButton: View {
                         .font(.system(size: 12, weight: .bold))
                 }
                 Text(label)
-                    .font(.custom(Theme.monoFont, size: 12))
+                    .font(.custom(DesignSystem.monoFont, size: 12))
                     .fontWeight(.bold)
             }
             .foregroundColor(color)
@@ -174,7 +195,7 @@ struct TimelineConnector: View {
             
             // Dot (centered at x=35)
             Circle()
-                .fill(isCompleted ? Theme.slate600 : color)
+                .fill(isCompleted ? DesignSystem.slate600 : color)
                 .frame(width: CardStyle.dotSize, height: CardStyle.dotSize)
                 .shadow(color: isCompleted ? .clear : color.opacity(0.6), radius: 4)
         }

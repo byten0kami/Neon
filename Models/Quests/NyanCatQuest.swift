@@ -46,6 +46,6 @@ class NyanCatQuest: QuestHandler {
         }
         
         // Quest-specific: auto-equip Nyan theme
-        ThemeManager.shared.setTheme("nyan")
+        ThemeManager.shared.setTheme(.nyan)
     }
 }

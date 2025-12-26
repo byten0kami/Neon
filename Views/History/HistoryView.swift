@@ -8,16 +8,16 @@ struct HistoryView: View {
     var body: some View {
         VStack(spacing: 16) {
             Text("[LOGS]")
-                .font(.custom(Theme.monoFont, size: 24))
-                .foregroundColor(Theme.amber)
+                .font(.custom(DesignSystem.monoFont, size: 24))
+                .foregroundColor(DesignSystem.amber)
             
             Text("SYSTEM LOGS")
-                .font(.custom(Theme.displayFont, size: 32))
+                .font(.custom(DesignSystem.displayFont, size: 32))
                 .foregroundColor(.white)
             
             Text("Coming soon...")
-                .font(.custom(Theme.lightFont, size: 16))
-                .foregroundColor(Theme.slate500)
+                .font(.custom(DesignSystem.lightFont, size: 16))
+                .foregroundColor(DesignSystem.slate500)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(

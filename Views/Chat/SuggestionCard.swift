@@ -27,7 +27,7 @@ struct SuggestionCard: View {
 
 #Preview {
     ZStack {
-        Theme.backgroundPrimary.ignoresSafeArea()
+        DesignSystem.backgroundPrimary.ignoresSafeArea()
         
         VStack(spacing: 16) {
             SuggestionCard(

@@ -14,7 +14,7 @@ struct TaskActionsSheet: View {
             // Header
             HStack {
                 Text("Task Details")
-                    .font(.custom(Theme.displayFont, size: 20))
+                    .font(.custom(DesignSystem.displayFont, size: 20))
                     .foregroundColor(.white)
                 
                 Spacer()
@@ -22,31 +22,31 @@ struct TaskActionsSheet: View {
                 Button("Done") {
                     onDismiss()
                 }
-                .font(.custom(Theme.headlineFont, size: 16))
-                .foregroundColor(Theme.cyan)
+                .font(.custom(DesignSystem.headlineFont, size: 16))
+                .foregroundColor(DesignSystem.cyan)
             }
             .padding()
             
             // Task info
             VStack(alignment: .leading, spacing: 12) {
                 Text("[TASK]")
-                    .font(.custom(Theme.monoFont, size: 11))
-                    .foregroundColor(Theme.cyan)
+                    .font(.custom(DesignSystem.monoFont, size: 11))
+                    .foregroundColor(DesignSystem.cyan)
                 
                 Text(task.title)
-                    .font(.custom(Theme.displayFont, size: 18))
+                    .font(.custom(DesignSystem.displayFont, size: 18))
                     .foregroundColor(.white)
                 
                 HStack(spacing: 12) {
                     Label(task.category, systemImage: "folder")
                     Label(task.priority.rawValue, systemImage: "flag")
                 }
-                .font(.custom(Theme.lightFont, size: 14))
-                .foregroundColor(Theme.slate500)
+                .font(.custom(DesignSystem.lightFont, size: 14))
+                .foregroundColor(DesignSystem.slate500)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
-            .background(Theme.backgroundCard)
+            .background(DesignSystem.backgroundCard)
             .cornerRadius(8)
             .padding(.horizontal)
             
@@ -56,11 +56,11 @@ struct TaskActionsSheet: View {
                     // Discuss with AI
                 } label: {
                     Label("DISCUSS WITH AI", systemImage: "bubble.left.and.bubble.right")
-                        .font(.custom(Theme.headlineFont, size: 14))
+                        .font(.custom(DesignSystem.headlineFont, size: 14))
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Theme.cyan)
+                        .background(DesignSystem.cyan)
                         .cornerRadius(8)
                 }
                 
@@ -69,11 +69,11 @@ struct TaskActionsSheet: View {
                         // Edit
                     } label: {
                         Label("Edit", systemImage: "pencil")
-                            .font(.custom(Theme.headlineFont, size: 14))
+                            .font(.custom(DesignSystem.headlineFont, size: 14))
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Theme.slate700)
+                            .background(DesignSystem.slate700)
                             .cornerRadius(8)
                     }
                     
@@ -82,11 +82,11 @@ struct TaskActionsSheet: View {
                         onDismiss()
                     } label: {
                         Label("Delete", systemImage: "trash")
-                            .font(.custom(Theme.headlineFont, size: 14))
-                            .foregroundColor(Theme.red)
+                            .font(.custom(DesignSystem.headlineFont, size: 14))
+                            .foregroundColor(DesignSystem.red)
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Theme.backgroundCard)
+                            .background(DesignSystem.backgroundCard)
                             .cornerRadius(8)
                     }
                 }
@@ -95,7 +95,7 @@ struct TaskActionsSheet: View {
             
             Spacer()
         }
-        .background(Theme.backgroundPrimary)
+        .background(DesignSystem.backgroundPrimary)
         .presentationDetents([.medium])
     }
 }

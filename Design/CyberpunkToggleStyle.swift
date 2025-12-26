@@ -9,15 +9,15 @@ struct CyberpunkToggleStyle: ToggleStyle {
             configuration.isOn.toggle()
         } label: {
             RoundedRectangle(cornerRadius: 16)
-                .fill(configuration.isOn ? Theme.green.opacity(0.3) : Theme.slate700)
+                .fill(configuration.isOn ? DesignSystem.green.opacity(0.3) : DesignSystem.slate700)
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
-                        .stroke(configuration.isOn ? Theme.green : Theme.slate600, lineWidth: 1)
+                        .stroke(configuration.isOn ? DesignSystem.green : DesignSystem.slate600, lineWidth: 1)
                 )
                 .frame(width: 40, height: 20)
                 .overlay(
                     Circle()
-                        .fill(configuration.isOn ? Theme.green : Theme.slate500)
+                        .fill(configuration.isOn ? DesignSystem.green : DesignSystem.slate500)
                         .frame(width: 16, height: 16)
                         .offset(x: configuration.isOn ? 10 : -10),
                     alignment: .center

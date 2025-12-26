@@ -113,18 +113,18 @@ struct TimelineItemActionsSheet: View {
                 // Item Info
                 VStack(alignment: .leading, spacing: 8) {
                     Text(item.title)
-                        .font(.custom(Theme.displayFont, size: 24))
+                        .font(.custom(DesignSystem.displayFont, size: 24))
                         .foregroundColor(.white)
                     
                     if let description = item.description {
                         Text(description)
-                            .font(.custom(Theme.lightFont, size: 16))
-                            .foregroundColor(Theme.slate400)
+                            .font(.custom(DesignSystem.lightFont, size: 16))
+                            .foregroundColor(DesignSystem.slate400)
                     }
                     
                     HStack {
                         Text(item.priority.displayName)
-                            .font(.custom(Theme.monoFont, size: 12))
+                            .font(.custom(DesignSystem.monoFont, size: 12))
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
                             .background(priorityColor.opacity(0.2))
@@ -132,20 +132,20 @@ struct TimelineItemActionsSheet: View {
                         
                         if let recurrence = item.recurrenceText {
                             Text(recurrence)
-                                .font(.custom(Theme.monoFont, size: 12))
-                                .foregroundColor(Theme.slate500)
+                                .font(.custom(DesignSystem.monoFont, size: 12))
+                                .foregroundColor(DesignSystem.slate500)
                         }
                         
                         if item.mustBeCompleted {
                             Text("REQUIRED")
-                                .font(.custom(Theme.monoFont, size: 10))
-                                .foregroundColor(Theme.red)
+                                .font(.custom(DesignSystem.monoFont, size: 10))
+                                .foregroundColor(DesignSystem.red)
                         }
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding()
-                .background(Theme.backgroundSecondary)
+                .background(DesignSystem.backgroundSecondary)
                 .cornerRadius(8)
                 
                 Spacer()
@@ -163,8 +163,8 @@ struct TimelineItemActionsSheet: View {
                             }
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Theme.lime.opacity(0.2))
-                            .foregroundColor(Theme.lime)
+                            .background(DesignSystem.lime.opacity(0.2))
+                            .foregroundColor(DesignSystem.lime)
                             .cornerRadius(8)
                         }
                         
@@ -178,8 +178,8 @@ struct TimelineItemActionsSheet: View {
                             }
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Theme.amber.opacity(0.2))
-                            .foregroundColor(Theme.amber)
+                            .background(DesignSystem.amber.opacity(0.2))
+                            .foregroundColor(DesignSystem.amber)
                             .cornerRadius(8)
                         }
                     }
@@ -194,14 +194,14 @@ struct TimelineItemActionsSheet: View {
                         }
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Theme.red.opacity(0.2))
-                        .foregroundColor(Theme.red)
+                        .background(DesignSystem.red.opacity(0.2))
+                        .foregroundColor(DesignSystem.red)
                         .cornerRadius(8)
                     }
                 }
             }
             .padding()
-            .background(Theme.backgroundPrimary.ignoresSafeArea())
+            .background(DesignSystem.backgroundPrimary.ignoresSafeArea())
             .navigationTitle("Item Details")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -216,11 +216,11 @@ struct TimelineItemActionsSheet: View {
     
     private var priorityColor: Color {
         switch item.priority {
-        case .critical: return Theme.red
-        case .ai: return Theme.purple
-        case .high: return Theme.amber
-        case .normal: return Theme.lime
-        case .low: return Theme.cyan
+        case .critical: return DesignSystem.red
+        case .ai: return DesignSystem.purple
+        case .high: return DesignSystem.amber
+        case .normal: return DesignSystem.lime
+        case .low: return DesignSystem.cyan
         }
     }
 }

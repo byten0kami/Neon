@@ -11,6 +11,9 @@ struct CardConfig {
     let badgeText: String
     let accentColor: Color
     
+    // Priority Theme Style (for themed badges)
+    let priorityTagStyle: PriorityTagStyle?
+    
     // Time & Status
     let time: String?
     let isCompleted: Bool
@@ -28,6 +31,7 @@ struct CardConfig {
         description: String? = nil,
         badgeText: String,
         accentColor: Color,
+        priorityTagStyle: PriorityTagStyle? = nil,
         time: String? = nil,
         isCompleted: Bool = false,
         isOverdue: Bool = false,
@@ -39,6 +43,7 @@ struct CardConfig {
         self.description = description
         self.badgeText = badgeText
         self.accentColor = accentColor
+        self.priorityTagStyle = priorityTagStyle
         self.time = time
         self.isCompleted = isCompleted
         self.isOverdue = isOverdue
@@ -60,14 +65,14 @@ struct CardConfig {
         let actions = [
             TimelineCardAction(
                 title: "Y",
-                color: Theme.lime,
+                color: DesignSystem.lime,
                 icon: "checkmark",
                 isFilled: true,
                 action: onAccept
             ),
             TimelineCardAction(
                 title: "N",
-                color: Theme.slate500,
+                color: DesignSystem.slate500,
                 icon: "xmark",
                 isFilled: false,
                 action: onDeny
@@ -78,7 +83,7 @@ struct CardConfig {
             title: title,
             description: description,
             badgeText: "CMD",
-            accentColor: Theme.purple,
+            accentColor: DesignSystem.purple,
             time: dailyTime,
             recurrence: dailyTime != nil ? "DAILY" : nil,
             actions: actions
@@ -117,7 +122,7 @@ struct CardConfig {
                 ),
                 TimelineCardAction(
                     title: task.isRecurring ? "Defer" : "Skip",
-                    color: Theme.slate500,
+                    color: DesignSystem.slate500,
                     icon: task.isRecurring ? "clock.arrow.circlepath" : "arrow.turn.up.right",
                     isFilled: false,
                     action: task.isRecurring ? onDefer : onDelete
@@ -142,11 +147,8 @@ struct CardConfig {
     // MARK: - Factory for TimelineItem (Master-Instance Architecture)
     
     /// Create a card config for a TimelineItem (new Master-Instance architecture)
-    /// Priority-driven badge/colors:
-    /// - .critical → ASAP (red)
-    /// - .high → TASK (amber)
-    /// - .normal → TASK (lime)
-    /// - .low → INFO (cyan)
+    /// Uses active priority theme from ThemeManager
+    @MainActor
     static func forTimelineItem(
         _ item: TimelineItem,
         isGhost: Bool = false,
@@ -154,8 +156,8 @@ struct CardConfig {
         onDefer: @escaping () -> Void,
         onDelete: @escaping () -> Void
     ) -> CardConfig {
-        // Priority-based styling
-        let (badgeText, accentColor) = priorityStyle(for: item.priority, category: item.category)
+        // Get theme-aware priority style from current theme
+        let style = ThemeManager.shared.priorityTagStyle(for: item.priority)
         
         // Determine time display
         let timeString: String?
@@ -168,19 +170,17 @@ struct CardConfig {
         // Build actions based on mustBeCompleted flag
         var actions: [TimelineCardAction] = []
         if !item.isCompleted {
-            // All priorities get the same actions: Done + Defer/Skip
-            // Second button depends on mustBeCompleted, not recurrence
             actions = [
                 TimelineCardAction(
                     title: "Done",
-                    color: accentColor,
+                    color: style.color,
                     icon: "checkmark",
                     isFilled: true,
                     action: onComplete
                 ),
                 TimelineCardAction(
                     title: item.mustBeCompleted ? "Defer" : "Skip",
-                    color: Theme.slate500,
+                    color: DesignSystem.slate500,
                     icon: item.mustBeCompleted ? "clock.arrow.circlepath" : "arrow.turn.up.right",
                     isFilled: false,
                     action: item.mustBeCompleted ? onDefer : onDelete
@@ -191,8 +191,9 @@ struct CardConfig {
         return CardConfig(
             title: item.title,
             description: item.description,
-            badgeText: badgeText,
-            accentColor: accentColor,
+            badgeText: style.text,
+            accentColor: style.color,
+            priorityTagStyle: style,
             time: timeString,
             isCompleted: item.isCompleted,
             isOverdue: item.isOverdue,
@@ -200,23 +201,6 @@ struct CardConfig {
             recurrence: item.recurrenceText?.uppercased(),
             actions: actions
         )
-    }
-    
-    /// Get badge text and accent color based on priority only
-    private static func priorityStyle(for priority: ItemPriority, category: String) -> (String, Color) {
-        // All cards are TASK, colored by priority
-        switch priority {
-        case .critical:
-            return ("TASK", Theme.red)
-        case .ai:
-            return ("TASK", Theme.purple)
-        case .high:
-            return ("TASK", Theme.amber)
-        case .normal:
-            return ("TASK", Theme.lime)
-        case .low:
-            return ("TASK", Theme.cyan)
-        }
     }
     
     // MARK: - Helper Methods
