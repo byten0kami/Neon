@@ -15,6 +15,10 @@ targets:
   NeonTracker:
     type: application
     platform: iOS
+    # Explicitly inherit configurations to ensure secrets are seen by the target
+    configFiles:
+      Debug: Config/Secrets.xcconfig
+      Release: Config/Secrets.xcconfig
     sources:
       - path: .
         excludes:
@@ -52,6 +56,9 @@ targets:
   NeonTests:
     type: bundle.unit-test
     platform: iOS
+    configFiles:
+      Debug: Config/Secrets.xcconfig
+      Release: Config/Secrets.xcconfig
     sources:
       - path: Tests
     dependencies:
