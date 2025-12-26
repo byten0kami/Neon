@@ -58,7 +58,7 @@ struct NyanCatView: View {
     
     private func triggerExplosion() {
         isExploding = true
-        QuestManager.shared.completeQuest(id: .nyanCat)
+        QuestManager.shared.completeQuest(id: "nyan_cat")
         
         // Wait for explosion animation then dismiss
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {

@@ -1,102 +1,101 @@
 import Foundation
 import Combine
 
-/// Manages the state and progression of quests
+/// Manages the state and progression of quests via handlers
 @MainActor
 class QuestManager: ObservableObject {
     static let shared = QuestManager()
     
-    @Published var quests: [Quest] = []
+    /// All registered quest handlers
+    @Published private(set) var handlers: [QuestHandler] = []
     
-    private let questsPersistenceKey = "neon_quests_progress"
+    private let persistenceKey = "neon_quest_phases"
     
     // Publishes events when quests are completed
-    let questCompletedPublisher = PassthroughSubject<Quest, Never>()
+    let questCompletedPublisher = PassthroughSubject<String, Never>()
     
     private init() {
-        loadQuests()
+        registerHandlers()
+        loadState()
+        updateAvailability()
     }
     
-    // MARK: - Event Handling
+    // MARK: - Registration
     
-    /// Reports an event to the quest system to check for triggers associated with it
-    func reportEvent(_ event: QuestTriggerEvent) {
-        switch event {
-        case .taskCompleted:
-            checkNyanTrigger()
-        default:
-            break
+    private func registerHandlers() {
+        handlers = [
+            NyanCatQuest()
+            // Future: add more quests here
+        ]
+    }
+    
+    // MARK: - Event Routing
+    
+    /// Routes events to all available quest handlers
+    func reportEvent(_ event: TriggerEvent) {
+        for handler in handlers where handler.phase == .available {
+            if handler.shouldTrigger(on: event) {
+                saveState()
+            }
         }
-    }
-    
-    // MARK: - Specific Quest Logic
-    // TODO: REMOVE COUPLING FROM EXACT QUEST
-    private func checkNyanTrigger() {
-        guard let index = quests.firstIndex(where: { $0.id == .nyanCat }) else { return }
-        let quest = quests[index]
-        
-        // Only trigger if active and not completed
-        guard quest.isActive, !quest.isCompleted else { return }
-        
-        // Alpha Testing Logic: Always trigger on task completion
-        // In the future this might be random chance
-        OverlayEffectsManager.shared.showEffect(.nyanCat)
     }
     
     // MARK: - Completion
     
-    /// Marks a quest as complete, usually called from UI interaction (tapping the cat)
-    func completeQuest(id: QuestID) {
-        guard let index = quests.firstIndex(where: { $0.id == id }) else { return }
+    /// Completes a quest by ID (called from UI, e.g., tapping Nyan Cat)
+    func completeQuest(id: String) {
+        guard let handler = handlers.first(where: { $0.id == id }) else { return }
+        guard handler.phase == .triggered else { return }
         
-        if !quests[index].isCompleted {
-            quests[index].isCompleted = true
-            quests[index].completedAt = Date()
-            quests[index].progress = 1.0
-            
-            saveQuests()
-            
-            // Notify system
-            questCompletedPublisher.send(quests[index])
-            
-            // Distribute Rewards
-            RewardManager.shared.processQuestCompletion(questID: id)
-            
-            // If Nyan Cat, auto-switch theme (per user request: "enabled as soon as collected")
-            if id == .nyanCat {
-                ThemeManager.shared.setTheme("nyan")
-            }
+        handler.complete()
+        saveState()
+        questCompletedPublisher.send(id)
+    }
+    
+    // MARK: - Availability
+    
+    /// Updates availability for all dormant quests
+    func updateAvailability() {
+        for handler in handlers {
+            handler.updateAvailability()
         }
+        saveState()
+    }
+    
+    // MARK: - Query
+    
+    /// Returns handler for a specific quest ID
+    func handler(for id: String) -> QuestHandler? {
+        handlers.first { $0.id == id }
+    }
+    
+    /// Returns all completed quest IDs
+    var completedQuestIDs: [String] {
+        handlers.filter { $0.phase == .completed }.map { $0.id }
     }
     
     // MARK: - Persistence
     
-    private func loadQuests() {
-        let defaults = QuestFactory.defaultQuests()
+    private func loadState() {
+        guard let data = UserDefaults.standard.data(forKey: persistenceKey),
+              let phases = try? JSONDecoder().decode([String: QuestPhase].self, from: data)
+        else { return }
         
-        if let data = UserDefaults.standard.data(forKey: questsPersistenceKey),
-           let savedQuests = try? JSONDecoder().decode([Quest].self, from: data) {
-            
-            // Merge saved state with default definitions
-            // This ensures code updates (new titles/logic) apply, but progress is kept
-            self.quests = defaults.map { defaultQuest in
-                if let saved = savedQuests.first(where: { $0.id == defaultQuest.id }) {
-                    var merged = defaultQuest
-                    merged.isCompleted = saved.isCompleted
-                    merged.progress = saved.progress
-                    merged.completedAt = saved.completedAt
-                    return merged
-                }
-                return defaultQuest
+        for handler in handlers {
+            if let savedPhase = phases[handler.id] {
+                handler.phase = savedPhase
             }
-        } else {
-            self.quests = defaults
         }
     }
     
-    private func saveQuests() {
-        if let encoded = try? JSONEncoder().encode(quests) {
-            UserDefaults.standard.set(encoded, forKey: questsPersistenceKey)
+    private func saveState() {
+        var phases: [String: QuestPhase] = [:]
+        for handler in handlers {
+            phases[handler.id] = handler.phase
+        }
+        
+        if let encoded = try? JSONEncoder().encode(phases) {
+            UserDefaults.standard.set(encoded, forKey: persistenceKey)
         }
     }
 }

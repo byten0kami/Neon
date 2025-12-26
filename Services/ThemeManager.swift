@@ -35,6 +35,9 @@ class ThemeManager: ObservableObject {
     // MARK: - Logic
     
     func setTheme(_ themeID: String) {
+        // Refresh first to pick up any newly unlocked themes
+        refreshAvailableThemes()
+        
         if let theme = availableThemes.first(where: { $0.id == themeID }) {
             currentTheme = theme
             UserDefaults.standard.set(themeID, forKey: selectedThemeKey)

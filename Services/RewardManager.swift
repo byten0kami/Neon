@@ -46,15 +46,4 @@ class RewardManager: ObservableObject {
     func isUnlocked(id: String) -> Bool {
         return unlockedRewardIDs.contains(id)
     }
-    
-    // MARK: - Quest Integration
-    
-    /// Called when a quest is completed to distribute rewards
-    func processQuestCompletion(questID: QuestID) {
-        switch questID {
-        case .nyanCat:
-            unlockReward(id: "theme_nyan")
-            // Auto-equip or notify user could happen here
-        }
-    }
 }
