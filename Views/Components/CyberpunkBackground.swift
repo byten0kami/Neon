@@ -100,58 +100,6 @@ struct GridPattern: View {
     }
 }
 
-/// Global scanline overlay - covers entire UI with cyan hologram effect
-/// Use as an overlay on the root view to apply CRT scanline effect across all tabs
-struct GlobalScanlineOverlay: View {
-    var body: some View {
-        GeometryReader { geometry in
-            // Create repeating scanline pattern
-            Canvas { context, size in
-                let lineSpacing: CGFloat = 3  // 3px per line pair
-                var y: CGFloat = 0
-                
-                while y < size.height {
-                    // Draw semi-transparent cyan line at 50% mark of each 3px segment
-                    let rect = CGRect(x: 0, y: y + (lineSpacing / 2), width: size.width, height: lineSpacing / 2)
-                    context.fill(Path(rect), with: .color(DesignSystem.cyan.opacity(0.1)))
-                    y += lineSpacing
-                }
-            }
-        }
-        .ignoresSafeArea()
-        .allowsHitTesting(false)  // Pass through all touches
-    }
-}
-
-/// Scanline effect for low stability state (legacy - animated version)
-struct ScanlineEffect: View {
-    @State private var offset: CGFloat = 0
-    
-    var body: some View {
-        GeometryReader { geometry in
-            Rectangle()
-                .fill(
-                    LinearGradient(
-                        colors: [.clear, DesignSystem.red.opacity(0.3), .clear],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                )
-                .frame(height: 4)
-                .offset(y: offset)
-                .onAppear {
-                    withAnimation(
-                        Animation.linear(duration: 3)
-                            .repeatForever(autoreverses: false)
-                    ) {
-                        offset = geometry.size.height
-                    }
-                }
-        }
-        .ignoresSafeArea()
-    }
-}
-
 #Preview {
     CyberpunkBackground(isLowStability: false)
 }

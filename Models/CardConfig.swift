@@ -90,60 +90,6 @@ struct CardConfig {
         )
     }
     
-    /// Create a card config for a user task
-    static func forTask(
-        _ task: UserTask,
-        onComplete: @escaping () -> Void,
-        onDefer: @escaping () -> Void,
-        onDelete: @escaping () -> Void
-    ) -> CardConfig {
-        let cardType = TimelineCardType.from(category: task.category)
-        
-        // Determine time display
-        let timeString: String?
-        if task.isCompleted, let completedAt = task.completedAt {
-            timeString = formatTime(completedAt)
-        } else if let scheduledTime = task.scheduledTime {
-            timeString = formatTime(scheduledTime)
-        } else {
-            timeString = nil
-        }
-        
-        // Build actions - all tasks get Done + Defer/Skip based on isRecurring
-        var actions: [TimelineCardAction] = []
-        if !task.isCompleted {
-            actions = [
-                TimelineCardAction(
-                    title: "Done",
-                    color: cardType.color,
-                    icon: "checkmark",
-                    isFilled: true,
-                    action: onComplete
-                ),
-                TimelineCardAction(
-                    title: task.isRecurring ? "Defer" : "Skip",
-                    color: DesignSystem.slate500,
-                    icon: task.isRecurring ? "clock.arrow.circlepath" : "arrow.turn.up.right",
-                    isFilled: false,
-                    action: task.isRecurring ? onDefer : onDelete
-                )
-            ]
-        }
-        
-        return CardConfig(
-            title: task.title,
-            description: task.taskDescription,
-            badgeText: cardType.label,
-            accentColor: cardType.color,
-            time: timeString,
-            isCompleted: task.isCompleted,
-            isOverdue: task.isOverdue,
-            isDeferred: task.isDeferred,
-            recurrence: task.recurrence?.uppercased(),
-            actions: actions
-        )
-    }
-    
     // MARK: - Factory for TimelineItem (Master-Instance Architecture)
     
     /// Create a card config for a TimelineItem (new Master-Instance architecture)

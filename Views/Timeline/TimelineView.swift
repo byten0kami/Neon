@@ -2,9 +2,9 @@ import SwiftUI
 
 // MARK: - Timeline View (Master-Instance Architecture)
 
-/// The main scrolling timeline view using the new TimelineEngine
+/// The main scrolling timeline view using TimelineEngine
 /// Displays Past (Completed) -> NOW -> Future (Pending/Ghosts)
-struct NeonTimelineView: View {
+struct TimelineView: View {
     @Binding var selectedItem: TimelineItem?
     
     let completedItems: [TimelineItem]
@@ -60,61 +60,6 @@ struct NeonTimelineView: View {
             ),
             onTap: {
                 selectedItem = item
-            }
-        )
-    }
-}
-
-// MARK: - Legacy Support
-
-/// Wrapper to support legacy UserTask-based timeline
-/// Used during migration period
-struct LegacyNeonTimelineView: View {
-    @Binding var selectedTask: UserTask?
-    
-    let completedTasks: [UserTask]
-    let pendingTasks: [UserTask]
-    
-    // Actions passed from parent
-    let onCompleteTask: (UserTask) -> Void
-    let onDeleteTask: (UserTask) -> Void
-    let onDeferTask: (UserTask) -> Void
-    
-    var body: some View {
-        ZStack {
-            TimelineRails()
-            
-            ScrollView {
-                VStack(spacing: 0) {
-                    ForEach(completedTasks.reversed(), id: \.id) { task in
-                        taskView(for: task)
-                    }
-                    
-                    NowCard()
-                        .padding(.vertical, 0)
-                        .id("NOW")
-                    
-                    ForEach(pendingTasks, id: \.id) { task in
-                        taskView(for: task)
-                    }
-                    
-                    Color.clear.frame(height: 100)
-                }
-                .padding(.vertical, 20)
-            }
-        }
-    }
-    
-    private func taskView(for task: UserTask) -> some View {
-        UniversalTimelineCard(
-            config: CardConfig.forTask(
-                task,
-                onComplete: { onCompleteTask(task) },
-                onDefer: { onDeferTask(task) },
-                onDelete: { onDeleteTask(task) }
-            ),
-            onTap: {
-                selectedTask = task
             }
         )
     }

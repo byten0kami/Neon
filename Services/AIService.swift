@@ -63,14 +63,15 @@ class AIService {
     
     ## HOW YOU LEARN RULES
     You DON'T have hardcoded rules. Instead:
-    1. User tells you: "I take Euthyrox on empty stomach"
-    2. You ADD a fact: {category: "medication", content: "Euthyrox - take on empty stomach"}
-    3. You ADD a constraint: {category: "constraint", content: "No food for 30min after Euthyrox"}
-    4. Next time user says "I want coffee", you CHECK your memory and WARN if conflict
-     4a. It's just a lousy example. User will not actually communicate with the assistant that he wants coffee, 
-     but when suggesting the card to create, you should also ask if the user wants to create a timer for coffee,
-     or the like.
-     4b. Another example: user goes to gym, you should suggest a timer card to eat before or after gym.
+    1. User tells you: "I take Euthyrox every morning"
+    2. You ADD a fact: {category: "medication", content: "Euthyrox every morning"}
+    3. You do a research - Euthyrox is taken on empty stomach
+    4. So, you SUGGEST a constraint: {category: "constraint", content: "No food for 30min after Euthyrox"}
+    5. Next time user says "I want coffee", you CHECK your memory and WARN if conflict
+    5a. It's just a lousy example. User will not actually communicate with the assistant that he wants coffee, 
+    but when suggesting the card to create, you should also ask if the user wants to create a timer for coffee,
+    or the like.
+    5b. Another example: user goes to gym, you should suggest a timer card to eat before or after gym.
     
     ## YOUR FUNCTIONS
     You can perform these ACTIONS in your response:
@@ -78,27 +79,15 @@ class AIService {
     1. **add_fact** - Remember something about user
        {"type": "add_fact", "category": "medication", "content": "Takes Euthyrox 50mcg at 7am"}
     
-    2. **start_timer** - Start a countdown
-       {"type": "start_timer", "name": "Coffee allowed", "minutes": 60}
-    
-    3. **schedule_event** - Add one-time event to schedule
-       {"type": "schedule_event", "title": "Take Iron", "time": "14:00", "priority": "high"}
-    
-    4. **create_task** - Create a to-do task for user
-       {"type": "create_task", "title": "Buy vitamins", "priority": "normal", "category": "health"}
-       With time/repeat: {"type": "create_task", "title": "Meds", "time": "09:00", "daily_time": "09:00"}
-       With interval: {"type": "create_task", "title": "Drink water", "interval_minutes": 60}
-       URGENT/ASAP: If user says "urgent", "asap", or "emergency", set category to "asap":
-       {"type": "create_task", "title": "Fix server", "category": "asap"}
-    
-    5. **schedule_reminder** - Create scheduled or recurring reminder
-       One-time: {"type": "schedule_reminder", "title": "Take medicine", "time": "14:00"}
-       Recurring: {"type": "schedule_reminder", "title": "Drink water", "interval_minutes": 60}
-       Daily: {"type": "schedule_reminder", "title": "Morning pills", "daily_time": "07:00"}
-    
-    6. **create_timeline_item** - Create a Master-Instance item (NEW - preferred for recurring)
-       Required items (medication, bills): set mustBeCompleted: true (debt accumulation)
-       Flexible habits (yoga, reading): set mustBeCompleted: false
+    2. **create_timeline_item** - Create a timeline item (one-off or recurring)
+       This is the ONLY way to add items to the user's timeline.
+       
+       Required items (medication, bills, feeding pets): set mustBeCompleted: true (debt accumulates if missed)
+       Flexible habits (yoga, reading): set mustBeCompleted: false (no penalty for missing)
+       
+       One-time reminder (e.g., "remind me to eat in 30 min"):
+       {"type": "create_timeline_item", "title": "Eat lunch", "priority": "normal",
+        "mustBeCompleted": false, "time": "14:30"}
        
        Daily medication course (5 days):
        {"type": "create_timeline_item", "title": "Antibiotics", "priority": "critical", 
@@ -115,13 +104,13 @@ class AIService {
         "recurrence": {"frequency": "weekly", "interval": 1, "weekdays": [1, 3, 5]}}
     
     ## SMART SCHEDULING RULES
-    - If user says "remind me at 14:00" → use schedule_reminder with time
-    - If user says "drink water regularly" → use schedule_reminder with interval_minutes: 60
-    - If user says "every morning" → use schedule_reminder with daily_time
-    - If user mentions "for X days" or "course" → use create_timeline_item with recurrence.endCondition.count
-    - If user says medication/pills/meds → set mustBeCompleted: true (critical, debt accumulation)
-    - If user says habit/exercise/yoga → set mustBeCompleted: false (flexible)
-    - ALWAYS include specific times when scheduling, don't create vague reminders
+    - For timers/countdowns: create a one-off item at current_time + minutes
+    - For "remind me at X" → create one-off at time X
+    - For "every morning" → create recurring with daily frequency
+    - For "for X days" or "course" → use recurrence.endCondition.count
+    - For medication/pills/critical → set mustBeCompleted: true, priority: "critical"
+    - For habits/exercise → set mustBeCompleted: false
+    - ALWAYS include specific times when scheduling
     
     ## RESPONSE FORMAT
     Always respond with valid JSON:
@@ -309,43 +298,9 @@ class AIService {
                             ))
                         }
                         
-                    case "start_timer":
-                        if let name = actionDict["name"] as? String,
-                           let minutes = actionDict["minutes"] as? Int {
-                            actions.append(.startTimer(name: name, minutes: minutes))
-                        }
-                        
-                    case "schedule_event":
-                        if let title = actionDict["title"] as? String,
-                           let time = actionDict["time"] as? String {
-                            actions.append(.scheduleEvent(
-                                title: title,
-                                time: time,
-                                priority: actionDict["priority"] as? String ?? "normal"
-                            ))
-                        }
-                    
-                    case "create_task":
-                        if let title = actionDict["title"] as? String {
-                            actions.append(.createTask(
-                                title: title,
-                                priority: actionDict["priority"] as? String ?? "normal",
-                                category: actionDict["category"] as? String ?? "general",
-                                time: actionDict["time"] as? String,
-                                dailyTime: actionDict["daily_time"] as? String,
-                                intervalMinutes: actionDict["interval_minutes"] as? Int
-                            ))
-                        }
-                    
-                    case "schedule_reminder":
-                        if let title = actionDict["title"] as? String {
-                            actions.append(.scheduleReminder(
-                                title: title,
-                                time: actionDict["time"] as? String,
-                                dailyTime: actionDict["daily_time"] as? String,
-                                intervalMinutes: actionDict["interval_minutes"] as? Int
-                            ))
-                        }
+                    case "start_timer", "schedule_event", "create_task", "schedule_reminder":
+                        // Legacy action types - ignore
+                        break
                     
                     case "create_timeline_item":
                         if let title = actionDict["title"] as? String {
@@ -446,10 +401,6 @@ struct AIServiceResponse {
 enum AIAction {
     case addFact(content: String, category: String, note: String?)
     case updateFact(id: UUID, content: String)
-    case scheduleEvent(title: String, time: String, priority: String)
-    case startTimer(name: String, minutes: Int)
-    case createTask(title: String, priority: String, category: String, time: String?, dailyTime: String?, intervalMinutes: Int?)
-    case scheduleReminder(title: String, time: String?, dailyTime: String?, intervalMinutes: Int?)
     case createTimelineItem(
         title: String,
         description: String?,

@@ -17,8 +17,9 @@ class AIBrain: ObservableObject {
     private init() {}
     
     /// Main entry point: user says something, AI figures out what to do
+    /// Returns message + pending actions for UI to preview before executing
     @MainActor
-    func processUserInput(_ input: String, context: String = "General conversation", history: [ChatMessage] = []) async -> String {
+    func processUserInput(_ input: String, context: String = "General conversation", history: [ChatMessage] = []) async -> AIProcessResult {
         isThinking = true
         lastError = nil
         defer { isThinking = false }
@@ -26,26 +27,22 @@ class AIBrain: ObservableObject {
         do {
             let response = try await aiService.sendMessage(context: context, userMessage: input, history: history)
             
-            // Execute all actions AI requested
-            for action in response.actions {
-                executeAction(action)
-            }
-            
+            // Return pending actions for UI to preview instead of executing immediately
             lastResponse = response.message
-            return response.message
+            return AIProcessResult(message: response.message, pendingActions: response.actions)
         } catch let error as AIError {
             lastError = error.localizedDescription
             print("[AIBrain] Error: \(error.localizedDescription)")
-            return "[SYNC ERROR] \(error.localizedDescription)"
+            return AIProcessResult(message: "[SYNC ERROR] \(error.localizedDescription)", pendingActions: [])
         } catch {
             lastError = error.localizedDescription
             print("[AIBrain] Unknown error: \(error)")
-            return "[SYNC ERROR] Connection failed. Check network."
+            return AIProcessResult(message: "[SYNC ERROR] Connection failed. Check network.", pendingActions: [])
         }
     }
     
-    /// Execute a single action from AI
-    private func executeAction(_ action: AIAction) {
+    /// Execute a single action from AI (called from UI after user confirms)
+    func executeAction(_ action: AIAction) {
         switch action {
         case .addFact(let content, let category, let note):
             knowledge.addFact(content, category: category, aiNote: note)
@@ -53,37 +50,6 @@ class AIBrain: ObservableObject {
             
         case .updateFact(let id, let content):
             knowledge.updateFact(id: id, newContent: content)
-            
-        case .scheduleEvent(let title, let time, let priority):
-            scheduleNewEvent(title: title, timeString: time, priority: priority)
-            
-        case .startTimer(let name, let minutes):
-            ScheduleStore.shared.startTimer(name: name, durationMinutes: minutes)
-            print("[AIBrain] Started timer: \(name) for \(minutes) min")
-            
-        case .createTask(let title, let priority, let category, let time, let dailyTime, let intervalMinutes):
-             // Create using full Task parameters
-             let task = UserTask(
-                 title: title,
-                 status: (intervalMinutes != nil || dailyTime != nil) ? .recurring : .pending,
-                 priority: TaskPriority(rawValue: priority) ?? .normal,
-                 scheduledTime: time != nil ? parseTime(time!) : nil,
-                 dailyTime: dailyTime,
-                 intervalMinutes: intervalMinutes,
-                 category: category
-             )
-             TaskStore.shared.addTask(task)
-             print("[AIBrain] Created task: \(title)")
-            
-        case .scheduleReminder(let title, let time, let dailyTime, let intervalMinutes):
-            if let time = time {
-                TaskStore.shared.addScheduledReminder(title: title, time: time)
-            } else if let daily = dailyTime {
-                TaskStore.shared.addDailyReminder(title: title, dailyTime: daily)
-            } else if let interval = intervalMinutes {
-                TaskStore.shared.addIntervalReminder(title: title, intervalMinutes: interval)
-            }
-            print("[AIBrain] Scheduled reminder: \(title)")
             
         case .createTimelineItem(let title, let description, let priority, let mustBeCompleted, let time, let aiRecurrence):
             createTimelineItem(
@@ -194,43 +160,7 @@ class AIBrain: ObservableObject {
         return nil
     }
     
-    /// Parse time string and create event
-    private func scheduleNewEvent(title: String, timeString: String, priority: String) {
-        let components = timeString.split(separator: ":").compactMap { Int($0) }
-        guard components.count == 2 else { return }
-        
-        let hour = components[0]
-        let minute = components[1]
-        
-        var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: Date())
-        dateComponents.hour = hour
-        dateComponents.minute = minute
-        
-        guard let scheduledTime = Calendar.current.date(from: dateComponents) else { return }
-        
-        let eventPriority: EventPriority
-        switch priority {
-        case "critical": eventPriority = .critical
-        case "high": eventPriority = .high
-        case "low": eventPriority = .low
-        default: eventPriority = .normal
-        }
-        
-        let event = ScheduledEvent(
-            type: .reminder(message: title),
-            title: title,
-            scheduledTime: scheduledTime,
-            priority: eventPriority
-        )
-        
-        ScheduleStore.shared.addEvent(event)
-        print("[AIBrain] Scheduled: \(title) at \(timeString)")
-    }
-    
-    func onEventCompleted(_ event: ScheduledEvent) async {
-        let prompt = "Event completed: \"\(event.title)\". Any follow-up needed?"
-        _ = await processUserInput(prompt, context: "Event completion")
-    }
+
     
     /// Quick safety check for an activity
     @MainActor
@@ -295,4 +225,10 @@ struct SafetyCheckResult {
     let allowed: Bool
     let warnings: [String]
     let message: String
+}
+
+/// Result of processing user input - contains message and pending actions for preview
+struct AIProcessResult {
+    let message: String
+    let pendingActions: [AIAction]
 }

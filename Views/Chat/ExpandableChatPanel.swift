@@ -5,7 +5,6 @@ struct ExpandableChatPanel: View {
     @Binding var isPresented: Bool
     @StateObject private var brain = AIBrain.shared
     @StateObject private var knowledge = AIKnowledgeBase.shared
-    @StateObject private var taskStore = TaskStore.shared
     @ObservedObject private var themeManager = ThemeManager.shared
     
     @State private var messages: [ChatMessage] = []
@@ -87,9 +86,24 @@ struct ExpandableChatPanel: View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 12) {
-                    ForEach(messages) { message in
+                    ForEach(Array(messages.enumerated()), id: \.element.id) { index, message in
                         ChatBubble(message: message)
                             .id(message.id)
+                        
+                        // Show card previews for pending actions
+                        if !message.pendingActions.isEmpty {
+                            CardPreviewBubble(
+                                actions: message.pendingActions,
+                                onAccept: { action in
+                                    brain.executeAction(action)
+                                    removePendingAction(action, from: index)
+                                },
+                                onDeny: { action in
+                                    removePendingAction(action, from: index)
+                                }
+                            )
+                            .id("\(message.id)-preview")
+                        }
                     }
                     
                     if isLoading {
@@ -185,12 +199,46 @@ struct ExpandableChatPanel: View {
         isLoading = true
         
         Task {
-            let response = await brain.processUserInput(text, context: "Chat conversation", history: messages)
+            let result = await brain.processUserInput(text, context: "Chat conversation", history: messages)
             
             await MainActor.run {
-                messages.append(ChatMessage(role: .assistant, content: response))
+                // Auto-execute non-visible actions (facts), keep others for preview
+                var visibleActions: [AIAction] = []
+                for action in result.pendingActions {
+                    switch action {
+                    case .addFact, .updateFact:
+                        // Facts are auto-added without preview
+                        brain.executeAction(action)
+                    default:
+                        visibleActions.append(action)
+                    }
+                }
+                
+                messages.append(ChatMessage(
+                    role: .assistant,
+                    content: result.message,
+                    pendingActions: visibleActions
+                ))
                 isLoading = false
             }
+        }
+    }
+    
+    /// Remove a pending action from a message after user accepts or denies
+    private func removePendingAction(_ action: AIAction, from messageIndex: Int) {
+        guard messageIndex < messages.count else { return }
+        messages[messageIndex].pendingActions.removeAll { pendingAction in
+            // Compare by type and title for identity
+            actionIdentity(pendingAction) == actionIdentity(action)
+        }
+    }
+    
+    /// Helper to identify actions for removal
+    private func actionIdentity(_ action: AIAction) -> String {
+        switch action {
+        case .createTimelineItem(let title, _, _, _, _, _): return "timeline-\(title)"
+        case .addFact(let content, _, _): return "fact-\(content)"
+        case .updateFact(let id, _): return "update-\(id)"
         }
     }
 }

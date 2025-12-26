@@ -12,17 +12,20 @@ struct ChatMessage: Identifiable {
     let role: MessageRole
     let content: String
     let timestamp: String
+    var pendingActions: [AIAction]
     
     init(
         id: UUID = UUID(),
         role: MessageRole,
         content: String,
-        timestamp: String = ""
+        timestamp: String = "",
+        pendingActions: [AIAction] = []
     ) {
         self.id = id
         self.role = role
         self.content = content
         self.timestamp = timestamp.isEmpty ? Self.currentTime() : timestamp
+        self.pendingActions = pendingActions
     }
     
     private static func currentTime() -> String {

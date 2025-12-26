@@ -39,7 +39,7 @@ struct HomeView: View {
             VStack(spacing: 0) {
                 StatusHeader(stability: stability)
                 
-                NeonTimelineView(
+                TimelineView(
                     selectedItem: $selectedItem,
                     completedItems: completedItems,
                     pendingItems: pendingItems,
