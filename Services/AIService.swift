@@ -96,10 +96,31 @@ class AIService {
        Recurring: {"type": "schedule_reminder", "title": "Drink water", "interval_minutes": 60}
        Daily: {"type": "schedule_reminder", "title": "Morning pills", "daily_time": "07:00"}
     
+    6. **create_timeline_item** - Create a Master-Instance item (NEW - preferred for recurring)
+       Required items (medication, bills): set mustBeCompleted: true (debt accumulation)
+       Flexible habits (yoga, reading): set mustBeCompleted: false
+       
+       Daily medication course (5 days):
+       {"type": "create_timeline_item", "title": "Antibiotics", "priority": "critical", 
+        "mustBeCompleted": true, "time": "09:00",
+        "recurrence": {"frequency": "daily", "interval": 1, "endCondition": {"type": "count", "value": 5}}}
+       
+       Forever habit:
+       {"type": "create_timeline_item", "title": "Morning Yoga", "priority": "normal",
+        "mustBeCompleted": false, "time": "07:00",
+        "recurrence": {"frequency": "daily", "interval": 1, "endCondition": {"type": "forever"}}}
+       
+       Weekly on specific days:
+       {"type": "create_timeline_item", "title": "Gym", "time": "18:00",
+        "recurrence": {"frequency": "weekly", "interval": 1, "weekdays": [1, 3, 5]}}
+    
     ## SMART SCHEDULING RULES
     - If user says "remind me at 14:00" → use schedule_reminder with time
     - If user says "drink water regularly" → use schedule_reminder with interval_minutes: 60
     - If user says "every morning" → use schedule_reminder with daily_time
+    - If user mentions "for X days" or "course" → use create_timeline_item with recurrence.endCondition.count
+    - If user says medication/pills/meds → set mustBeCompleted: true (critical, debt accumulation)
+    - If user says habit/exercise/yoga → set mustBeCompleted: false (flexible)
     - ALWAYS include specific times when scheduling, don't create vague reminders
     
     ## RESPONSE FORMAT
@@ -325,6 +346,51 @@ class AIService {
                                 intervalMinutes: actionDict["interval_minutes"] as? Int
                             ))
                         }
+                    
+                    case "create_timeline_item":
+                        if let title = actionDict["title"] as? String {
+                            // Parse recurrence if present
+                            var recurrence: AIRecurrence? = nil
+                            if let recurrenceDict = actionDict["recurrence"] as? [String: Any],
+                               let frequency = recurrenceDict["frequency"] as? String {
+                                let interval = recurrenceDict["interval"] as? Int ?? 1
+                                let weekdays = recurrenceDict["weekdays"] as? [Int]
+                                
+                                // Parse end condition
+                                var endCondition: AIEndCondition = .forever
+                                if let endDict = recurrenceDict["endCondition"] as? [String: Any],
+                                   let endType = endDict["type"] as? String {
+                                    switch endType {
+                                    case "count":
+                                        if let count = endDict["value"] as? Int {
+                                            endCondition = .count(count)
+                                        }
+                                    case "until":
+                                        if let dateStr = endDict["value"] as? String {
+                                            endCondition = .until(dateStr)
+                                        }
+                                    default:
+                                        endCondition = .forever
+                                    }
+                                }
+                                
+                                recurrence = AIRecurrence(
+                                    frequency: frequency,
+                                    interval: interval,
+                                    endCondition: endCondition,
+                                    weekdays: weekdays
+                                )
+                            }
+                            
+                            actions.append(.createTimelineItem(
+                                title: title,
+                                description: actionDict["description"] as? String,
+                                priority: actionDict["priority"] as? String ?? "normal",
+                                mustBeCompleted: actionDict["mustBeCompleted"] as? Bool ?? false,
+                                time: actionDict["time"] as? String,
+                                recurrence: recurrence
+                            ))
+                        }
                         
                     default:
                         break
@@ -384,6 +450,28 @@ enum AIAction {
     case startTimer(name: String, minutes: Int)
     case createTask(title: String, priority: String, category: String, time: String?, dailyTime: String?, intervalMinutes: Int?)
     case scheduleReminder(title: String, time: String?, dailyTime: String?, intervalMinutes: Int?)
+    case createTimelineItem(
+        title: String,
+        description: String?,
+        priority: String,
+        mustBeCompleted: Bool,
+        time: String?,
+        recurrence: AIRecurrence?
+    )
+}
+
+/// Recurrence data from AI response
+struct AIRecurrence {
+    let frequency: String      // "daily", "weekly", "monthly", "yearly"
+    let interval: Int
+    let endCondition: AIEndCondition
+    let weekdays: [Int]?       // For weekly: [0, 1, 2, 3, 4, 5, 6] (Sun-Sat)
+}
+
+enum AIEndCondition {
+    case forever
+    case until(String)         // Date string
+    case count(Int)
 }
 
 enum AIError: Error, LocalizedError {

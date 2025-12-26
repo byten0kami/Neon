@@ -30,7 +30,7 @@ class QuestManager: ObservableObject {
     }
     
     // MARK: - Specific Quest Logic
-    
+    // TODO: REMOVE COUPLING FROM EXACT QUEST
     private func checkNyanTrigger() {
         guard let index = quests.firstIndex(where: { $0.id == .nyanCat }) else { return }
         let quest = quests[index]

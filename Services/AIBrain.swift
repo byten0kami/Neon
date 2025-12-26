@@ -84,7 +84,114 @@ class AIBrain: ObservableObject {
                 TaskStore.shared.addIntervalReminder(title: title, intervalMinutes: interval)
             }
             print("[AIBrain] Scheduled reminder: \(title)")
+            
+        case .createTimelineItem(let title, let description, let priority, let mustBeCompleted, let time, let aiRecurrence):
+            createTimelineItem(
+                title: title,
+                description: description,
+                priority: priority,
+                mustBeCompleted: mustBeCompleted,
+                timeString: time,
+                aiRecurrence: aiRecurrence
+            )
         }
+    }
+    
+    /// Create a TimelineItem (Master or One-off) using the new TimelineEngine
+    private func createTimelineItem(
+        title: String,
+        description: String?,
+        priority: String,
+        mustBeCompleted: Bool,
+        timeString: String?,
+        aiRecurrence: AIRecurrence?
+    ) {
+        let itemPriority = ItemPriority(from: priority)
+        let scheduledTime: Date
+        
+        // Parse time string or default to now + 1 hour
+        if let timeStr = timeString, let parsedTime = parseTime(timeStr) {
+            scheduledTime = parsedTime
+        } else {
+            scheduledTime = Date().addingTimeInterval(3600) // Default 1 hour from now
+        }
+        
+        // Check if this is a recurring item (Master) or one-off
+        if let aiRecurrence = aiRecurrence {
+            // Convert AIRecurrence to RecurrenceRule
+            let frequency: RecurrenceRule.Frequency
+            switch aiRecurrence.frequency.lowercased() {
+            case "weekly": frequency = .weekly
+            case "monthly": frequency = .monthly
+            case "yearly": frequency = .yearly
+            default: frequency = .daily
+            }
+            
+            let endCondition: RecurrenceRule.EndCondition
+            switch aiRecurrence.endCondition {
+            case .forever:
+                endCondition = .forever
+            case .count(let n):
+                endCondition = .count(n)
+            case .until(let dateStr):
+                if let date = parseDateString(dateStr) {
+                    endCondition = .until(date)
+                } else {
+                    endCondition = .forever
+                }
+            }
+            
+            let weekdaysSet: Set<Int>? = aiRecurrence.weekdays.map { Set($0) }
+            
+            let recurrence = RecurrenceRule(
+                frequency: frequency,
+                interval: aiRecurrence.interval,
+                endCondition: endCondition,
+                weekdays: weekdaysSet
+            )
+            
+            // Create Master
+            let master = TimelineItem.master(
+                title: title,
+                description: description,
+                priority: itemPriority,
+                startTime: scheduledTime,
+                mustBeCompleted: mustBeCompleted,
+                recurrence: recurrence
+            )
+            
+            TimelineEngine.shared.addMaster(master)
+            print("[AIBrain] Created recurring master: \(title)")
+        } else {
+            // Create One-off
+            let item = TimelineItem.oneOff(
+                title: title,
+                description: description,
+                priority: itemPriority,
+                scheduledTime: scheduledTime,
+                mustBeCompleted: mustBeCompleted
+            )
+            
+            TimelineEngine.shared.addOneOff(item)
+            print("[AIBrain] Created one-off item: \(title)")
+        }
+    }
+    
+    /// Parse date string (ISO format or simple YYYY-MM-DD)
+    private func parseDateString(_ dateStr: String) -> Date? {
+        let formatters = [
+            "yyyy-MM-dd'T'HH:mm:ss",
+            "yyyy-MM-dd"
+        ]
+        for format in formatters {
+            let formatter = DateFormatter()
+            formatter.dateFormat = format
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            if let date = formatter.date(from: dateStr) {
+                return date
+            }
+        }
+        return nil
     }
     
     /// Parse time string and create event

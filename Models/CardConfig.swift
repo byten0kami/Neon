@@ -205,11 +205,130 @@ struct CardConfig {
         )
     }
     
+    // MARK: - Factory for TimelineItem (Master-Instance Architecture)
+    
+    /// Create a card config for a TimelineItem (new Master-Instance architecture)
+    /// Priority-driven badge/colors:
+    /// - .critical → ASAP (red)
+    /// - .high → TASK (amber)
+    /// - .normal → TASK (lime)
+    /// - .low → INFO (cyan)
+    static func forTimelineItem(
+        _ item: TimelineItem,
+        isGhost: Bool = false,
+        onComplete: @escaping () -> Void,
+        onDefer: @escaping () -> Void,
+        onDelete: @escaping () -> Void
+    ) -> CardConfig {
+        // Priority-based styling
+        let (badgeText, accentColor) = priorityStyle(for: item.priority, category: item.category)
+        
+        // Determine time display
+        let timeString: String?
+        if item.isCompleted, let completedAt = item.completedAt {
+            timeString = formatTime(completedAt)
+        } else {
+            timeString = formatTime(item.effectiveTime)
+        }
+        
+        // Build actions based on priority/category
+        var actions: [TimelineCardAction] = []
+        if !item.isCompleted {
+            switch item.priority {
+            case .critical:
+                // ASAP: EXECUTE only
+                actions = [
+                    TimelineCardAction(
+                        title: "EXECUTE",
+                        color: accentColor,
+                        icon: "exclamationmark.triangle.fill",
+                        isFilled: true,
+                        action: onComplete
+                    )
+                ]
+                
+            case .high, .normal:
+                // Standard: DONE, DEFER/SKIP
+                actions = [
+                    TimelineCardAction(
+                        title: "Done",
+                        color: accentColor,
+                        icon: "checkmark",
+                        isFilled: true,
+                        action: onComplete
+                    ),
+                    TimelineCardAction(
+                        title: item.mustBeCompleted ? "Defer" : "Skip",
+                        color: Theme.slate500,
+                        icon: item.mustBeCompleted ? "clock.arrow.circlepath" : "arrow.turn.up.right",
+                        isFilled: false,
+                        action: item.mustBeCompleted ? onDefer : onDelete
+                    )
+                ]
+                
+            case .low:
+                // INFO: ACK only
+                actions = [
+                    TimelineCardAction(
+                        title: "Ack",
+                        color: accentColor,
+                        icon: "hand.thumbsup",
+                        isFilled: false,
+                        action: onComplete
+                    )
+                ]
+            }
+        }
+        
+        return CardConfig(
+            title: item.title,
+            description: item.description,
+            badgeText: badgeText,
+            accentColor: accentColor,
+            time: timeString,
+            isCompleted: item.isCompleted,
+            isOverdue: item.isOverdue,
+            isDeferred: item.isDeferred,
+            recurrence: item.recurrenceText?.uppercased(),
+            actions: actions
+        )
+    }
+    
+    /// Get badge text and accent color based on priority and category
+    private static func priorityStyle(for priority: ItemPriority, category: String) -> (String, Color) {
+        // Check if category overrides (insight, info, reminder)
+        let lowerCategory = category.lowercased()
+        
+        switch lowerCategory {
+        case "insight", "suggestion":
+            return ("INSIGHT", Theme.purple)
+        case "reminder", "remind":
+            return ("RMD", Theme.amber)
+        case "info", "log", "config":
+            return ("INFO", Theme.cyan)
+        default:
+            break
+        }
+        
+        // Use priority-based styling
+        switch priority {
+        case .critical:
+            return ("ASAP", Theme.red)
+        case .high:
+            return ("TASK", Theme.amber)
+        case .normal:
+            return ("TASK", Theme.lime)
+        case .low:
+            return ("INFO", Theme.cyan)
+        }
+    }
+    
     // MARK: - Helper Methods
     
     private static func formatTime(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter.string(from: date)
     }
 }

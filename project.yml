@@ -27,6 +27,7 @@ targets:
           - "Logs"
           - ".gemini"
           - ".agent"
+          - "Tests"
     resources:
       - path: Assets.xcassets
       - path: Resources
@@ -48,15 +49,32 @@ targets:
         SWIFT_EMIT_LOC_STRINGS: YES
         SWIFT_STRICT_CONCURRENCY: complete
 
+  NeonTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests
+    dependencies:
+      - target: NeonTracker
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.neurosync.tracker.tests
+        SWIFT_VERSION: "6.0"
+        GENERATE_INFOPLIST_FILE: YES
+        SWIFT_STRICT_CONCURRENCY: complete
+
 schemes:
   NeonTracker:
     build:
       targets:
         NeonTracker: all
+        NeonTests: [test]
     run:
       config: Debug
     test:
       config: Debug
+      targets:
+        - NeonTests
     profile:
       config: Release
     analyze:
