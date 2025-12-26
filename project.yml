@@ -1,0 +1,65 @@
+name: NeonTracker
+options:
+  bundleIdPrefix: com.neurosync
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+
+configs:
+  Debug:
+    xcconfig: Config/Secrets.xcconfig
+  Release:
+    xcconfig: Config/Secrets.xcconfig
+
+targets:
+  NeonTracker:
+    type: application
+    platform: iOS
+    sources:
+      - path: .
+        excludes:
+          - "*.xcodeproj"
+          - "*.yml"
+          - "*.md"
+          - "*.sh"
+          - ".DS_Store"
+          - ".git"
+          - "Logs"
+          - ".gemini"
+          - ".agent"
+    resources:
+      - path: Assets.xcassets
+      - path: Resources
+    info:
+      path: Info.plist
+      properties:
+        OPENROUTER_API_KEY: $(OPENROUTER_API_KEY)
+        UILaunchScreen: {}
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.neurosync.tracker
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        SWIFT_VERSION: "6.0"
+        INFOPLIST_FILE: Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        ENABLE_PREVIEWS: YES
+        ENABLE_USER_SCRIPT_SANDBOXING: YES
+        SWIFT_EMIT_LOC_STRINGS: YES
+        SWIFT_STRICT_CONCURRENCY: complete
+
+schemes:
+  NeonTracker:
+    build:
+      targets:
+        NeonTracker: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release

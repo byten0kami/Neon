@@ -1,0 +1,46 @@
+# Xcode
+*.xcuserstate
+*.xcuserdatad/
+xcuserdata/
+DerivedData/
+*.xcodeproj/
+.build/
+build/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Swift Package Manager
+.swiftpm/
+Package.resolved
+
+# CocoaPods (if used)
+Pods/
+Podfile.lock
+
+# IDE
+*.xcworkspace/xcuserdata/
+.idea/
+*.swp
+
+# VS Code (optional - remove if you want to share workspace)
+*.code-workspace
+.vscode/
+
+# Secrets (API keys - NEVER commit these)
+Config/Secrets.xcconfig
+
+# Logs & Analytics (local debug data)
+Logs/
+
+# Misc
+*.log
+*.bak
+*.pbxproj
+
+# AI Advisor
+.gemini/
+.agent/
