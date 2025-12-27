@@ -41,7 +41,7 @@ extension Theme {
     var timeFont: String { DesignSystem.monoFont }
     var titleFont: String { DesignSystem.displayFont }
     var bodyFont: String { DesignSystem.lightFont }
-    var bodyFontSize: CGFloat { 14 }
+    var bodyFontSize: CGFloat { 16 }
     var tagFont: String { DesignSystem.monoFont }
     
     // Default to no ambient effect

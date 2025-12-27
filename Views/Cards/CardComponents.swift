@@ -33,7 +33,7 @@ enum CardStyle {
     static let padding: CGFloat = 16
     static let dotSize: CGFloat = 12
     static let connectorWidth: CGFloat = 24
-    static let buttonHeight: CGFloat = 26 // Reduced to 2/3 of original
+    static let buttonHeight: CGFloat = 18 // Reduced by 1/3
     static let buttonPaddingH: CGFloat = 16 // Adjusted padding
     static let buttonPaddingV: CGFloat = 4
 }
@@ -123,11 +123,11 @@ struct PriorityTag: View {
     var body: some View {
         let effectiveText = style?.text ?? text
         let effectiveColor = style?.color ?? color
-        let textColor = style?.textColor ?? effectiveColor
-        let bgColor = style?.backgroundColor
+        let textColor = Color.white // Match time badge (white text)
+        let bgColor = DesignSystem.backgroundSecondary // Match time badge (dark BG)
         let borderRadius = style?.borderRadius ?? CardStyle.cornerRadius
-        let hasGlow = style?.hasGlow ?? false
-        let glowRadius = style?.glowRadius ?? 0
+        let hasGlow = style?.hasGlow ?? true // Default to true for "cool" look
+        let glowRadius = style?.glowRadius ?? 5
         let useSystemFont = style?.useSystemFont ?? false
         let tagFont = ThemeManager.shared.currentTheme.tagFont
         
@@ -137,7 +137,7 @@ struct PriorityTag: View {
             .foregroundColor(textColor)
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
-            .background(bgColor ?? Color.clear)
+            .background(bgColor)
             .cornerRadius(borderRadius)
             .overlay(
                 RoundedRectangle(cornerRadius: borderRadius)

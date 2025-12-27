@@ -37,8 +37,10 @@ struct ContentView: View {
                     HistoryView()
                 case .settings:
                     SettingsView()
+                #if DEBUG
                 case .smpl:
                     FontSamplerView()
+                #endif
                 }
             }
             .padding(.bottom, 80) // Add padding for tab bar

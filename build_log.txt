@@ -1,0 +1,728 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -scheme NeonTracker -destination "platform=iOS Simulator,name=iPhone 16e" clean build
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+** CLEAN SUCCEEDED **
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (1 target)
+    Target 'NeonTracker' in project 'NeonTracker' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/darynavoloshyna/Repositories/Neon/Assets.xcassets
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+Build description signature: c7db048a6d7b53baf9b46a06da730b7c
+Build description path: /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/XCBuildData/c7db048a6d7b53baf9b46a06da730b7c.xcbuilddata
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.2-23C53-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache
+    cd /Users/darynavoloshyna/Repositories/Neon/NeonTracker.xcodeproj
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -o /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.2-23C53-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache
+
+CreateBuildDirectory /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex
+    cd /Users/darynavoloshyna/Repositories/Neon/NeonTracker.xcodeproj
+    builtin-create-build-directory /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex
+
+CreateBuildDirectory /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products
+    cd /Users/darynavoloshyna/Repositories/Neon/NeonTracker.xcodeproj
+    builtin-create-build-directory /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products
+
+CreateBuildDirectory /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+    cd /Users/darynavoloshyna/Repositories/Neon/NeonTracker.xcodeproj
+    builtin-create-build-directory /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+CreateBuildDirectory /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/ExplicitPrecompiledModules
+    cd /Users/darynavoloshyna/Repositories/Neon/NeonTracker.xcodeproj
+    builtin-create-build-directory /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+CreateBuildDirectory /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator
+    cd /Users/darynavoloshyna/Repositories/Neon/NeonTracker.xcodeproj
+    builtin-create-build-directory /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator
+
+WriteAuxiliaryFile /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker-30ad0a6cd8321060d03c021706e03a2d-VFS-iphonesimulator/all-product-headers.yaml
+    cd /Users/darynavoloshyna/Repositories/Neon/NeonTracker.xcodeproj
+    write-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker-30ad0a6cd8321060d03c021706e03a2d-VFS-iphonesimulator/all-product-headers.yaml
+
+CreateBuildDirectory /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator
+    cd /Users/darynavoloshyna/Repositories/Neon/NeonTracker.xcodeproj
+    builtin-create-build-directory /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator
+
+WriteAuxiliaryFile /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-own-target-headers.hmap (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    write-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-own-target-headers.hmap
+
+WriteAuxiliaryFile /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-project-headers.hmap (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    write-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-project-headers.hmap
+
+WriteAuxiliaryFile /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-all-non-framework-target-headers.hmap (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    write-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-all-non-framework-target-headers.hmap
+
+WriteAuxiliaryFile /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-DebugDylibPath-normal-arm64.txt (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    write-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-DebugDylibPath-normal-arm64.txt
+
+WriteAuxiliaryFile /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-all-target-headers.hmap (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    write-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-all-target-headers.hmap
+
+WriteAuxiliaryFile /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-generated-files.hmap (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    write-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-generated-files.hmap
+
+WriteAuxiliaryFile /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker.hmap (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    write-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker.hmap
+
+WriteAuxiliaryFile /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker_const_extract_protocols.json (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    write-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker_const_extract_protocols.json
+
+WriteAuxiliaryFile /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker.LinkFileList (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    write-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker.LinkFileList
+
+WriteAuxiliaryFile /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker.SwiftFileList (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    write-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker.SwiftFileList
+
+WriteAuxiliaryFile /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker-OutputFileMap.json (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    write-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker-OutputFileMap.json
+
+WriteAuxiliaryFile /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker.SwiftConstValuesFileList (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    write-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker.SwiftConstValuesFileList
+
+WriteAuxiliaryFile /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker.DependencyStaticMetadataFileList (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    write-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker.DependencyStaticMetadataFileList
+
+WriteAuxiliaryFile /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-DebugDylibInstallName-normal-arm64.txt (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    write-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-DebugDylibInstallName-normal-arm64.txt
+
+WriteAuxiliaryFile /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker.DependencyMetadataFileList (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    write-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker.DependencyMetadataFileList
+
+MkDir /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    /bin/mkdir -p /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+WriteAuxiliaryFile /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources/Entitlements-Simulated.plist (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    write-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources/Entitlements-Simulated.plist
+
+ProcessProductPackaging "" /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker.app-Simulated.xcent (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+    Entitlements:
+    
+    {
+    "application-identifier" = "TH8X4TDH2F.com.neurosync.tracker";
+}
+    
+    builtin-productPackagingUtility -entitlements -format xml -o /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker.app-Simulated.xcent
+
+ProcessProductPackagingDER /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker.app-Simulated.xcent /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker.app-Simulated.xcent.der (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    /usr/bin/derq query -f xml -i /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker.app-Simulated.xcent -o /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker.app-Simulated.xcent.der --raw
+
+Ld /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/__preview.dylib normal (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-ios17.0-simulator -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -O0 -L/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator -F/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator -install_name @rpath/NeonTracker.debug.dylib -dead_strip -rdynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -Xlinker -dependency_info -Xlinker /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker_dependency_info.dat -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __entitlements -Xlinker /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker.app-Simulated.xcent -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __ents_der -Xlinker /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker.app-Simulated.xcent.der -Xlinker -no_adhoc_codesign -o /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/__preview.dylib
+
+MkDir /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/assetcatalog_output/unthinned (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    /bin/mkdir -p /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/assetcatalog_output/unthinned
+
+GenerateAssetSymbols /Users/darynavoloshyna/Repositories/Neon/Assets.xcassets (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    /Applications/Xcode.app/Contents/Developer/usr/bin/actool /Users/darynavoloshyna/Repositories/Neon/Assets.xcassets --compile /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app --output-format human-readable-text --notices --warnings --export-dependency-info /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/assetcatalog_dependencies --output-partial-info-plist /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/assetcatalog_generated_info.plist --app-icon AppIcon --compress-pngs --enable-on-demand-resources YES --development-region en --target-device iphone --target-device ipad --minimum-deployment-target 17.0 --platform iphonesimulator --bundle-identifier com.neurosync.tracker --generate-swift-asset-symbol-extensions NO --generate-swift-asset-symbols /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources/GeneratedAssetSymbols.swift --generate-objc-asset-symbols /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources/GeneratedAssetSymbols.h --generate-asset-symbol-index /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+/* com.apple.actool.compilation-results */
+/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources/GeneratedAssetSymbols.h
+/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources/GeneratedAssetSymbols.swift
+
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/build_fixed.log /Users/darynavoloshyna/Repositories/Neon/build_fixed.log (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/build_fixed.log /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+MkDir /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/assetcatalog_output/thinned (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    /bin/mkdir -p /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/assetcatalog_output/thinned
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/build.log /Users/darynavoloshyna/Repositories/Neon/build.log (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/build.log /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/UbuntuMono-Regular.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/UbuntuMono-Regular.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/UbuntuMono-Regular.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/UbuntuMono-Italic.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/UbuntuMono-Italic.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/UbuntuMono-Italic.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/UbuntuMono-BoldItalic.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/UbuntuMono-BoldItalic.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/UbuntuMono-BoldItalic.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/UbuntuMono-Bold.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/UbuntuMono-Bold.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/UbuntuMono-Bold.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/TurretRoad-Regular.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/TurretRoad-Regular.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/TurretRoad-Regular.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/TurretRoad-Medium.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/TurretRoad-Medium.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/TurretRoad-Medium.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/TurretRoad-Light.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/TurretRoad-Light.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/TurretRoad-Light.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/TurretRoad-ExtraLight.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/TurretRoad-ExtraLight.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/TurretRoad-ExtraLight.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/TurretRoad-ExtraBold.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/TurretRoad-ExtraBold.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/TurretRoad-ExtraBold.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/TurretRoad-Bold.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/TurretRoad-Bold.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/TurretRoad-Bold.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/SyneMono-Regular.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/SyneMono-Regular.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/SyneMono-Regular.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Silkscreen-Regular.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Silkscreen-Regular.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Silkscreen-Regular.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Silkscreen-Bold.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Silkscreen-Bold.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Silkscreen-Bold.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/ShareTechMono-Regular.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/ShareTechMono-Regular.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/ShareTechMono-Regular.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Rationale-Regular.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Rationale-Regular.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Rationale-Regular.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Rajdhani-SemiBold.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Rajdhani-SemiBold.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Rajdhani-SemiBold.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Rajdhani-Regular.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Rajdhani-Regular.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Rajdhani-Regular.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Rajdhani-Bold.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Rajdhani-Bold.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Rajdhani-Bold.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Rajdhani-Medium.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Rajdhani-Medium.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Rajdhani-Medium.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Quantico-Regular.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Quantico-Regular.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Quantico-Regular.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Quantico-Italic.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Quantico-Italic.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Quantico-Italic.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Quantico-Bold.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Quantico-Bold.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Quantico-Bold.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Quantico-BoldItalic.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Quantico-BoldItalic.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Quantico-BoldItalic.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Orbitron-Regular.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Orbitron-Regular.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Orbitron-Regular.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Orbitron-Bold.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Orbitron-Bold.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Orbitron-Bold.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Orbitron-Medium.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Orbitron-Medium.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Orbitron-Medium.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Offside-Regular.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Offside-Regular.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Offside-Regular.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Neon.code-workspace /Users/darynavoloshyna/Repositories/Neon/Neon.code-workspace (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Neon.code-workspace /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Megrim-Regular.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Megrim-Regular.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Megrim-Regular.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/MajorMonoDisplay-Regular.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/MajorMonoDisplay-Regular.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/MajorMonoDisplay-Regular.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/KellySlab-Regular.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/KellySlab-Regular.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/KellySlab-Regular.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Iceland-Regular.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Iceland-Regular.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Iceland-Regular.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Iceberg-Regular.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Iceberg-Regular.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Iceberg-Regular.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Handjet-VariableFont_ELGR,ELSH,wght.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Handjet-VariableFont_ELGR,ELSH,wght.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Handjet-VariableFont_ELGR,ELSH,wght.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Handjet-SemiBold.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Handjet-SemiBold.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Handjet-SemiBold.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Handjet-Thin.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Handjet-Thin.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Handjet-Thin.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Handjet-Regular.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Handjet-Regular.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Handjet-Regular.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Handjet-Medium.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Handjet-Medium.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Handjet-Medium.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Handjet-Light.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Handjet-Light.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Handjet-Light.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Handjet-ExtraLight.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Handjet-ExtraLight.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Handjet-ExtraLight.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Handjet-Bold.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Handjet-Bold.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Handjet-Bold.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Geo-Regular.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Geo-Regular.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Geo-Regular.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Geo-Italic.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Geo-Italic.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Geo-Italic.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Electrolize-Regular.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Electrolize-Regular.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Electrolize-Regular.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Audiowide-Regular.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Audiowide-Regular.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Audiowide-Regular.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Asimovian-Regular.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Asimovian-Regular.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Asimovian-Regular.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CpResource /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Anta-Regular.ttf /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Anta-Regular.ttf (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/darynavoloshyna/Repositories/Neon/Resources/Fonts/Anta-Regular.ttf /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app
+
+CompileAssetCatalogVariant thinned /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app /Users/darynavoloshyna/Repositories/Neon/Assets.xcassets (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    /Applications/Xcode.app/Contents/Developer/usr/bin/actool /Users/darynavoloshyna/Repositories/Neon/Assets.xcassets --compile /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/assetcatalog_output/thinned --output-format human-readable-text --notices --warnings --export-dependency-info /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/assetcatalog_dependencies_thinned --output-partial-info-plist /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/assetcatalog_generated_info.plist_thinned --app-icon AppIcon --compress-pngs --enable-on-demand-resources YES --filter-for-thinning-device-configuration iPhone17,5 --filter-for-device-os-version 26.2 --development-region en --target-device iphone --target-device ipad --minimum-deployment-target 17.0 --platform iphonesimulator
+/* com.apple.actool.compilation-results */
+/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/assetcatalog_generated_info.plist_thinned
+
+
+LinkAssetCatalog /Users/darynavoloshyna/Repositories/Neon/Assets.xcassets (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-linkAssetCatalog --thinned /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/assetcatalog_output/thinned --thinned-dependencies /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/assetcatalog_dependencies_thinned --thinned-info-plist-content /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/assetcatalog_generated_info.plist_thinned --unthinned /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/assetcatalog_output/unthinned --unthinned-dependencies /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/assetcatalog_dependencies_unthinned --unthinned-info-plist-content /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/assetcatalog_generated_info.plist_unthinned --output /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app --plist-output /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/assetcatalog_generated_info.plist
+
+ProcessInfoPlistFile /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Info.plist /Users/darynavoloshyna/Repositories/Neon/Info.plist (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-infoPlistUtility /Users/darynavoloshyna/Repositories/Neon/Info.plist -producttype com.apple.product-type.application -genpkginfo /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -additionalcontentfile /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/assetcatalog_generated_info.plist -o /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.app/Info.plist
+
+SwiftDriver NeonTracker normal arm64 com.apple.xcode.tools.swift.compiler (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-SwiftDriver -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name NeonTracker -Onone -enforce-exclusivity\=checked @/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker.SwiftFileList -DDEBUG -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios17.0-simulator -g -module-cache-path /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -enable-testing -index-store-path /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 6 -I /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator -F /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator -emit-localized-strings -emit-localized-strings-path /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64 -c -j12 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.2-23C53-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache -output-file-map /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker_const_extract_protocols.json -Xcc -iquote -Xcc /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-generated-files.hmap -Xcc -I/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-own-target-headers.hmap -Xcc -I/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-all-target-headers.hmap -Xcc -iquote -Xcc /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-project-headers.hmap -Xcc -I/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources-normal/arm64 -Xcc -I/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources/arm64 -Xcc -I/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker-Swift.h -working-directory /Users/darynavoloshyna/Repositories/Neon -experimental-emit-module-separately -disable-cmo
+
+SwiftCompile normal arm64 Compiling\ ExpandableChatPanel.swift,\ FontSamplerView.swift,\ GlitchEffect.swift,\ HUDCorners.swift,\ HistoryView.swift,\ HomeView.swift /Users/darynavoloshyna/Repositories/Neon/Views/Chat/ExpandableChatPanel.swift /Users/darynavoloshyna/Repositories/Neon/Views/FontSamplerView.swift /Users/darynavoloshyna/Repositories/Neon/Views/Components/GlitchEffect.swift /Users/darynavoloshyna/Repositories/Neon/Views/Components/HUDCorners.swift /Users/darynavoloshyna/Repositories/Neon/Views/History/HistoryView.swift /Users/darynavoloshyna/Repositories/Neon/Views/Home/HomeView.swift (in target 'NeonTracker' from project 'NeonTracker')
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Chat/ExpandableChatPanel.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/FontSamplerView.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Components/GlitchEffect.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Components/HUDCorners.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/History/HistoryView.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Home/HomeView.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 Compiling\ CardComponents.swift,\ CardConfig.swift,\ CardLayoutStrategy.swift,\ CardPreviewBubble.swift,\ ChatComponents.swift,\ ContentView.swift /Users/darynavoloshyna/Repositories/Neon/Views/Cards/CardComponents.swift /Users/darynavoloshyna/Repositories/Neon/Models/CardConfig.swift /Users/darynavoloshyna/Repositories/Neon/Views/Cards/CardLayoutStrategy.swift /Users/darynavoloshyna/Repositories/Neon/Views/Chat/CardPreviewBubble.swift /Users/darynavoloshyna/Repositories/Neon/Views/Chat/ChatComponents.swift /Users/darynavoloshyna/Repositories/Neon/ContentView.swift (in target 'NeonTracker' from project 'NeonTracker')
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Cards/CardComponents.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Models/CardConfig.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Cards/CardLayoutStrategy.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Chat/CardPreviewBubble.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Chat/ChatComponents.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/ContentView.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 Compiling\ AIBrain.swift,\ AIKnowledgeBase.swift,\ AIService.swift,\ APISettings.swift,\ APISettingsStore.swift,\ AmbientEffects.swift /Users/darynavoloshyna/Repositories/Neon/Services/AIBrain.swift /Users/darynavoloshyna/Repositories/Neon/Services/AIKnowledgeBase.swift /Users/darynavoloshyna/Repositories/Neon/Services/AIService.swift /Users/darynavoloshyna/Repositories/Neon/Models/APISettings.swift /Users/darynavoloshyna/Repositories/Neon/Services/APISettingsStore.swift /Users/darynavoloshyna/Repositories/Neon/Views/Components/AmbientEffects.swift (in target 'NeonTracker' from project 'NeonTracker')
+Failed frontend command:
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift-frontend -frontend -c -primary-file /Users/darynavoloshyna/Repositories/Neon/Services/AIBrain.swift -primary-file /Users/darynavoloshyna/Repositories/Neon/Services/AIKnowledgeBase.swift -primary-file /Users/darynavoloshyna/Repositories/Neon/Services/AIService.swift -primary-file /Users/darynavoloshyna/Repositories/Neon/Models/APISettings.swift -primary-file /Users/darynavoloshyna/Repositories/Neon/Services/APISettingsStore.swift -primary-file /Users/darynavoloshyna/Repositories/Neon/Views/Components/AmbientEffects.swift /Users/darynavoloshyna/Repositories/Neon/Views/Cards/CardComponents.swift /Users/darynavoloshyna/Repositories/Neon/Models/CardConfig.swift /Users/darynavoloshyna/Repositories/Neon/Views/Cards/CardLayoutStrategy.swift /Users/darynavoloshyna/Repositories/Neon/Views/Chat/CardPreviewBubble.swift /Users/darynavoloshyna/Repositories/Neon/Views/Chat/ChatComponents.swift /Users/darynavoloshyna/Repositories/Neon/ContentView.swift /Users/darynavoloshyna/Repositories/Neon/Design/Themes/CorporateTheme.swift /Users/darynavoloshyna/Repositories/Neon/Services/CryptoManager.swift /Users/darynavoloshyna/Repositories/Neon/Views/Components/CyberpunkBackground.swift /Users/darynavoloshyna/Repositories/Neon/Design/CyberpunkModifiers.swift /Users/darynavoloshyna/Repositories/Neon/Design/DesignSystem.swift /Users/darynavoloshyna/Repositories/Neon/Views/Overlays/EditTaskOverlay.swift /Users/darynavoloshyna/Repositories/Neon/Views/Chat/ExpandableChatPanel.swift /Users/darynavoloshyna/Repositories/Neon/Views/FontSamplerView.swift /Users/darynavoloshyna/Repositories/Neon/Views/Components/GlitchEffect.swift /Users/darynavoloshyna/Repositories/Neon/Views/Components/HUDCorners.swift /Users/darynavoloshyna/Repositories/Neon/Views/History/HistoryView.swift /Users/darynavoloshyna/Repositories/Neon/Views/Home/HomeView.swift /Users/darynavoloshyna/Repositories/Neon/Models/ItemPriority.swift /Users/darynavoloshyna/Repositories/Neon/Design/Themes/MercenaryTheme.swift /Users/darynavoloshyna/Repositories/Neon/Models/Message.swift /Users/darynavoloshyna/Repositories/Neon/Views/Home/MonthCalendarView.swift /Users/darynavoloshyna/Repositories/Neon/NeonTrackerApp.swift /Users/darynavoloshyna/Repositories/Neon/Models/Quests/NyanCatQuest.swift /Users/darynavoloshyna/Repositories/Neon/Views/Components/NyanCatView.swift /Users/darynavoloshyna/Repositories/Neon/Design/Themes/NyanTheme.swift /Users/darynavoloshyna/Repositories/Neon/Managers/OverlayEffectsManager.swift /Users/darynavoloshyna/Repositories/Neon/Design/ThemeSystem/PriorityTagStyle.swift /Users/darynavoloshyna/Repositories/Neon/Services/ProfileStore.swift /Users/darynavoloshyna/Repositories/Neon/Views/Protocols/ProtocolsView.swift /Users/darynavoloshyna/Repositories/Neon/Models/QuestHandler.swift /Users/darynavoloshyna/Repositories/Neon/Services/QuestManager.swift /Users/darynavoloshyna/Repositories/Neon/Models/QuestModels.swift /Users/darynavoloshyna/Repositories/Neon/Models/RecurrenceRule.swift /Users/darynavoloshyna/Repositories/Neon/Models/Reward.swift /Users/darynavoloshyna/Repositories/Neon/Services/RewardManager.swift /Users/darynavoloshyna/Repositories/Neon/Models/User/SchedulePreferences.swift /Users/darynavoloshyna/Repositories/Neon/Views/Settings/SettingsView.swift /Users/darynavoloshyna/Repositories/Neon/Design/Themes/StalkerTheme.swift /Users/darynavoloshyna/Repositories/Neon/Views/Home/StatusHeader.swift /Users/darynavoloshyna/Repositories/Neon/Views/Chat/SuggestionCard.swift /Users/darynavoloshyna/Repositories/Neon/Views/Components/TabBar.swift /Users/darynavoloshyna/Repositories/Neon/Views/Home/TaskRow.swift /Users/darynavoloshyna/Repositories/Neon/Design/Themes/TerminalTheme.swift /Users/darynavoloshyna/Repositories/Neon/Design/ThemeSystem/Theme.swift /Users/darynavoloshyna/Repositories/Neon/Design/ThemeSystem/ThemeEffect.swift /Users/darynavoloshyna/Repositories/Neon/Design/ThemeSystem/ThemeID.swift /Users/darynavoloshyna/Repositories/Neon/Services/ThemeManager.swift /Users/darynavoloshyna/Repositories/Neon/Views/Cards/TimelineCardAction.swift /Users/darynavoloshyna/Repositories/Neon/Views/Timeline/TimelineComponents.swift /Users/darynavoloshyna/Repositories/Neon/Services/TimelineEngine.swift /Users/darynavoloshyna/Repositories/Neon/Models/TimelineItem.swift /Users/darynavoloshyna/Repositories/Neon/Views/Timeline/TimelineRail.swift /Users/darynavoloshyna/Repositories/Neon/Views/Cards/UniversalTimelineCard.swift /Users/darynavoloshyna/Repositories/Neon/Design/ThemeSystem/UnlockConfig.swift /Users/darynavoloshyna/Repositories/Neon/Models/User/UserProfile.swift /Users/darynavoloshyna/Repositories/Neon/Views/Settings/WeekStartPicker.swift /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources/GeneratedAssetSymbols.swift -supplementary-output-file-map /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/supplementaryOutputs-1 -emit-localized-strings -emit-localized-strings-path /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64 -target arm64-apple-ios17.0-simulator -module-can-import-version DeveloperToolsSupport 23.0.4 23.0.4 -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libFoundationMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#FoundationMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libObservationMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#ObservationMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libPreviewsMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#PreviewsMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libSwiftMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#SwiftMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libSwiftUIMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#SwiftUIMacros -disable-implicit-swift-modules -Xcc -fno-implicit-modules -Xcc -fno-implicit-module-maps -explicit-swift-module-map-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker-dependencies-1.json -Xllvm -aarch64-use-tbi -enable-objc-interop -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -I /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator -F /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator -no-color-diagnostics -Xcc -fno-color-diagnostics -enable-testing -g -debug-info-format\=dwarf -dwarf-version\=4 -module-cache-path /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -swift-version 6 -enforce-exclusivity\=checked -Onone -D DEBUG -serialize-debugging-options -const-gather-protocols-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker_const_extract_protocols.json -enable-experimental-feature DebugDescriptionMacro -empty-abi-descriptor -validate-clang-modules-once -clang-build-session-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -working-directory -Xcc /Users/darynavoloshyna/Repositories/Neon -enable-anonymous-context-mangled-names -file-compilation-dir /Users/darynavoloshyna/Repositories/Neon -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -Xcc -ivfsstatcache -Xcc /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.2-23C53-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache -Xcc -I/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/swift-overrides.hmap -Xcc -iquote -Xcc /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-generated-files.hmap -Xcc -I/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-own-target-headers.hmap -Xcc -I/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-all-target-headers.hmap -Xcc -iquote -Xcc /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-project-headers.hmap -Xcc -I/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources-normal/arm64 -Xcc -I/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources/arm64 -Xcc -I/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources -Xcc -DDEBUG\=1 -no-auto-bridging-header-chaining -module-name NeonTracker -frontend-parseable-output -disable-clang-spi -target-sdk-version 26.2 -target-sdk-name iphonesimulator26.2 -clang-target arm64-apple-ios26.2-simulator -in-process-plugin-server-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/libSwiftInProcPluginServer.dylib -o /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/AIBrain.o -o /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/AIKnowledgeBase.o -o /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/AIService.o -o /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/APISettings.o -o /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/APISettingsStore.o -o /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/AmbientEffects.o -index-unit-output-path /NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/AIBrain.o -index-unit-output-path /NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/AIKnowledgeBase.o -index-unit-output-path /NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/AIService.o -index-unit-output-path /NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/APISettings.o -index-unit-output-path /NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/APISettingsStore.o -index-unit-output-path /NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/AmbientEffects.o -index-store-path /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Index.noindex/DataStore -index-system-modules
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Services/AIBrain.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+/Users/darynavoloshyna/Repositories/Neon/Services/AIBrain.swift:30:48: error: sending 'self.aiService' risks causing data races
+            let response = try await aiService.sendMessage(context: context, userMessage: input, history: history)
+                                     ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/darynavoloshyna/Repositories/Neon/Services/AIBrain.swift:30:48: note: sending main actor-isolated 'self.aiService' to nonisolated instance method 'sendMessage(context:userMessage:history:)' risks causing data races between nonisolated and main actor-isolated uses
+            let response = try await aiService.sendMessage(context: context, userMessage: input, history: history)
+                                               ^
+/Users/darynavoloshyna/Repositories/Neon/Services/AIBrain.swift:201:48: error: sending 'self.aiService' risks causing data races
+            let response = try await aiService.askBrain(prompt: prompt)
+                                     ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~
+/Users/darynavoloshyna/Repositories/Neon/Services/AIBrain.swift:201:48: note: sending main actor-isolated 'self.aiService' to nonisolated instance method 'askBrain(prompt:)' risks causing data races between nonisolated and main actor-isolated uses
+            let response = try await aiService.askBrain(prompt: prompt)
+                                               ^
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Services/AIKnowledgeBase.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Services/AIService.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Models/APISettings.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Services/APISettingsStore.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Components/AmbientEffects.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 Compiling\ ItemPriority.swift,\ MercenaryTheme.swift,\ Message.swift,\ MonthCalendarView.swift,\ NeonTrackerApp.swift /Users/darynavoloshyna/Repositories/Neon/Models/ItemPriority.swift /Users/darynavoloshyna/Repositories/Neon/Design/Themes/MercenaryTheme.swift /Users/darynavoloshyna/Repositories/Neon/Models/Message.swift /Users/darynavoloshyna/Repositories/Neon/Views/Home/MonthCalendarView.swift /Users/darynavoloshyna/Repositories/Neon/NeonTrackerApp.swift (in target 'NeonTracker' from project 'NeonTracker')
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Models/ItemPriority.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Design/Themes/MercenaryTheme.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Models/Message.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Home/MonthCalendarView.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/NeonTrackerApp.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 Compiling\ CorporateTheme.swift,\ CryptoManager.swift,\ CyberpunkBackground.swift,\ CyberpunkModifiers.swift,\ DesignSystem.swift,\ EditTaskOverlay.swift /Users/darynavoloshyna/Repositories/Neon/Design/Themes/CorporateTheme.swift /Users/darynavoloshyna/Repositories/Neon/Services/CryptoManager.swift /Users/darynavoloshyna/Repositories/Neon/Views/Components/CyberpunkBackground.swift /Users/darynavoloshyna/Repositories/Neon/Design/CyberpunkModifiers.swift /Users/darynavoloshyna/Repositories/Neon/Design/DesignSystem.swift /Users/darynavoloshyna/Repositories/Neon/Views/Overlays/EditTaskOverlay.swift (in target 'NeonTracker' from project 'NeonTracker')
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Design/Themes/CorporateTheme.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Services/CryptoManager.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Components/CyberpunkBackground.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Design/CyberpunkModifiers.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Design/DesignSystem.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Overlays/EditTaskOverlay.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 Compiling\ ProfileStore.swift,\ ProtocolsView.swift,\ QuestHandler.swift,\ QuestManager.swift,\ QuestModels.swift /Users/darynavoloshyna/Repositories/Neon/Services/ProfileStore.swift /Users/darynavoloshyna/Repositories/Neon/Views/Protocols/ProtocolsView.swift /Users/darynavoloshyna/Repositories/Neon/Models/QuestHandler.swift /Users/darynavoloshyna/Repositories/Neon/Services/QuestManager.swift /Users/darynavoloshyna/Repositories/Neon/Models/QuestModels.swift (in target 'NeonTracker' from project 'NeonTracker')
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Services/ProfileStore.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Protocols/ProtocolsView.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Models/QuestHandler.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Services/QuestManager.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Models/QuestModels.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 Compiling\ RecurrenceRule.swift,\ Reward.swift,\ RewardManager.swift,\ SchedulePreferences.swift,\ SettingsView.swift /Users/darynavoloshyna/Repositories/Neon/Models/RecurrenceRule.swift /Users/darynavoloshyna/Repositories/Neon/Models/Reward.swift /Users/darynavoloshyna/Repositories/Neon/Services/RewardManager.swift /Users/darynavoloshyna/Repositories/Neon/Models/User/SchedulePreferences.swift /Users/darynavoloshyna/Repositories/Neon/Views/Settings/SettingsView.swift (in target 'NeonTracker' from project 'NeonTracker')
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Models/RecurrenceRule.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Models/Reward.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Services/RewardManager.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Models/User/SchedulePreferences.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Settings/SettingsView.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 Compiling\ TerminalTheme.swift,\ Theme.swift,\ ThemeEffect.swift,\ ThemeID.swift,\ ThemeManager.swift /Users/darynavoloshyna/Repositories/Neon/Design/Themes/TerminalTheme.swift /Users/darynavoloshyna/Repositories/Neon/Design/ThemeSystem/Theme.swift /Users/darynavoloshyna/Repositories/Neon/Design/ThemeSystem/ThemeEffect.swift /Users/darynavoloshyna/Repositories/Neon/Design/ThemeSystem/ThemeID.swift /Users/darynavoloshyna/Repositories/Neon/Services/ThemeManager.swift (in target 'NeonTracker' from project 'NeonTracker')
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Design/Themes/TerminalTheme.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Design/ThemeSystem/Theme.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Design/ThemeSystem/ThemeEffect.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Design/ThemeSystem/ThemeID.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Services/ThemeManager.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftEmitModule normal arm64 Emitting\ module\ for\ NeonTracker (in target 'NeonTracker' from project 'NeonTracker')
+
+EmitSwiftModule normal arm64 (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 Compiling\ UniversalTimelineCard.swift,\ UnlockConfig.swift,\ UserProfile.swift,\ WeekStartPicker.swift,\ GeneratedAssetSymbols.swift /Users/darynavoloshyna/Repositories/Neon/Views/Cards/UniversalTimelineCard.swift /Users/darynavoloshyna/Repositories/Neon/Design/ThemeSystem/UnlockConfig.swift /Users/darynavoloshyna/Repositories/Neon/Models/User/UserProfile.swift /Users/darynavoloshyna/Repositories/Neon/Views/Settings/WeekStartPicker.swift /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources/GeneratedAssetSymbols.swift (in target 'NeonTracker' from project 'NeonTracker')
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Cards/UniversalTimelineCard.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Design/ThemeSystem/UnlockConfig.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Models/User/UserProfile.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Settings/WeekStartPicker.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources/GeneratedAssetSymbols.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 Compiling\ StalkerTheme.swift,\ StatusHeader.swift,\ SuggestionCard.swift,\ TabBar.swift,\ TaskRow.swift /Users/darynavoloshyna/Repositories/Neon/Design/Themes/StalkerTheme.swift /Users/darynavoloshyna/Repositories/Neon/Views/Home/StatusHeader.swift /Users/darynavoloshyna/Repositories/Neon/Views/Chat/SuggestionCard.swift /Users/darynavoloshyna/Repositories/Neon/Views/Components/TabBar.swift /Users/darynavoloshyna/Repositories/Neon/Views/Home/TaskRow.swift (in target 'NeonTracker' from project 'NeonTracker')
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Design/Themes/StalkerTheme.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Home/StatusHeader.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Chat/SuggestionCard.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Components/TabBar.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Home/TaskRow.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 Compiling\ TimelineCardAction.swift,\ TimelineComponents.swift,\ TimelineEngine.swift,\ TimelineItem.swift,\ TimelineRail.swift /Users/darynavoloshyna/Repositories/Neon/Views/Cards/TimelineCardAction.swift /Users/darynavoloshyna/Repositories/Neon/Views/Timeline/TimelineComponents.swift /Users/darynavoloshyna/Repositories/Neon/Services/TimelineEngine.swift /Users/darynavoloshyna/Repositories/Neon/Models/TimelineItem.swift /Users/darynavoloshyna/Repositories/Neon/Views/Timeline/TimelineRail.swift (in target 'NeonTracker' from project 'NeonTracker')
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Cards/TimelineCardAction.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Timeline/TimelineComponents.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Services/TimelineEngine.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Models/TimelineItem.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Timeline/TimelineRail.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 Compiling\ NyanCatQuest.swift,\ NyanCatView.swift,\ NyanTheme.swift,\ OverlayEffectsManager.swift,\ PriorityTagStyle.swift /Users/darynavoloshyna/Repositories/Neon/Models/Quests/NyanCatQuest.swift /Users/darynavoloshyna/Repositories/Neon/Views/Components/NyanCatView.swift /Users/darynavoloshyna/Repositories/Neon/Design/Themes/NyanTheme.swift /Users/darynavoloshyna/Repositories/Neon/Managers/OverlayEffectsManager.swift /Users/darynavoloshyna/Repositories/Neon/Design/ThemeSystem/PriorityTagStyle.swift (in target 'NeonTracker' from project 'NeonTracker')
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Models/Quests/NyanCatQuest.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Views/Components/NyanCatView.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Design/Themes/NyanTheme.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Managers/OverlayEffectsManager.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Design/ThemeSystem/PriorityTagStyle.swift (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    
+
+SwiftDriverJobDiscovery normal arm64 Compiling TerminalTheme.swift, Theme.swift, ThemeEffect.swift, ThemeID.swift, ThemeManager.swift (in target 'NeonTracker' from project 'NeonTracker')
+
+SwiftDriverJobDiscovery normal arm64 Emitting module for NeonTracker (in target 'NeonTracker' from project 'NeonTracker')
+
+SwiftDriver\ Compilation\ Requirements NeonTracker normal arm64 com.apple.xcode.tools.swift.compiler (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-Swift-Compilation-Requirements -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name NeonTracker -Onone -enforce-exclusivity\=checked @/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker.SwiftFileList -DDEBUG -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.2.sdk -target arm64-apple-ios17.0-simulator -g -module-cache-path /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -enable-testing -index-store-path /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 6 -I /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator -F /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator -emit-localized-strings -emit-localized-strings-path /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64 -c -j12 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.2-23C53-7d00a8b37fbd7999ea79df8ebc024bf0.sdkstatcache -output-file-map /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker_const_extract_protocols.json -Xcc -iquote -Xcc /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-generated-files.hmap -Xcc -I/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-own-target-headers.hmap -Xcc -I/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-all-target-headers.hmap -Xcc -iquote -Xcc /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/NeonTracker-project-headers.hmap -Xcc -I/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources-normal/arm64 -Xcc -I/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources/arm64 -Xcc -I/Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker-Swift.h -working-directory /Users/darynavoloshyna/Repositories/Neon -experimental-emit-module-separately -disable-cmo
+
+SwiftMergeGeneratedHeaders /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources/NeonTracker-Swift.h /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker-Swift.h (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-swiftHeaderTool -arch arm64 /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker-Swift.h -o /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/DerivedSources/NeonTracker-Swift.h
+
+Copy /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.swiftmodule/arm64-apple-ios-simulator.swiftmodule /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker.swiftmodule (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker.swiftmodule /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.swiftmodule/arm64-apple-ios-simulator.swiftmodule
+
+Copy /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.swiftmodule/arm64-apple-ios-simulator.swiftdoc /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker.swiftdoc (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker.swiftdoc /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.swiftmodule/arm64-apple-ios-simulator.swiftdoc
+
+Copy /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.swiftmodule/arm64-apple-ios-simulator.abi.json /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker.abi.json (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker.abi.json /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.swiftmodule/arm64-apple-ios-simulator.abi.json
+
+Copy /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker.swiftsourceinfo (in target 'NeonTracker' from project 'NeonTracker')
+    cd /Users/darynavoloshyna/Repositories/Neon
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Intermediates.noindex/NeonTracker.build/Debug-iphonesimulator/NeonTracker.build/Objects-normal/arm64/NeonTracker.swiftsourceinfo /Users/darynavoloshyna/Library/Developer/Xcode/DerivedData/NeonTracker-dcetbyacrvkhwgbumymtuqospvkp/Build/Products/Debug-iphonesimulator/NeonTracker.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo
+
+SwiftDriverJobDiscovery normal arm64 Compiling ProfileStore.swift, ProtocolsView.swift, QuestHandler.swift, QuestManager.swift, QuestModels.swift (in target 'NeonTracker' from project 'NeonTracker')
+
+** BUILD FAILED **
+
+
+The following build commands failed:
+	SwiftCompile normal arm64 Compiling\ AIBrain.swift,\ AIKnowledgeBase.swift,\ AIService.swift,\ APISettings.swift,\ APISettingsStore.swift,\ AmbientEffects.swift /Users/darynavoloshyna/Repositories/Neon/Services/AIBrain.swift /Users/darynavoloshyna/Repositories/Neon/Services/AIKnowledgeBase.swift /Users/darynavoloshyna/Repositories/Neon/Services/AIService.swift /Users/darynavoloshyna/Repositories/Neon/Models/APISettings.swift /Users/darynavoloshyna/Repositories/Neon/Services/APISettingsStore.swift /Users/darynavoloshyna/Repositories/Neon/Views/Components/AmbientEffects.swift (in target 'NeonTracker' from project 'NeonTracker')
+	SwiftCompile normal arm64 /Users/darynavoloshyna/Repositories/Neon/Services/AIBrain.swift (in target 'NeonTracker' from project 'NeonTracker')
+	Building project NeonTracker with scheme NeonTracker
+(3 failures)

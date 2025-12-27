@@ -61,7 +61,9 @@ final class APISettingsTests: XCTestCase {
         let original = APISettings(
             useCustomKey: true,
             selectedModel: "openai/gpt-4o-mini",
-            defaultDeferMinutes: 30
+            defaultDeferMinutes: 30,
+            defaultDurationMinutes: 45,
+            cardLayoutMode: .side
         )
         
         let encoder = JSONEncoder()
@@ -73,6 +75,8 @@ final class APISettingsTests: XCTestCase {
         XCTAssertEqual(decoded.useCustomKey, original.useCustomKey)
         XCTAssertEqual(decoded.selectedModel, original.selectedModel)
         XCTAssertEqual(decoded.defaultDeferMinutes, original.defaultDeferMinutes)
+        XCTAssertEqual(decoded.defaultDurationMinutes, original.defaultDurationMinutes)
+        XCTAssertEqual(decoded.cardLayoutMode, original.cardLayoutMode)
     }
     
     func test_codable_defaultRoundTrip() throws {

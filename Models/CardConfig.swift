@@ -10,6 +10,7 @@ struct CardConfig {
     let description: String?
     let badgeText: String
     let accentColor: Color
+    let durationText: String?
     
     // Priority Theme Style (for themed badges)
     let priorityTagStyle: PriorityTagStyle?
@@ -24,9 +25,6 @@ struct CardConfig {
     // Optional Features
     let recurrence: String?
     let actions: [TimelineCardAction]
-    
-    // MARK: - Initializer
-    
     init(
         title: String,
         description: String? = nil,
@@ -34,6 +32,7 @@ struct CardConfig {
         accentColor: Color,
         priorityTagStyle: PriorityTagStyle? = nil,
         time: String? = nil,
+        durationText: String? = nil,
         isCompleted: Bool = false,
         isOverdue: Bool = false,
         isDeferred: Bool = false,
@@ -47,6 +46,7 @@ struct CardConfig {
         self.accentColor = accentColor
         self.priorityTagStyle = priorityTagStyle
         self.time = time
+        self.durationText = durationText
         self.isCompleted = isCompleted
         self.isOverdue = isOverdue
         self.isDeferred = isDeferred
@@ -88,6 +88,7 @@ struct CardConfig {
             badgeText: "CMD",
             accentColor: DesignSystem.purple,
             time: dailyTime,
+            durationText: nil,
             recurrence: dailyTime != nil ? "DAILY" : nil,
             actions: actions
         )
@@ -110,12 +111,29 @@ struct CardConfig {
         // Get theme-aware priority style from current theme
         let style = ThemeManager.shared.priorityTagStyle(for: item.priority)
         
-        // Determine time display
+        // Determine time and duration display
         let timeString: String?
+        let durationText: String?
+        
         if item.isCompleted, let completedAt = item.completedAt {
             timeString = formatTime(completedAt)
+            durationText = nil
         } else {
             timeString = formatTime(item.effectiveTime)
+            
+            if item.duration > 0 {
+                let durationHrs = item.duration / 3600.0
+                if durationHrs >= 1.0 {
+                    let formattedDuration = String(format: "%.1f", durationHrs)
+                        .replacingOccurrences(of: ".0", with: "") 
+                    durationText = "+\(formattedDuration)hrs"
+                } else {
+                    let durationMins = Int(item.duration / 60.0)
+                    durationText = "+\(durationMins)m"
+                }
+            } else {
+                durationText = nil
+            }
         }
         
         // Build actions based on mustBeCompleted flag
@@ -182,6 +200,7 @@ struct CardConfig {
             accentColor: style.color,
             priorityTagStyle: style,
             time: timeString,
+            durationText: durationText,
             isCompleted: item.isCompleted,
             isOverdue: item.isOverdue,
             isDeferred: item.isDeferred,

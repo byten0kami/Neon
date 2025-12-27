@@ -321,7 +321,7 @@ struct SecurityScanView: View {
 struct StaticInterferenceView: View {
     var body: some View {
         GeometryReader { geometry in
-            SwiftUI.TimelineView(.animation) { context in
+            TimelineView(.animation) { context in
                 Canvas { context, size in
                     for _ in 0..<1500 {
                         let rect = CGRect(

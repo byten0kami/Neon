@@ -44,7 +44,7 @@ struct MercenaryTheme: Theme {
         switch priority {
         case .ai:
             return PriorityTagStyle(
-                text: "CMD",
+                text: "SYS",
                 color: aiAccent,
                 hasGlow: true,
                 glowRadius: 4

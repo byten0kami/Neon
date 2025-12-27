@@ -35,7 +35,8 @@ struct StatusHeader: View {
             
             Spacer()
             
-            // Effect Demo Button
+            // Effect Demo Button (Debug Only)
+            #if DEBUG
             Button(action: {
                 OverlayEffectsManager.shared.forceTriggerEffect()
             }) {
@@ -45,6 +46,7 @@ struct StatusHeader: View {
                     .shadow(color: DesignSystem.purple.opacity(0.5), radius: 2)
             }
             .padding(.trailing, 8)
+            #endif
 
             // Calendar Button
             Button(action: onCalendarTap) {

@@ -15,6 +15,8 @@ struct SettingsView: View {
     @StateObject private var engine = TimelineEngine.shared
     @State private var isThemeDropdownExpanded: Bool = false
     @State private var showingWeekStartPicker: Bool = false
+    @State private var showingResetAlert: Bool = false
+    @State private var resetComplete: Bool = false
     
     enum SaveStatus {
         case none, saving, saved, error
@@ -35,6 +37,9 @@ struct SettingsView: View {
                     
                     // About Section
                     aboutSection
+                    
+                    // Danger Zone
+                    dangerSection
                     
                     Spacer(minLength: 100)
                 }
@@ -412,6 +417,41 @@ struct SettingsView: View {
                     
                     divider
                     
+                    settingsRow {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Default Duration")
+                                    .font(.custom(DesignSystem.monoFont, size: 20))
+                                    .foregroundColor(.white)
+                                Text("New task duration")
+                                    .font(.custom(DesignSystem.lightFont, size: 14))
+                                    .foregroundColor(DesignSystem.slate500)
+                            }
+                            Spacer()
+                            Menu {
+                                Button("15 min") { apiSettings.setDefaultDurationMinutes(15) }
+                                Button("30 min") { apiSettings.setDefaultDurationMinutes(30) }
+                                Button("1 hour") { apiSettings.setDefaultDurationMinutes(60) }
+                                Button("1.5 hours") { apiSettings.setDefaultDurationMinutes(90) }
+                                Button("2 hours") { apiSettings.setDefaultDurationMinutes(120) }
+                            } label: {
+                                HStack(spacing: 8) {
+                                    Text(defaultDurationString)
+                                        .font(.custom(DesignSystem.monoFont, size: 18))
+                                        .foregroundColor(themeManager.currentTheme.mainAccent)
+                                    Image(systemName: "hourglass")
+                                        .foregroundColor(themeManager.currentTheme.mainAccent)
+                                }
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 8)
+                                .background(themeManager.currentTheme.mainAccent.opacity(0.1))
+                                .cornerRadius(8)
+                            }
+                        }
+                    }
+                    
+                    divider
+                    
                     // Card Layout Row
                     settingsRow {
                         HStack {
@@ -486,6 +526,18 @@ struct SettingsView: View {
         case 60: return "1 hour"
         case 120: return "2 hours"
         case 240: return "4 hours"
+        default: return "\(minutes) min"
+        }
+    }
+    
+    private var defaultDurationString: String {
+        let minutes = apiSettings.settings.defaultDurationMinutes
+        switch minutes {
+        case 15: return "15 min"
+        case 30: return "30 min"
+        case 60: return "1 hour"
+        case 90: return "1.5 hours"
+        case 120: return "2 hours"
         default: return "\(minutes) min"
         }
     }
@@ -629,6 +681,53 @@ struct SettingsView: View {
         }
     }
     
+    // MARK: - Danger Zone
+    
+    private var dangerSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            sectionHeader("DANGER ZONE")
+            
+            Button(action: { showingResetAlert = true }) {
+                HStack {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("RESET APP")
+                            .font(.custom(DesignSystem.monoFont, size: 20))
+                            .foregroundColor(DesignSystem.red)
+                        Text("Wipe all data and keys")
+                            .font(.custom(DesignSystem.lightFont, size: 14))
+                            .foregroundColor(DesignSystem.red.opacity(0.7))
+                    }
+                    Spacer()
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .foregroundColor(DesignSystem.red)
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 14)
+                .background(DesignSystem.red.opacity(0.1))
+                .cornerRadius(CardStyle.cornerRadius)
+                .overlay(
+                    RoundedRectangle(cornerRadius: CardStyle.cornerRadius)
+                        .stroke(DesignSystem.red.opacity(0.5), lineWidth: 1)
+                )
+            }
+        }
+        .alert("Reset Application", isPresented: $showingResetAlert) {
+            Button("Cancel", role: .cancel) { }
+            Button("Reset Everything", role: .destructive) {
+                resetApp()
+            }
+        } message: {
+            Text("Are you sure? This will delete all your tasks, settings, and encryption keys. This action cannot be undone.")
+        }
+        .alert("Reset Complete", isPresented: $resetComplete) {
+            Button("OK") {
+                // fatalError() // Optional: crash to force restart, or just let them see empty state
+            }
+        } message: {
+            Text("Application data has been wiped. Please restart the app.")
+        }
+    }
+    
     // MARK: - Helper Views
     
     private func sectionHeader(_ title: String) -> some View {
@@ -670,6 +769,22 @@ struct SettingsView: View {
         if let url = URL(string: "https://openrouter.ai/keys") {
             UIApplication.shared.open(url)
         }
+    }
+    
+    private func resetApp() {
+        // 1. Wipe UserDefaults
+        if let bundleID = Bundle.main.bundleIdentifier {
+            UserDefaults.standard.removePersistentDomain(forName: bundleID)
+        }
+        
+        // 2. Wipe Keychain
+        apiSettings.deleteAPIKey()
+        CryptoManager.shared.deleteKey()
+        
+        // 3. Clear in-memory state (optional, as app restart is best)
+        apiSettings.updateSettings(.default)
+        
+        resetComplete = true
     }
 }
 

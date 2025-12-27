@@ -101,15 +101,34 @@ class AIKnowledgeBase: ObservableObject {
     
     private func save() {
         if let data = try? JSONEncoder().encode(facts) {
-            UserDefaults.standard.set(data, forKey: storageKey)
+            // Encrypt before saving
+            if let encrypted = try? CryptoManager.shared.encrypt(data) {
+                UserDefaults.standard.set(encrypted, forKey: storageKey)
+            } else {
+                print("[AIKnowledgeBase] Encryption failed, not saving to avoid cleartext leak")
+            }
         }
     }
     
     private func load() {
-        if let data = UserDefaults.standard.data(forKey: storageKey),
-           let decoded = try? JSONDecoder().decode([Fact].self, from: data) {
-            facts = decoded
-            lastUpdated = facts.map { $0.updatedAt }.max()
+        guard let data = UserDefaults.standard.data(forKey: storageKey) else { return }
+        
+        // Try to decrypt first
+        if let decrypted = try? CryptoManager.shared.decrypt(data),
+           let decoded = try? JSONDecoder().decode([Fact].self, from: decrypted) {
+            self.facts = decoded
+            self.lastUpdated = facts.map { $0.updatedAt }.max()
+            return
+        }
+        
+        // Fallback: Try legacy cleartext load (Migration)
+        if let decoded = try? JSONDecoder().decode([Fact].self, from: data) {
+            print("[AIKnowledgeBase] Migrating legacy cleartext data to encrypted storage")
+            self.facts = decoded
+            self.lastUpdated = facts.map { $0.updatedAt }.max()
+            
+            // Re-save immediately to encrypt
+            save() 
         }
     }
 }

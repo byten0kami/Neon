@@ -42,7 +42,7 @@ struct TerminalTheme: Theme {
         switch priority {
         case .ai:
             return PriorityTagStyle(
-                text: "SYS",
+                text: "CMD",
                 color: aiAccent,
                 borderRadius: 0
             )

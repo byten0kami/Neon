@@ -49,7 +49,7 @@ struct HomeView: View {
                     }
                 )
                 
-                TimelineView(
+                TimelineRailView(
                     selectedItem: $selectedItem,
                     completedItems: completedItems,
                     pendingItems: pendingItems,

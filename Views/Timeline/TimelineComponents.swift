@@ -103,9 +103,6 @@ struct TimelineRails: View {
     }
 }
 
-// Backward compatibility alias
-// Backward compatibility alias (deprecated)
-typealias TimelineRail = TimelineRailFuture
 
 // MARK: - Now Card
 

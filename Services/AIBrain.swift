@@ -11,10 +11,12 @@ class AIBrain: ObservableObject {
     @Published var lastResponse: String?
     @Published var lastError: String?
     
-    private let aiService = AIService.shared
+    private let aiService: AIServiceProtocol
     private let knowledge = AIKnowledgeBase.shared
     
-    private init() {}
+    internal init(service: AIServiceProtocol = AIService.shared) {
+        self.aiService = service
+    }
     
     /// Main entry point: user says something, AI figures out what to do
     /// Returns message + pending actions for UI to preview before executing
@@ -125,22 +127,24 @@ class AIBrain: ObservableObject {
                 description: description,
                 priority: itemPriority,
                 startTime: scheduledTime,
+                duration: TimeInterval(APISettingsStore.shared.settings.defaultDurationMinutes * 60),
                 recurrence: recurrence
             )
             
             TimelineEngine.shared.addMaster(master)
-            print("[AIBrain] Created recurring master: \(title)")
+            print("[AIBrain] Created recurring master: \(title) with duration \(APISettingsStore.shared.settings.defaultDurationMinutes)m")
         } else {
             // Create One-off
             let item = TimelineItem.oneOff(
                 title: title,
                 description: description,
                 priority: itemPriority,
-                scheduledTime: scheduledTime
+                scheduledTime: scheduledTime,
+                duration: TimeInterval(APISettingsStore.shared.settings.defaultDurationMinutes * 60)
             )
             
             TimelineEngine.shared.addOneOff(item)
-            print("[AIBrain] Created one-off item: \(title)")
+            print("[AIBrain] Created one-off item: \(title) with duration \(APISettingsStore.shared.settings.defaultDurationMinutes)m")
         }
     }
     

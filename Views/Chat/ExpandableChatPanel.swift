@@ -37,7 +37,7 @@ struct ExpandableChatPanel: View {
             inputArea
         }
         .background(CardBackground(accentColor: themeManager.currentTheme.aiAccent))
-        .padding(.horizontal, 8)
+        // Removed .padding(.horizontal, 8) to make frame fuller
         .padding(.top, 60)  // Space for status header (matches calendar)
         .padding(.bottom, 90)  // Space for tab bar (matches calendar)
         .onAppear {
@@ -46,25 +46,21 @@ struct ExpandableChatPanel: View {
                 isInputFocused = true
             }
         }
+        .onDisappear {
+            clearHistory()
+        }
     }
     
     // MARK: - Header
     
     private var header: some View {
         HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                PriorityTag(text: "AI-CORE", color: themeManager.currentTheme.aiAccent)
-                
-                Text(Date.now.formatted(date: .numeric, time: .shortened))
-                    .font(.custom(DesignSystem.monoFont, size: 10))
-                    .foregroundColor(DesignSystem.slate600)
-            }
+            PriorityTag(text: "AI-CORE", color: themeManager.currentTheme.aiAccent)
             
             Spacer()
             
-            // Close button styled as card action
-            CardActionButton(
-                label: "CLOSE",
+            // Close button just a cross in a square
+            CardActionIconButton(
                 color: DesignSystem.slate500,
                 icon: "xmark",
                 isFilled: false
@@ -87,7 +83,7 @@ struct ExpandableChatPanel: View {
     private var chatArea: some View {
         ScrollViewReader { proxy in
             ScrollView {
-                LazyVStack(alignment: .leading, spacing: 12) {
+                LazyVStack(alignment: .leading, spacing: 6) { // Reduced spacing from 12 to 6
                     ForEach(Array(messages.enumerated()), id: \.element.id) { index, message in
                         ChatBubble(message: message)
                             .id(message.id)
@@ -165,8 +161,7 @@ struct ExpandableChatPanel: View {
             .padding(.trailing, 4)
             
             // Send Button
-            CardActionButton(
-                label: "SEND",
+            CardActionIconButton( // Changed to Icon Button for compactness
                 color: inputText.isEmpty ? DesignSystem.slate600 : themeManager.currentTheme.aiAccent,
                 icon: "arrow.up",
                 isFilled: true
@@ -255,6 +250,15 @@ struct ExpandableChatPanel: View {
         case .addFact(let content, _, _): return "fact-\(content)"
         case .updateFact(let id, _): return "update-\(id)"
         }
+    }
+    
+    // MARK: - Cleanup
+    
+    /// Wipes all chat data from memory
+    private func clearHistory() {
+        messages.removeAll(keepingCapacity: false)
+        inputText = ""
+        greeting = ""
     }
 }
 

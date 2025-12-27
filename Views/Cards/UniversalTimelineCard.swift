@@ -36,31 +36,28 @@ struct UniversalTimelineCard: View {
             // 2. Card Content
             cardContent
         }
-        .padding(.vertical, showConnector ? 4 : 0)
+        .padding(.vertical, showConnector ? 10 : 0)
         .opacity(config.isOverdue ? blinkOpacity : 1.0)
         .onAppear {
             if config.isOverdue { startBlinkAnimation() }
         }
     }
     
-    // Helper to calculate actions excluding AI
-    private var separateActions: (main: [TimelineCardAction], ai: TimelineCardAction?) {
-        let ai = config.actions.first(where: { $0.icon == "brain" || $0.icon == "brain.head.profile" })
-        var main = config.actions.filter { $0.icon != "brain" && $0.icon != "brain.head.profile" }
+    // Helper to calculate actions
+    private var separateActions: [TimelineCardAction] {
+        var actions = config.actions
         
-        // Sort Order: SKIP -> DEFER -> DONE
-        // We use weights based on action title or common identifiers.
-        // Assuming Titles: "Skip", "Defer", "Done" (or icon names if titles vary)
-        main.sort { a, b in
+        // Sort Order: AI -> SKIP -> DEFER -> DONE
+        actions.sort { a, b in
             func weight(_ action: TimelineCardAction) -> Int {
-                // Check icon names first as they are more stable in code
                 if let icon = action.icon {
-                    if icon.contains("xmark") { return 0 } // Skip
+                    if icon.contains("brain") { return -1 } // AI First
+                    if icon.contains("xmark") || icon.contains("turn.up.right") { return 0 } // Skip
                     if icon.contains("arrow.clockwise") || icon.contains("clock") { return 1 } // Defer
                     if icon.contains("checkmark") { return 2 } // Done
                 }
-                // Fallback to title
                 let t = action.title.lowercased()
+                if t.contains("ai") { return -1 }
                 if t.contains("skip") { return 0 }
                 if t.contains("defer") { return 1 }
                 if t.contains("done") { return 2 }
@@ -69,7 +66,7 @@ struct UniversalTimelineCard: View {
             return weight(a) < weight(b)
         }
         
-        return (main, ai)
+        return actions
     }
     
     private var cardContent: some View {
@@ -84,7 +81,9 @@ struct UniversalTimelineCard: View {
                     actionsByStrategy
                 }
             }
-            .padding(CardStyle.padding)
+            .padding(.horizontal, CardStyle.padding)
+            .padding(.top, CardStyle.padding)
+            .padding(.bottom, 8)
             
             // Side panel layout (rendered outside main VStack)
             if apiSettings.settings.cardLayoutMode == .side {
@@ -97,6 +96,61 @@ struct UniversalTimelineCard: View {
             isCompleted: config.isCompleted,
             isSkipped: config.isSkipped
         ))
+        .overlay(
+            HStack(spacing: 6) {
+                PriorityTag(text: config.badgeText, color: config.accentColor, style: config.priorityTagStyle)
+                
+                if let recurrence = config.recurrence {
+                    Text(recurrence.lowercased())
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(config.accentColor.opacity(0.1))
+                        .cornerRadius(4)
+                        .font(.custom(theme.tagFont, size: 12))
+                        .foregroundColor(config.accentColor)
+                }
+            }
+            .offset(y: -5)
+            .padding(.leading, 12),
+            alignment: .topLeading
+        )
+        .overlay(
+            HStack(spacing: 6) {
+                if let duration = config.durationText {
+                    Text(duration)
+                        .font(.custom(theme.tagFont, size: 12))
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(config.accentColor.opacity(0.1))
+                        .cornerRadius(4)
+                        .foregroundColor(config.accentColor)
+                }
+                
+                if let time = config.time {
+                    Text(time)
+                        .font(.custom(theme.timeFont, size: 14))
+                        .fontWeight(.bold)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(DesignSystem.backgroundSecondary)
+                        .cornerRadius(CardStyle.cornerRadius)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: CardStyle.cornerRadius)
+                                .stroke(config.isDeferred ? DesignSystem.amber : config.accentColor, lineWidth: 1)
+                        )
+                        .foregroundColor(config.isDeferred ? DesignSystem.amber : .white)
+                        .shadow(
+                            color: config.isSkipped ? DesignSystem.red.opacity(0.8) :
+                                (config.isCompleted ? DesignSystem.green.opacity(0.8) :
+                                    config.accentColor.opacity(0.8)),
+                            radius: 5
+                        )
+                }
+            }
+            .offset(y: -5)
+            .padding(.trailing, 12),
+            alignment: .topTrailing
+        )
         .padding(.trailing, showConnector ? 16 : 0)
     }
     
@@ -104,7 +158,7 @@ struct UniversalTimelineCard: View {
     @ViewBuilder
     private var actionsByStrategy: some View {
         let mode = apiSettings.settings.cardLayoutMode
-        let actions = separateActions.main
+        let actions = separateActions
         let isCompleted = config.isCompleted
         
         switch mode {
@@ -120,77 +174,10 @@ struct UniversalTimelineCard: View {
     // MARK: - Sub-Components
     
     private var mainInfoContent: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            // Header: Badge + Recurrence Flag + AI Button on left, Time with clock icon on right
-            HStack(alignment: .center, spacing: 8) {
-                // Left side: Badge and recurrence flag
-                PriorityTag(text: config.badgeText, color: config.accentColor, style: config.priorityTagStyle)
-                
-                // Recurrence flag next to badge (styled as grey text)
-                if let recurrence = config.recurrence {
-                    Text(recurrence.lowercased())
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(config.accentColor.opacity(0.1))
-                        .cornerRadius(4)
-                        .font(.custom(theme.tagFont, size: 12))
-                        .foregroundColor(config.accentColor)
-                }
-                
-                // AI Button (Moved from actions)
-                if let aiAction = separateActions.ai {
-                     Button(action: aiAction.action) {
-                         Image(systemName: aiAction.icon ?? "brain")
-                             .font(.system(size: 11, weight: .bold)) // Match Tag Font Size
-                             .foregroundColor(aiAction.color)
-                             .padding(.horizontal, 8) // Match Tag Padding
-                             .padding(.vertical, 4)   // Match Tag Padding
-                             // Remove background fill as requested ("neon border and icon inside")
-                             .background(Color.clear) 
-                             .overlay(
-                                RoundedRectangle(cornerRadius: CardStyle.cornerRadius)
-                                    .stroke(aiAction.color, lineWidth: 1)
-                             )
-                             .cornerRadius(CardStyle.cornerRadius)
-                     }
-                     .buttonStyle(PlainButtonStyle())
-                }
-                
-                Spacer()
-                
-                // Right side: Time with clock icon
-                if let time = config.time {
-                    HStack(spacing: 4) {
-                        Image(systemName: config.isSkipped ? "xmark" : (config.isCompleted ? "checkmark" : (config.isDeferred ? "arrow.clockwise" : "clock")))
-                            .font(.system(size: 14))
-                            // User requested white text/icon with colored glow for skipped/completed
-                            .foregroundColor(config.isDeferred ? DesignSystem.amber : .white)
-                            .shadow(
-                                color: config.isSkipped ? DesignSystem.red.opacity(0.8) :
-                                    (config.isCompleted ? DesignSystem.green.opacity(0.8) :
-                                        config.accentColor.opacity(0.8)),
-                                radius: 5
-                            )
-                        
-                        Text(time)
-                            .font(.custom(theme.timeFont, size: 16))
-                            .fontWeight(.bold)
-                            // User requested white text/icon with colored glow for skipped/completed
-                            .foregroundColor(config.isDeferred ? DesignSystem.amber : .white)
-                            .shadow(
-                                color: config.isSkipped ? DesignSystem.red.opacity(0.8) :
-                                    (config.isCompleted ? DesignSystem.green.opacity(0.8) :
-                                        config.accentColor.opacity(0.8)),
-                                radius: 5
-                            )
-                    }
-                }
-            }
-            
+        VStack(alignment: .leading, spacing: 2) {
             // Title (white text for active, grey for completed)
             Text(config.title)
                 .font(.custom(theme.titleFont, size: 18))
-                //.fontWeight(.bold)
                 .foregroundColor(config.isCompleted ? DesignSystem.slate500 : .white)
                 .shadow(color: config.isCompleted ? .clear : config.accentColor.opacity(0.6), radius: 6) // Glow for title
                 .padding(.top, 4)

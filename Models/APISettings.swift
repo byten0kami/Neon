@@ -13,6 +13,9 @@ struct APISettings: Codable {
     
     /// Default defer/snooze time in minutes
     var defaultDeferMinutes: Int
+
+    /// Default task duration in minutes
+    var defaultDurationMinutes: Int
     
     /// Card button layout preference
     enum CardLayoutMode: String, Codable, CaseIterable {
@@ -50,6 +53,7 @@ struct APISettings: Codable {
             useCustomKey: false,
             selectedModel: "google/gemini-2.0-flash-001",
             defaultDeferMinutes: 60,
+            defaultDurationMinutes: 30,
             cardLayoutMode: .classic
         )
     }

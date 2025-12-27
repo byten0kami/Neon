@@ -51,6 +51,11 @@ class APISettingsStore: ObservableObject {
         settings.defaultDeferMinutes = minutes
     }
     
+    /// Set default task duration in minutes
+    func setDefaultDurationMinutes(_ minutes: Int) {
+        settings.defaultDurationMinutes = minutes
+    }
+    
     /// Set card layout mode
     func setCardLayoutMode(_ mode: APISettings.CardLayoutMode) {
         settings.cardLayoutMode = mode

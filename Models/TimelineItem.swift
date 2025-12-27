@@ -26,6 +26,7 @@ struct TimelineItem: Identifiable, Codable, Sendable {
     // MARK: - Scheduling
     
     var scheduledTime: Date             // Original planned time
+    var duration: TimeInterval          // Duration in seconds (0 = no duration)
     var deferredUntil: Date?            // Snooze time (does not affect schedule)
     
     // MARK: - Lifecycle
@@ -66,6 +67,7 @@ struct TimelineItem: Identifiable, Codable, Sendable {
         priority: ItemPriority = .normal,
         category: String = "task",
         scheduledTime: Date,
+        duration: TimeInterval = 0,
         deferredUntil: Date? = nil,
         isCompleted: Bool = false,
         isSkipped: Bool = false,
@@ -84,6 +86,7 @@ struct TimelineItem: Identifiable, Codable, Sendable {
         self.priority = priority
         self.category = category
         self.scheduledTime = scheduledTime
+        self.duration = duration
         self.deferredUntil = deferredUntil
         self.isCompleted = isCompleted
         self.isSkipped = isSkipped
@@ -148,6 +151,7 @@ struct TimelineItem: Identifiable, Codable, Sendable {
             priority: master.priority,
             category: master.category,
             scheduledTime: date,
+            duration: master.duration, // Copy duration from master
             recurrence: nil  // Ghosts don't have recurrence
         )
         ghost.isSkipped = false
@@ -164,6 +168,7 @@ struct TimelineItem: Identifiable, Codable, Sendable {
         priority: ItemPriority = .normal,
         category: String = "task",
         startTime: Date,
+        duration: TimeInterval = 0,
         recurrence: RecurrenceRule
     ) -> TimelineItem {
         var item = TimelineItem(
@@ -172,6 +177,7 @@ struct TimelineItem: Identifiable, Codable, Sendable {
             priority: priority,
             category: category,
             scheduledTime: startTime,
+            duration: duration,
             recurrence: recurrence
         )
         
@@ -195,14 +201,16 @@ struct TimelineItem: Identifiable, Codable, Sendable {
         description: String? = nil,
         priority: ItemPriority = .normal,
         category: String = "task",
-        scheduledTime: Date
+        scheduledTime: Date,
+        duration: TimeInterval = 0
     ) -> TimelineItem {
         TimelineItem(
             title: title,
             description: description,
             priority: priority,
             category: category,
-            scheduledTime: scheduledTime
+            scheduledTime: scheduledTime,
+            duration: duration
         )
     }
 }

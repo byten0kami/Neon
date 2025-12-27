@@ -6,7 +6,9 @@ enum TabItem: String, CaseIterable {
     case protocols
     case history
     case settings
+    #if DEBUG
     case smpl
+    #endif
     
     var title: String {
         switch self {
@@ -14,7 +16,10 @@ enum TabItem: String, CaseIterable {
         case .protocols: return "BIO-KERNEL"
         case .history: return "SYSTEM LOGS"
         case .settings: return "CONFIGURATION"
+
+        #if DEBUG
         case .smpl: return "FONT SAMPLER"
+        #endif
         }
     }
     
@@ -24,7 +29,10 @@ enum TabItem: String, CaseIterable {
         case .protocols: return "PROTO"
         case .history: return "LOGS"
         case .settings: return "CFG"
+
+        #if DEBUG
         case .smpl: return "SMPL"
+        #endif
         }
     }
     
@@ -34,7 +42,10 @@ enum TabItem: String, CaseIterable {
         case .protocols: return "cylinder.split.1x2.fill"
         case .history: return "clock.arrow.circlepath"
         case .settings: return "gearshape.fill"
+
+        #if DEBUG
         case .smpl: return "textformat"
+        #endif
         }
     }
     
@@ -44,7 +55,10 @@ enum TabItem: String, CaseIterable {
         case .protocols: return DesignSystem.purple
         case .history: return DesignSystem.amber
         case .settings: return DesignSystem.slate400
+
+        #if DEBUG
         case .smpl: return DesignSystem.lime
+        #endif
         }
     }
 }
@@ -72,8 +86,7 @@ struct CyberpunkTabBar: View {
         .padding(.top, 8)
         .padding(.bottom, 40)
         .background(
-            DesignSystem.backgroundSecondary.opacity(0.9)
-                .background(.ultraThinMaterial)
+            DesignSystem.backgroundSecondary
         )
         .overlay(
             Rectangle()

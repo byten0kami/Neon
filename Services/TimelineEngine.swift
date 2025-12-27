@@ -187,7 +187,7 @@ class TimelineEngine: ObservableObject {
     /// Add a new Master (recurring item)
     func addMaster(_ master: TimelineItem) {
         guard master.isMaster else {
-            print("[TimelineEngine] Attempted to add non-master as master")
+            Log.database("Attempted to add non-master as master", privacy: .public)
             return
         }
         
@@ -197,13 +197,14 @@ class TimelineEngine: ObservableObject {
         }
         
         guard !isDuplicate else {
-            print("[TimelineEngine] Skipping duplicate master: \(master.title)")
+            Log.database("Skipping duplicate master: \(master.title)", privacy: .private)
             return
         }
         
         masters.append(master)
         save()
-        print("[TimelineEngine] Added master: \(master.title)")
+        save()
+        Log.database("Added master: \(master.title)", privacy: .private)
         
         // Immediately materialize if it triggers today
         materializeToday()
@@ -228,7 +229,7 @@ class TimelineEngine: ObservableObject {
         let ghosts = projectGhosts(for: today, excluding: existingSeriesIds)
         
         if !ghosts.isEmpty {
-            print("[TimelineEngine] Materializing \(ghosts.count) ghosts for Today")
+            Log.database("Materializing \(ghosts.count) ghosts for Today", privacy: .public)
             for ghost in ghosts {
                  instances.append(ghost)
                  if ghost.effectiveTime > Date() {
@@ -242,7 +243,7 @@ class TimelineEngine: ObservableObject {
     /// Add a new one-off item
     func addOneOff(_ item: TimelineItem) {
         guard item.isOneOff else {
-            print("[TimelineEngine] Attempted to add non-one-off as one-off")
+            Log.database("Attempted to add non-one-off as one-off", privacy: .public)
             return
         }
         
@@ -266,7 +267,7 @@ class TimelineEngine: ObservableObject {
                 scheduleNotification(for: item)
             }
             save()
-            print("[TimelineEngine] Updated instance: \(item.title)")
+            Log.database("Updated instance: \(item.title)", privacy: .private)
             return
         }
         
@@ -274,11 +275,11 @@ class TimelineEngine: ObservableObject {
         if let index = masters.firstIndex(where: { $0.id == item.id }) {
             masters[index] = item
             save()
-            print("[TimelineEngine] Updated master: \(item.title)")
+            Log.database("Updated master: \(item.title)", privacy: .private)
             return
         }
         
-        print("[TimelineEngine] Item not found for update: \(item.id)")
+        Log.database("Item not found for update: \(item.id)", privacy: .public)
     }
     
     /// Complete an item
@@ -289,12 +290,12 @@ class TimelineEngine: ObservableObject {
             instances[index].completedAt = Date()
             cancelNotification(for: instances[index])
             save()
-            print("[TimelineEngine] Completed instance: \(instances[index].title)")
+            Log.database("Completed instance: \(instances[index].title)", privacy: .private)
             return
         }
         
         // If it's a ghost being completed, it should have been materialized first
-        print("[TimelineEngine] Item not found for completion: \(id)")
+        Log.database("Item not found for completion: \(id)", privacy: .public)
     }
     
     /// Skip an item (mark as completed and skipped)
@@ -306,11 +307,11 @@ class TimelineEngine: ObservableObject {
             instances[index].completedAt = Date()
             cancelNotification(for: instances[index])
             save()
-            print("[TimelineEngine] Skipped instance: \(instances[index].title)")
+            Log.database("Skipped instance: \(instances[index].title)", privacy: .private)
             return
         }
         
-        print("[TimelineEngine] Item not found for skipping: \(id)")
+        Log.database("Item not found for skipping: \(id)", privacy: .public)
     }
     
     /// Defer an item by a number of minutes
@@ -334,7 +335,7 @@ class TimelineEngine: ObservableObject {
             scheduleNotification(for: instances[index])
             
             save()
-            print("[TimelineEngine] Deferred: \(instances[index].title) to \(newTime)")
+            Log.database("Deferred: \(instances[index].title) to \(newTime)", privacy: .private)
         }
     }
     
@@ -361,22 +362,43 @@ class TimelineEngine: ObservableObject {
     
     private func save() {
         if let mastersData = try? JSONEncoder().encode(masters) {
-            UserDefaults.standard.set(mastersData, forKey: mastersKey)
+            if let encrypted = try? CryptoManager.shared.encrypt(mastersData) {
+                UserDefaults.standard.set(encrypted, forKey: mastersKey)
+            }
         }
         if let instancesData = try? JSONEncoder().encode(instances) {
-            UserDefaults.standard.set(instancesData, forKey: instancesKey)
+            if let encrypted = try? CryptoManager.shared.encrypt(instancesData) {
+                UserDefaults.standard.set(encrypted, forKey: instancesKey)
+            }
         }
     }
     
     private func load() {
-        if let mastersData = UserDefaults.standard.data(forKey: mastersKey),
-           let decoded = try? JSONDecoder().decode([TimelineItem].self, from: mastersData) {
-            masters = decoded
+        // Load Masters
+        if let mastersData = UserDefaults.standard.data(forKey: mastersKey) {
+            if let decrypted = try? CryptoManager.shared.decrypt(mastersData),
+               let decoded = try? JSONDecoder().decode([TimelineItem].self, from: decrypted) {
+                masters = decoded
+            } else if let decoded = try? JSONDecoder().decode([TimelineItem].self, from: mastersData) {
+                Log.database("Migrating legacy cleartext masters", privacy: .public)
+                masters = decoded
+                // Will be saved encrypted at end of load or next save
+            }
         }
-        if let instancesData = UserDefaults.standard.data(forKey: instancesKey),
-           let decoded = try? JSONDecoder().decode([TimelineItem].self, from: instancesData) {
-            instances = decoded
+        
+        // Load Instances
+        if let instancesData = UserDefaults.standard.data(forKey: instancesKey) {
+            if let decrypted = try? CryptoManager.shared.decrypt(instancesData),
+               let decoded = try? JSONDecoder().decode([TimelineItem].self, from: decrypted) {
+                instances = decoded
+            } else if let decoded = try? JSONDecoder().decode([TimelineItem].self, from: instancesData) {
+                Log.database("Migrating legacy cleartext instances", privacy: .public)
+                instances = decoded
+            }
         }
+        
+        // Force save to encrypt if we just migrated
+        save()
         
         #if DEBUG
         if masters.isEmpty && instances.isEmpty {
@@ -390,7 +412,7 @@ class TimelineEngine: ObservableObject {
     private func requestNotificationPermission() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             if granted {
-                print("[TimelineEngine] Notification permission granted")
+                Log.ui("Notification permission granted", privacy: .public)
             }
         }
     }
@@ -414,7 +436,7 @@ class TimelineEngine: ObservableObject {
         
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
-                print("[TimelineEngine] Notification error: \(error)")
+                Log.ui("Notification error: \(error)", privacy: .public)
             }
         }
     }
@@ -430,7 +452,7 @@ class TimelineEngine: ObservableObject {
         instances.removeAll()
         UserDefaults.standard.removeObject(forKey: mastersKey)
         UserDefaults.standard.removeObject(forKey: instancesKey)
-        print("[TimelineEngine] All data cleared")
+        Log.database("All data cleared", privacy: .public)
     }
     
     private func injectMockData() {
@@ -443,6 +465,7 @@ class TimelineEngine: ObservableObject {
             title: "Morning Yoga",
             description: "20 min stretch routine",
             startTime: calendar.date(bySettingHour: 7, minute: 0, second: 0, of: now) ?? now,
+            duration: 1200,
             recurrence: .daily()
         )
         
@@ -452,6 +475,7 @@ class TimelineEngine: ObservableObject {
             description: "Morning dose",
             priority: .high,
             startTime: calendar.date(bySettingHour: 8, minute: 0, second: 0, of: now) ?? now,
+            duration: 300,
             recurrence: .daily()
         )
         
@@ -461,6 +485,7 @@ class TimelineEngine: ObservableObject {
             description: "Plan the week ahead",
             priority: .high,
             startTime: calendar.date(bySettingHour: 18, minute: 0, second: 0, of: now) ?? now,
+            duration: 1800,
             recurrence: .weekly(on: [0], endCondition: .forever) // Sunday
         )
         
@@ -473,7 +498,8 @@ class TimelineEngine: ObservableObject {
             title: "System Boot Protocol",
             description: "Initialization complete",
             category: "info",
-            scheduledTime: now.addingTimeInterval(-3600 * 4)
+            scheduledTime: now.addingTimeInterval(-3600 * 4),
+            duration: 60
         )
         completed1.isCompleted = true
         completed1.completedAt = now.addingTimeInterval(-3600 * 3)
@@ -481,7 +507,8 @@ class TimelineEngine: ObservableObject {
         var completed2 = TimelineItem.oneOff(
             title: "Review PRs",
             priority: .high,
-            scheduledTime: now.addingTimeInterval(-3600 * 2)
+            scheduledTime: now.addingTimeInterval(-3600 * 2),
+            duration: 2700
         )
         completed2.isCompleted = true
         completed2.completedAt = now.addingTimeInterval(-3600 * 1)
@@ -490,21 +517,24 @@ class TimelineEngine: ObservableObject {
         let future1 = TimelineItem.oneOff(
             title: "Upload Data Packet",
             priority: .high,
-            scheduledTime: now.addingTimeInterval(3600 * 1)
+            scheduledTime: now.addingTimeInterval(3600 * 1),
+            duration: 900
         )
         
         let future2 = TimelineItem.oneOff(
             title: "Server Status Check",
             description: "All systems operational",
             category: "info",
-            scheduledTime: now.addingTimeInterval(3600 * 2)
+            scheduledTime: now.addingTimeInterval(3600 * 2),
+            duration: 600
         )
         
         // Overdue debt item
         let overdueDebt = TimelineItem.oneOff(
             title: "Overdue Critical Task",
             priority: .high,
-            scheduledTime: now.addingTimeInterval(-3600 * 24) // Yesterday
+            scheduledTime: now.addingTimeInterval(-3600 * 24), // Yesterday
+            duration: 3600
         )
         
         // AI Insight - Scheduling conflict
@@ -512,7 +542,8 @@ class TimelineEngine: ObservableObject {
             title: "Schedule Conflict Detected",
             description: "Upload Data Packet overlaps with Server Status Check. Consider moving one task by 30 minutes.",
             priority: .ai,
-            scheduledTime: now.addingTimeInterval(3600 * 1.5)
+            scheduledTime: now.addingTimeInterval(3600 * 1.5),
+            duration: 5400 // 1.5 hours
         )
         
         // Low priority task
@@ -520,12 +551,13 @@ class TimelineEngine: ObservableObject {
             title: "Read Tech Article",
             description: "Optional: New Swift features overview",
             priority: .low,
-            scheduledTime: now.addingTimeInterval(3600 * 6)
+            scheduledTime: now.addingTimeInterval(3600 * 6),
+            duration: 1200
         )
         
         instances = [completed1, completed2, future1, future2, overdueDebt, aiInsight, lowPriority]
         
         save()
-        print("[TimelineEngine] Mock data injected: \(masters.count) masters, \(instances.count) instances")
+        Log.database("Mock data injected: \(masters.count) masters, \(instances.count) instances", privacy: .public)
     }
 }

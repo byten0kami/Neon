@@ -1,10 +1,10 @@
 import SwiftUI
 
-// MARK: - Timeline View (Master-Instance Architecture)
+// MARK: - Timeline Rail (Master-Instance Architecture)
 
 /// The main scrolling timeline view using TimelineEngine
 /// Displays Past (Completed) -> NOW -> Future (Pending/Ghosts)
-struct TimelineView: View {
+struct TimelineRailView: View {
     @Binding var selectedItem: TimelineItem?
     
     let completedItems: [TimelineItem]

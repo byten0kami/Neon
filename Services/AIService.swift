@@ -1,10 +1,24 @@
 import Foundation
 
+/// Protocol for AI Service to allow mocking
+@MainActor
+protocol AIServiceProtocol {
+    func sendMessage(context: String, userMessage: String, history: [ChatMessage]) async throws -> AIServiceResponse
+    func askBrain(prompt: String) async throws -> String
+}
+
 /// Service for communicating with AI via OpenRouter (Claude, GPT, etc.)
 /// The AI uses AIKnowledgeBase to store and retrieve facts about the user
 @MainActor
-class AIService {
-    static let shared = AIService()
+class AIService: AIServiceProtocol {
+    static let shared: AIServiceProtocol = AIService()
+    
+    // Security Delegate
+    private let certPinner = CertPinner()
+    private lazy var urlSession: URLSession = {
+        let configuration = URLSessionConfiguration.default
+        return URLSession(configuration: configuration, delegate: certPinner, delegateQueue: nil)
+    }()
     
     // OpenRouter API (supports Claude, GPT, Gemini via one API)
     // Priority: 1) User's custom key, 2) Environment variable, 3) Bundled key
@@ -17,12 +31,14 @@ class AIService {
         if let envKey = ProcessInfo.processInfo.environment["OPENROUTER_API_KEY"], !envKey.isEmpty {
             return envKey.trimmingCharacters(in: .whitespacesAndNewlines)
         }
-        // 3. Fall back to bundled key (Info.plist for TestFlight/App Store)
+        // 3. Fall back to bundled key (Only in DEBUG for development convenience)
+        #if DEBUG
         if let bundleKey = Bundle.main.infoDictionary?["OPENROUTER_API_KEY"] as? String, 
            !bundleKey.isEmpty,
-           bundleKey != "$(OPENROUTER_API_KEY)" { // Ignore if substitution failed
+           bundleKey != "$(OPENROUTER_API_KEY)" { 
             return bundleKey.trimmingCharacters(in: .whitespacesAndNewlines)
         }
+        #endif
         
         return ""
     }
@@ -33,133 +49,6 @@ class AIService {
     private var model: String {
         APISettingsStore.shared.settings.selectedModel
     }
-    
-    /// NeuroSync OS System Prompt - defines AI personality and capabilities
-    private let systemPrompt = """
-    # NEUROSYNC OS — SYSTEM PROTOCOL v1.0
-    
-    You are NeuroSync OS, a cyberpunk personal assistant inspired by JARVIS.
-    
-    ## YOUR IDENTITY
-    - Name: NeuroSync
-    - Personality: Concise, slightly sarcastic
-    - Tone: Use sci-fi terminology (bio-protocols, neural stability, system sync)
-    - Always SHORT responses (2-3 sentences max)
-    
-    ## YOUR MEMORY SYSTEM
-    You have a Knowledge Base where you store FACTS about the user.
-    - You LEARN by listening to the user
-    - Every conversation, you receive your current memory
-    - When you learn something NEW, you ADD it as a fact
-    
-    Fact categories (you can use ANY string, these are suggestions):
-    - "medication" - drugs, supplements, dosages, schedules
-    - "condition" - health conditions, diagnoses
-    - "routine" - daily habits (coffee, gym, sleep time)
-    - "preference" - likes/dislikes, preferred times
-    - "event" - planned activities (theater, travel, meetings)
-    - "constraint" - rules (no alcohol with meds, empty stomach, etc.)
-    - "allergy" - food/drug allergies
-    
-    ## HOW YOU LEARN RULES
-    You DON'T have hardcoded rules. Instead:
-    1. User tells you: "I take Euthyrox every morning"
-    2. You ADD a fact: {category: "medication", content: "Euthyrox every morning"}
-    3. You do a research - Euthyrox is taken on empty stomach
-    4. So, you SUGGEST a constraint: {category: "constraint", content: "No food for 30min after Euthyrox"}
-    5. Next time user says "I want coffee", you CHECK your memory and WARN if conflict
-    5a. It's just a lousy example. User will not actually communicate with the assistant that he wants coffee, 
-    but when suggesting the card to create, you should also ask if the user wants to create a timer for coffee,
-    or the like.
-    5b. Another example: user goes to gym, you should suggest a timer card to eat before or after gym.
-    
-    ## YOUR FUNCTIONS
-    You can perform these ACTIONS in your response:
-    
-    1. **add_fact** - Remember something about user
-       {"type": "add_fact", "category": "medication", "content": "Takes Euthyrox 50mcg at 7am"}
-    
-    2. **create_timeline_item** - Create a timeline item (one-off or recurring)
-       This is the ONLY way to add items to the user's timeline.
-       
-       One-time reminder (e.g., "remind me to eat in 30 min"):
-       {"type": "create_timeline_item", "title": "Eat lunch", "priority": "normal",
-        "time": "14:30"}
-       
-       Daily medication course (5 days):
-       {"type": "create_timeline_item", "title": "Antibiotics", "priority": "critical", 
-        "time": "09:00",
-        "recurrence": {"frequency": "daily", "interval": 1, "endCondition": {"type": "count", "value": 5}}}
-       
-       Forever habit:
-       {"type": "create_timeline_item", "title": "Morning Yoga", "priority": "normal",
-        "time": "07:00",
-        "recurrence": {"frequency": "daily", "interval": 1, "endCondition": {"type": "forever"}}}
-       
-       Weekly on specific days:
-       {"type": "create_timeline_item", "title": "Gym", "time": "18:00",
-        "recurrence": {"frequency": "weekly", "interval": 1, "weekdays": [1, 3, 5]}}
-    
-    3. **delete_timeline_item** - Delete a task by title
-       {"type": "delete_timeline_item", "title": "Drink Water"}
-    
-    ## SMART SCHEDULING RULES
-    - For timers/countdowns: create a one-off item at current_time + minutes
-    - For "remind me at X" → create one-off at time X
-    - For "every morning" → create recurring with daily frequency
-    - For "for X days" or "course" → use recurrence.endCondition.count
-    - For medication/pills/important → set priority: "high"
-    - ALWAYS include specific times when scheduling
-    
-    ## RESPONSE FORMAT
-    Always respond with valid JSON:
-    ```json
-    {
-        "message": "[STATUS] Your response here",
-        "actions": []
-    }
-    ```
-    
-    Status tags:
-    - [SYNC] - Information acknowledged, saved
-    - [OK] - Confirmed, no issues
-    - [WARNING] - Potential conflict or risk
-    - [ALERT] - Critical health warning
-    
-    ## EXAMPLES
-    
-    User: "I take Euthyrox every morning"
-    Response:
-    {
-        "message": "[SYNC] Euthyrox protocol registered. Morning administration noted. Reminder: take on empty stomach, wait 30-60min before food or coffee.",
-        "actions": [
-            {"type": "add_fact", "category": "medication", "content": "Takes Euthyrox daily in the morning"},
-            {"type": "add_fact", "category": "constraint", "content": "Euthyrox requires empty stomach, no food/coffee for 30-60min after"}
-        ]
-    }
-    
-    User: "I want coffee" (when user has Euthyrox in memory)
-    Response:
-    {
-        "message": "[WARNING] Coffee conflicts with Euthyrox absorption. Wait at least 60min after taking medication. Want me to start a timer?",
-        "actions": []
-    }
-    
-    User: "I'm going to theater tonight"
-    Response:
-    {
-        "message": "[SYNC] Evening theater event logged. Adjusting medication schedule if needed. Enjoy the show.",
-        "actions": [
-            {"type": "add_fact", "category": "event", "content": "Theater visit tonight"}
-        ]
-    }
-    
-    ## CRITICAL RULES
-    1. NEVER make up medical facts - only use what user told you
-    2. If unsure about drug interactions, RECOMMEND consulting a doctor
-    3. Be PROACTIVE about potential conflicts
-    4. Keep responses SHORT but informative
-    """
     
     private init() {}
     
@@ -193,7 +82,7 @@ class AIService {
         Remember: Respond ONLY with valid JSON.
         """
         
-        let responseText = try await makeRequest(systemPrompt: systemPrompt, userPrompt: userPrompt)
+        let responseText = try await makeRequest(systemPrompt: AIPrompts.system, userPrompt: userPrompt)
         return parseResponse(responseText)
     }
     
@@ -209,7 +98,7 @@ class AIService {
         REQUEST: \(prompt)
         """
         
-        return try await makeRequest(systemPrompt: systemPrompt, userPrompt: userPrompt)
+        return try await makeRequest(systemPrompt: AIPrompts.system, userPrompt: userPrompt)
     }
     
     private func makeRequest(systemPrompt: String, userPrompt: String) async throws -> String {
@@ -237,7 +126,8 @@ class AIService {
         
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
         
-        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        let (data, response) = try await urlSession.data(for: request)
         
         guard let httpResponse = response as? HTTPURLResponse else {
             throw AIError.apiError("No HTTP response")
@@ -245,7 +135,7 @@ class AIService {
         
         if httpResponse.statusCode != 200 {
             let errorBody = String(data: data, encoding: .utf8) ?? "Unknown"
-            print("[AIService] Error \(httpResponse.statusCode): \(errorBody)")
+            Log.network("Error \(httpResponse.statusCode): \(errorBody)", privacy: .public)
             
             if httpResponse.statusCode == 401 {
                 throw AIError.apiError("Unauthorized (401). Please check your API Key in Settings.")
@@ -265,7 +155,7 @@ class AIService {
         return content
     }
     
-    private func parseResponse(_ text: String) -> AIServiceResponse {
+    internal func parseResponse(_ text: String) -> AIServiceResponse {
         // Remove markdown code block if present
         var jsonText = text
             .replacingOccurrences(of: "```json", with: "")
@@ -291,8 +181,8 @@ class AIService {
                         if let content = actionDict["content"] as? String,
                            let category = actionDict["category"] as? String {
                             actions.append(.addFact(
-                                content: content,
-                                category: category,
+                                content: sanitize(content),
+                                category: sanitize(category),
                                 note: actionDict["note"] as? String
                             ))
                         }
@@ -306,39 +196,50 @@ class AIService {
                             // Parse recurrence if present
                             var recurrence: AIRecurrence? = nil
                             if let recurrenceDict = actionDict["recurrence"] as? [String: Any],
-                               let frequency = recurrenceDict["frequency"] as? String {
+                               let frequency = recurrenceDict["frequency"] as? String,
+                               let validFrequency = RecurrenceRule.Frequency(rawValue: frequency) {
+                                
                                 let interval = recurrenceDict["interval"] as? Int ?? 1
                                 let weekdays = recurrenceDict["weekdays"] as? [Int]
                                 
-                                // Parse end condition
-                                var endCondition: AIEndCondition = .forever
-                                if let endDict = recurrenceDict["endCondition"] as? [String: Any],
-                                   let endType = endDict["type"] as? String {
-                                    switch endType {
-                                    case "count":
-                                        if let count = endDict["value"] as? Int {
-                                            endCondition = .count(count)
+                                // Validate details
+                                if interval > 0 && (weekdays == nil || weekdays!.allSatisfy({ (0...6).contains($0) })) {
+                                    // Parse end condition
+                                    var endCondition: AIEndCondition = .forever
+                                    if let endDict = recurrenceDict["endCondition"] as? [String: Any],
+                                       let endType = endDict["type"] as? String {
+                                        switch endType {
+                                        case "count":
+                                            if let count = endDict["value"] as? Int, count > 0 {
+                                                endCondition = .count(count)
+                                            }
+                                        case "until":
+                                            if let dateStr = endDict["value"] as? String {
+                                                endCondition = .until(dateStr)
+                                            }
+                                        default:
+                                            endCondition = .forever
                                         }
-                                    case "until":
-                                        if let dateStr = endDict["value"] as? String {
-                                            endCondition = .until(dateStr)
-                                        }
-                                    default:
-                                        endCondition = .forever
                                     }
+                                    
+                                    recurrence = AIRecurrence(
+                                        frequency: validFrequency.rawValue,
+                                        interval: interval,
+                                        endCondition: endCondition,
+                                        weekdays: weekdays
+                                    )
                                 }
-                                
-                                recurrence = AIRecurrence(
-                                    frequency: frequency,
-                                    interval: interval,
-                                    endCondition: endCondition,
-                                    weekdays: weekdays
-                                )
+                            }
+                            
+                            let sanitizedTitle = sanitize(title, maxLength: 200)
+                            var description = actionDict["description"] as? String
+                            if let desc = description {
+                                description = sanitize(desc, maxLength: 1000)
                             }
                             
                             actions.append(.createTimelineItem(
-                                title: title,
-                                description: actionDict["description"] as? String,
+                                title: sanitizedTitle,
+                                description: description,
                                 priority: actionDict["priority"] as? String ?? "normal",
                                 time: actionDict["time"] as? String,
                                 recurrence: recurrence
@@ -347,7 +248,7 @@ class AIService {
                         
                     case "delete_timeline_item":
                         if let title = actionDict["title"] as? String {
-                            actions.append(.deleteTimelineItem(title: title))
+                            actions.append(.deleteTimelineItem(title: sanitize(title, maxLength: 200)))
                         }
                         
                     default:
@@ -356,16 +257,36 @@ class AIService {
                 }
             }
             
-            return AIServiceResponse(message: message, actions: actions)
+            return AIServiceResponse(message: sanitize(message), actions: actions)
         }
         
         // Fallback: if JSON parsing fails, return raw text
-        print("[AIService] JSON parse failed, raw text: \(text.prefix(200))")
-        return AIServiceResponse(message: text, actions: [])
+        Log.ai("JSON parse failed, raw text: \(text.prefix(200))", privacy: .private)
+        return AIServiceResponse(message: sanitize(text), actions: [])
+    }
+    
+    /// Sanitizes text by removing HTML/Markdown and enforcing length limits
+    private func sanitize(_ text: String, maxLength: Int = Int.max) -> String {
+        // 1. Remove Markdown/HTML tags via Regex
+        // Matches <...> tags or Markdown styled characters like **text**, *text*, # text
+        // This is a simple heuristic approach
+        var sanitized = text
+            .replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil) // HTML tags
+            .replacingOccurrences(of: "\\*\\*", with: "") // Bold markdown
+            .replacingOccurrences(of: "__", with: "")      // Bold markdown
+            .replacingOccurrences(of: "#", with: "")       // Headers
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            
+        // 2. Enforce Max Length
+        if sanitized.count > maxLength {
+            sanitized = String(sanitized.prefix(maxLength))
+        }
+        
+        return sanitized
     }
     
     /// Extract the outermost JSON object from text, handling nested braces
-    private func extractOutermostJSON(from text: String) -> String {
+    internal func extractOutermostJSON(from text: String) -> String {
         guard let firstBrace = text.firstIndex(of: "{") else {
             return text
         }
