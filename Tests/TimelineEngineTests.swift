@@ -11,7 +11,8 @@ final class TimelineEngineTests: XCTestCase {
     override func setUp() {
         super.setUp()
         calendar = Calendar.current
-        // Engine will be initialized when implemented
+        engine = TimelineEngine.shared
+        engine.clearAll()
     }
     
     override func tearDown() {
@@ -157,63 +158,8 @@ final class TimelineEngineTests: XCTestCase {
         // XCTAssertEqual(ghostHour, 9)
     }
     
-    // MARK: - Time Debt Tests
-    
-    /// mustBeCompleted items from the past should appear on Today
-    func test_debt_mustBeCompletedAppearsOnToday() async throws {
-        // Given: An overdue item with mustBeCompleted = true
-        let yesterday = calendar.date(byAdding: .day, value: -1, to: Date())!
-        var item = TimelineItem.oneOff(
-            title: "Missed Pills",
-            scheduledTime: yesterday,
-            mustBeCompleted: true
-        )
-        
-        // When: We query for Today
-        // Then: The item should appear in the debt list
-        
-        // TODO: Implement when TimelineEngine is created
-        // let items = await engine.items(for: Date())
-        // XCTAssertTrue(items.contains { $0.title == "Missed Pills" })
-    }
-    
-    /// Regular missed items should stay in the past
-    func test_debt_regularMissedStaysInPast() async throws {
-        // Given: An overdue item with mustBeCompleted = false
-        let yesterday = calendar.date(byAdding: .day, value: -1, to: Date())!
-        var item = TimelineItem.oneOff(
-            title: "Missed Yoga",
-            scheduledTime: yesterday,
-            mustBeCompleted: false
-        )
-        
-        // When: We query for Today
-        // Then: The item should NOT appear (stays in history)
-        
-        // TODO: Implement when TimelineEngine is created
-        // let items = await engine.items(for: Date())
-        // XCTAssertFalse(items.contains { $0.title == "Missed Yoga" })
-    }
-    
-    /// Completed debt items should not appear on Today
-    func test_debt_completedDebtDisappears() async throws {
-        // Given: A completed item that WAS in debt
-        let yesterday = calendar.date(byAdding: .day, value: -1, to: Date())!
-        var item = TimelineItem.oneOff(
-            title: "Completed Pills",
-            scheduledTime: yesterday,
-            mustBeCompleted: true
-        )
-        item.isCompleted = true
-        item.completedAt = Date()
-        
-        // When: We query for Today
-        // Then: The item should NOT appear (debt cleared)
-        
-        // TODO: Implement when TimelineEngine is created
-        // let items = await engine.items(for: Date())
-        // XCTAssertFalse(items.contains { $0.title == "Completed Pills" })
-    }
+    // MARK: - Time Debt Tests (Removed)
+
     
     // MARK: - Materialization Tests
     
@@ -254,7 +200,39 @@ final class TimelineEngineTests: XCTestCase {
         // await engine.materialize(ghost)
         // let saved = engine.instances.first { $0.id == ghost.id }
         // XCTAssertEqual(saved?.seriesId, master.id)
+        /// Deferring an overdue task should move it to the future relative to NOW
+    @MainActor
+    func test_defer_overdueTask_movesToFuture() {
+        // Given: An overdue task (yesterday)
+        let yesterday = calendar.date(byAdding: .day, value: -1, to: Date())!
+        let item = TimelineItem.oneOff(
+            title: "Overdue Task",
+            scheduledTime: yesterday
+        )
+        engine.addOneOff(item)
+        
+        // Check it is overdue
+        let savedItem = engine.instances.first { $0.id == item.id }
+        XCTAssertTrue(savedItem!.isOverdue)
+        
+        // When: We defer by 1 hour
+        engine.defer(id: item.id, byHours: 1)
+        
+        // Then:
+        // 1. deferredUntil should be > Now
+        let deferredItem = engine.instances.first { $0.id == item.id }
+        XCTAssertNotNil(deferredItem?.deferredUntil)
+        XCTAssertGreaterThan(deferredItem!.deferredUntil!, Date())
+        
+        // 2. It should no longer be overdue
+        XCTAssertFalse(deferredItem!.isOverdue)
+        
+        // 3. It should be approximately Now + 1h
+        let oneHourFromNow = calendar.date(byAdding: .hour, value: 1, to: Date())!
+        // Allow small delta (2 seconds)
+        XCTAssertEqual(deferredItem!.deferredUntil!.timeIntervalSinceReferenceDate, oneHourFromNow.timeIntervalSinceReferenceDate, accuracy: 2.0)
     }
+}
 }
 
 // MARK: - RecurrenceRule Tests

@@ -51,12 +51,11 @@ class AIBrain: ObservableObject {
         case .updateFact(let id, let content):
             knowledge.updateFact(id: id, newContent: content)
             
-        case .createTimelineItem(let title, let description, let priority, let mustBeCompleted, let time, let aiRecurrence):
+        case .createTimelineItem(let title, let description, let priority, let time, let aiRecurrence):
             createTimelineItem(
                 title: title,
                 description: description,
                 priority: priority,
-                mustBeCompleted: mustBeCompleted,
                 timeString: time,
                 aiRecurrence: aiRecurrence
             )
@@ -68,7 +67,6 @@ class AIBrain: ObservableObject {
         title: String,
         description: String?,
         priority: String,
-        mustBeCompleted: Bool,
         timeString: String?,
         aiRecurrence: AIRecurrence?
     ) {
@@ -122,7 +120,6 @@ class AIBrain: ObservableObject {
                 description: description,
                 priority: itemPriority,
                 startTime: scheduledTime,
-                mustBeCompleted: mustBeCompleted,
                 recurrence: recurrence
             )
             
@@ -134,8 +131,7 @@ class AIBrain: ObservableObject {
                 title: title,
                 description: description,
                 priority: itemPriority,
-                scheduledTime: scheduledTime,
-                mustBeCompleted: mustBeCompleted
+                scheduledTime: scheduledTime
             )
             
             TimelineEngine.shared.addOneOff(item)

@@ -17,6 +17,7 @@ struct MercenaryTheme: Theme {
     private static let cyan = Color(hex: "00FFFF")
     private static let magenta = Color(hex: "FF00FF")
     private static let artifactPurple = Color(hex: "9932CC")
+    private static let dataBlue = Color(hex: "3C5AA0") // Muted dark blue
     
     // MARK: - Core Visual
     var mainAccent: Color { Self.cyan }
@@ -66,7 +67,9 @@ struct MercenaryTheme: Theme {
         case .low:
             return PriorityTagStyle(
                 text: "DATA",
-                color: Self.midnight
+                color: Self.dataBlue,
+                hasGlow: true,
+                glowRadius: 4
             )
         }
     }

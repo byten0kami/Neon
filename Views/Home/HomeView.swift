@@ -35,6 +35,8 @@ struct HomeView: View {
         todayItems.filter { !$0.isCompleted }
     }
     
+    @State private var deferItem: TimelineItem? // Item pending deferral confirmation
+    
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
@@ -62,16 +64,109 @@ struct HomeView: View {
                     },
                     onDeferItem: { item in
                         withAnimation {
-                            engine.defer(id: item.id, byHours: 1)
+                            deferItem = item
                         }
+                    },
+                    onSkipItem: { item in
+                        skipItem(item)
                     }
                 )
             }
+            .blur(radius: (selectedItem != nil || deferItem != nil) ? 5 : 0) // Blur background when overlay active
             
             // Overlay Effects
             if overlayManager.currentEffect == .nyanCat {
                 NyanCatView()
                     .transition(.opacity)
+            }
+            
+            // Edit Overlay
+            if let item = selectedItem {
+                EditTaskOverlay(
+                    item: Binding(
+                        get: { item },
+                        set: { selectedItem = $0 }
+                    ),
+                    onSave: { updatedItem in
+                        engine.update(updatedItem)
+                        selectedItem = nil
+                    },
+                    onCancel: {
+                        selectedItem = nil
+                    },
+                    onDelete: {
+                        engine.delete(id: item.id)
+                        selectedItem = nil
+                    }
+                )
+            }
+            
+            // Defer Confirmation Modal
+            if let item = deferItem {
+                ZStack {
+                    Color.black.opacity(0.5).ignoresSafeArea()
+                        .onTapGesture { deferItem = nil }
+                    
+                    VStack(spacing: 16) {
+                        Text("Defer Task?")
+                            .font(.custom(DesignSystem.monoFont, size: 14))
+                            .foregroundColor(DesignSystem.slate500)
+                        
+                        Text(item.title)
+                            .font(.custom(DesignSystem.displayFont, size: 18))
+                            .foregroundColor(.white)
+                            .lineLimit(2)
+                            .multilineTextAlignment(.center)
+                        
+                        Text("Defer 'In 1 Hour'?")
+                            .font(.custom(DesignSystem.lightFont, size: 16))
+                            .foregroundColor(DesignSystem.slate300)
+                        
+                        HStack(spacing: 12) {
+                            Button(action: {
+                                // No - Open Edit Task
+                                deferItem = nil
+                                selectedItem = item
+                            }) {
+                                Text("No, Edit")
+                                    .font(.custom(DesignSystem.monoFont, size: 14))
+                                    .foregroundColor(DesignSystem.slate400)
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 10)
+                                    .background(DesignSystem.backgroundSecondary)
+                                    .cornerRadius(8)
+                            }
+                            
+                            Button(action: {
+                                // Yes - Defer 1 Hour
+                                withAnimation {
+                                    engine.defer(id: item.id, byHours: 1)
+                                    deferItem = nil
+                                }
+                            }) {
+                                Text("Yes (1h)")
+                                    .font(.custom(DesignSystem.monoFont, size: 14))
+                                    .fontWeight(.bold)
+                                    .foregroundColor(DesignSystem.backgroundPrimary)
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 10)
+                                    .background(DesignSystem.amber)
+                                    .cornerRadius(8)
+                            }
+                        }
+                    }
+                    .padding(24)
+                    .background(DesignSystem.backgroundPrimary)
+                    .cornerRadius(12)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(DesignSystem.amber.opacity(0.5), lineWidth: 1)
+                    )
+                    .shadow(color: DesignSystem.amber.opacity(0.2), radius: 20)
+                    .padding(.horizontal, 40)
+                }
+                .transition(.opacity)
+                .zIndex(300)
             }
             
             if showingCalendar {
@@ -90,12 +185,6 @@ struct HomeView: View {
             }
             .ignoresSafeArea()
         )
-        .sheet(item: $selectedItem) { item in
-            TimelineItemActionsSheet(item: item, onDismiss: {
-                selectedItem = nil
-            })
-        }
-
     }
     
     // MARK: - Actions
@@ -111,131 +200,17 @@ struct HomeView: View {
             engine.complete(id: item.id)
         }
     }
-}
-
-// MARK: - Timeline Item Actions Sheet
-
-/// Actions sheet for TimelineItem (replacing TaskActionsSheet)
-struct TimelineItemActionsSheet: View {
-    let item: TimelineItem
-    let onDismiss: () -> Void
     
-    @StateObject private var engine = TimelineEngine.shared
-    
-    var body: some View {
-        NavigationView {
-            VStack(spacing: 20) {
-                // Item Info
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(item.title)
-                        .font(.custom(DesignSystem.displayFont, size: 24))
-                        .foregroundColor(.white)
-                    
-                    if let description = item.description {
-                        Text(description)
-                            .font(.custom(DesignSystem.lightFont, size: 16))
-                            .foregroundColor(DesignSystem.slate400)
-                    }
-                    
-                    HStack {
-                        Text(item.priority.displayName)
-                            .font(.custom(DesignSystem.monoFont, size: 12))
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(priorityColor.opacity(0.2))
-                            .cornerRadius(4)
-                        
-                        if let recurrence = item.recurrenceText {
-                            Text(recurrence)
-                                .font(.custom(DesignSystem.monoFont, size: 12))
-                                .foregroundColor(DesignSystem.slate500)
-                        }
-                        
-                        if item.mustBeCompleted {
-                            Text("REQUIRED")
-                                .font(.custom(DesignSystem.monoFont, size: 10))
-                                .foregroundColor(DesignSystem.red)
-                        }
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding()
-                .background(DesignSystem.backgroundSecondary)
-                .cornerRadius(8)
-                
-                Spacer()
-                
-                // Actions
-                VStack(spacing: 12) {
-                    if !item.isCompleted {
-                        Button(action: {
-                            engine.complete(id: item.id)
-                            onDismiss()
-                        }) {
-                            HStack {
-                                Image(systemName: "checkmark.circle.fill")
-                                Text("Mark Complete")
-                            }
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(DesignSystem.lime.opacity(0.2))
-                            .foregroundColor(DesignSystem.lime)
-                            .cornerRadius(8)
-                        }
-                        
-                        Button(action: {
-                            engine.defer(id: item.id, byHours: 1)
-                            onDismiss()
-                        }) {
-                            HStack {
-                                Image(systemName: "clock.arrow.circlepath")
-                                Text("Defer 1 Hour")
-                            }
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(DesignSystem.amber.opacity(0.2))
-                            .foregroundColor(DesignSystem.amber)
-                            .cornerRadius(8)
-                        }
-                    }
-                    
-                    Button(action: {
-                        engine.delete(id: item.id)
-                        onDismiss()
-                    }) {
-                        HStack {
-                            Image(systemName: "trash")
-                            Text("Delete")
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(DesignSystem.red.opacity(0.2))
-                        .foregroundColor(DesignSystem.red)
-                        .cornerRadius(8)
-                    }
-                }
-            }
-            .padding()
-            .background(DesignSystem.backgroundPrimary.ignoresSafeArea())
-            .navigationTitle("Item Details")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Close") {
-                        onDismiss()
-                    }
-                }
-            }
-        }
-    }
-    
-    private var priorityColor: Color {
-        switch item.priority {
-        case .critical: return DesignSystem.red
-        case .ai: return DesignSystem.purple
-        case .high: return DesignSystem.amber
-        case .normal: return DesignSystem.lime
-        case .low: return DesignSystem.cyan
+    private func skipItem(_ item: TimelineItem) {
+        // As with completion, materialize ghosts first
+        if item.seriesId != nil && !engine.instances.contains(where: { $0.id == item.id }) {
+            var materializedItem = item
+            materializedItem.isCompleted = true
+            materializedItem.isSkipped = true
+            materializedItem.completedAt = Date()
+            engine.materialize(materializedItem)
+        } else {
+            engine.skip(id: item.id)
         }
     }
 }

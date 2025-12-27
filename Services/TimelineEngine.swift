@@ -16,18 +16,39 @@ class TimelineEngine: ObservableObject {
     
     private let mastersKey = "neon_timeline_masters_v2"
     private let instancesKey = "neon_timeline_instances_v2"
+    private let weekStartKey = "neon_week_start_offset"
     
-    private lazy var calendar: Calendar = {
-        var cal = Calendar.current
-        cal.timeZone = TimeZone.current
-        return cal
-    }()
+    @Published var weekStartOffset: Int {
+        didSet {
+            UserDefaults.standard.set(weekStartOffset, forKey: weekStartKey)
+            updateCalendar()
+        }
+    }
+    
+    // Public calendar that respects the user's week start setting
+    private(set) var calendar: Calendar
     
     // MARK: - Initialization
     
     private init() {
+        let offset = UserDefaults.standard.object(forKey: weekStartKey) as? Int ?? 0 // Default 0 = Monday
+        var cal = Calendar.current
+        cal.timeZone = TimeZone.current
+        cal.firstWeekday = ((offset + 1) % 7) + 1
+        self.calendar = cal
+        
+        self.weekStartOffset = offset
+        
         load()
         requestNotificationPermission()
+    }
+    
+    private func updateCalendar() {
+        var cal = Calendar.current
+        cal.timeZone = TimeZone.current
+        cal.firstWeekday = ((weekStartOffset + 1) % 7) + 1
+        self.calendar = cal
+        // Re-process views if necessary, but @Published calendar change should trigger updates
     }
     
     // MARK: - Main Query Method
@@ -53,27 +74,13 @@ class TimelineEngine: ObservableObject {
         let activeGhosts = projectGhosts(for: viewDate, excluding: existingSeriesIds)
         result.append(contentsOf: activeGhosts)
         
-        // 4. Fetch Debt (only for Today)
-        if calendar.isDateInToday(viewDate) {
-            let debt = fetchDebt()
-            result.append(contentsOf: debt)
-        }
-        
-        // 5. Sort: AI first, then Debt (overdue), then by time
+        // 4. Sort: AI first, then by time
         return result.sorted { item1, item2 in
             // AI always first
             if item1.priority == .ai && item2.priority != .ai { return true }
             if item2.priority == .ai && item1.priority != .ai { return false }
             
-            // Critical overdue items (Debt) next
-            let isDebt1 = item1.isOverdue && item1.mustBeCompleted
-            let isDebt2 = item2.isOverdue && item2.mustBeCompleted
-            
-            if isDebt1 != isDebt2 {
-                return isDebt1
-            }
-            
-            // Everything else by effective time (Critical is just another priority now)
+            // Everything else by effective time (including overdue items)
             return item1.effectiveTime < item2.effectiveTime
         }
     }
@@ -143,22 +150,10 @@ class TimelineEngine: ObservableObject {
         return calendar.date(from: combined) ?? date
     }
     
-    // MARK: - Time Debt
+    // MARK: - Time Debt (Removed)
     
-    /// Fetches overdue items that must be completed (rolls over to Today)
-    private func fetchDebt() -> [TimelineItem] {
-        let today = calendar.startOfDay(for: Date())
-        
-        return instances.filter { item in
-            guard item.mustBeCompleted else { return false }
-            guard !item.isCompleted else { return false }
-            guard !item.isArchived else { return false }
-            
-            // Item is in the past
-            let itemDay = calendar.startOfDay(for: item.effectiveTime)
-            return itemDay < today
-        }
-    }
+    // Debt logic has been removed as per user request. Overdue items stay in the past.
+
     
     // MARK: - Materialization
     
@@ -217,6 +212,31 @@ class TimelineEngine: ObservableObject {
         print("[TimelineEngine] Added one-off: \(item.title)")
     }
     
+    /// Update an existing item
+    func update(_ item: TimelineItem) {
+        // Update instances
+        if let index = instances.firstIndex(where: { $0.id == item.id }) {
+            instances[index] = item
+            cancelNotification(for: item)
+            if !item.isCompleted && item.effectiveTime > Date() {
+                scheduleNotification(for: item)
+            }
+            save()
+            print("[TimelineEngine] Updated instance: \(item.title)")
+            return
+        }
+        
+        // Update masters
+        if let index = masters.firstIndex(where: { $0.id == item.id }) {
+            masters[index] = item
+            save()
+            print("[TimelineEngine] Updated master: \(item.title)")
+            return
+        }
+        
+        print("[TimelineEngine] Item not found for update: \(item.id)")
+    }
+    
     /// Complete an item
     func complete(id: UUID) {
         // Check instances first
@@ -233,11 +253,34 @@ class TimelineEngine: ObservableObject {
         print("[TimelineEngine] Item not found for completion: \(id)")
     }
     
+    /// Skip an item (mark as completed and skipped)
+    func skip(id: UUID) {
+        // Check instances first
+        if let index = instances.firstIndex(where: { $0.id == id }) {
+            instances[index].isCompleted = true
+            instances[index].isSkipped = true
+            instances[index].completedAt = Date()
+            cancelNotification(for: instances[index])
+            save()
+            print("[TimelineEngine] Skipped instance: \(instances[index].title)")
+            return
+        }
+        
+        print("[TimelineEngine] Item not found for skipping: \(id)")
+    }
+    
     /// Defer an item by a number of hours
     func `defer`(id: UUID, byHours hours: Int = 1) {
         if let index = instances.firstIndex(where: { $0.id == id }) {
             let current = instances[index].deferredUntil ?? instances[index].scheduledTime
-            let newTime = calendar.date(byAdding: .hour, value: hours, to: current) ?? current
+            
+            // If overdue (current < Now), defer relative to Now
+            // If future (current > Now), defer relative to scheduled time
+            // We strip seconds to keep it clean (and avoid edge case where Date() is slightly ahead)
+            let now = Date()
+            let baseTime = current < now ? now : current
+            
+            let newTime = calendar.date(byAdding: .hour, value: hours, to: baseTime) ?? baseTime
             
             instances[index].deferredUntil = newTime
             instances[index].deferredCount += 1
@@ -356,7 +399,6 @@ class TimelineEngine: ObservableObject {
             title: "Morning Yoga",
             description: "20 min stretch routine",
             startTime: calendar.date(bySettingHour: 7, minute: 0, second: 0, of: now) ?? now,
-            mustBeCompleted: false,
             recurrence: .daily()
         )
         
@@ -366,7 +408,6 @@ class TimelineEngine: ObservableObject {
             description: "Morning dose",
             priority: .critical,
             startTime: calendar.date(bySettingHour: 8, minute: 0, second: 0, of: now) ?? now,
-            mustBeCompleted: true,
             recurrence: .daily()
         )
         
@@ -376,7 +417,6 @@ class TimelineEngine: ObservableObject {
             description: "Plan the week ahead",
             priority: .high,
             startTime: calendar.date(bySettingHour: 18, minute: 0, second: 0, of: now) ?? now,
-            mustBeCompleted: false,
             recurrence: .weekly(on: [0], endCondition: .forever) // Sunday
         )
         
@@ -420,8 +460,7 @@ class TimelineEngine: ObservableObject {
         let overdueDebt = TimelineItem.oneOff(
             title: "Overdue Critical Task",
             priority: .critical,
-            scheduledTime: now.addingTimeInterval(-3600 * 24), // Yesterday
-            mustBeCompleted: true
+            scheduledTime: now.addingTimeInterval(-3600 * 24) // Yesterday
         )
         
         // AI Insight - Scheduling conflict

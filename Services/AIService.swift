@@ -82,21 +82,18 @@ class AIService {
     2. **create_timeline_item** - Create a timeline item (one-off or recurring)
        This is the ONLY way to add items to the user's timeline.
        
-       Required items (medication, bills, feeding pets): set mustBeCompleted: true (debt accumulates if missed)
-       Flexible habits (yoga, reading): set mustBeCompleted: false (no penalty for missing)
-       
        One-time reminder (e.g., "remind me to eat in 30 min"):
        {"type": "create_timeline_item", "title": "Eat lunch", "priority": "normal",
-        "mustBeCompleted": false, "time": "14:30"}
+        "time": "14:30"}
        
        Daily medication course (5 days):
        {"type": "create_timeline_item", "title": "Antibiotics", "priority": "critical", 
-        "mustBeCompleted": true, "time": "09:00",
+        "time": "09:00",
         "recurrence": {"frequency": "daily", "interval": 1, "endCondition": {"type": "count", "value": 5}}}
        
        Forever habit:
        {"type": "create_timeline_item", "title": "Morning Yoga", "priority": "normal",
-        "mustBeCompleted": false, "time": "07:00",
+        "time": "07:00",
         "recurrence": {"frequency": "daily", "interval": 1, "endCondition": {"type": "forever"}}}
        
        Weekly on specific days:
@@ -108,8 +105,7 @@ class AIService {
     - For "remind me at X" → create one-off at time X
     - For "every morning" → create recurring with daily frequency
     - For "for X days" or "course" → use recurrence.endCondition.count
-    - For medication/pills/critical → set mustBeCompleted: true, priority: "critical"
-    - For habits/exercise → set mustBeCompleted: false
+    - For medication/pills/critical → set priority: "critical"
     - ALWAYS include specific times when scheduling
     
     ## RESPONSE FORMAT
@@ -341,7 +337,6 @@ class AIService {
                                 title: title,
                                 description: actionDict["description"] as? String,
                                 priority: actionDict["priority"] as? String ?? "normal",
-                                mustBeCompleted: actionDict["mustBeCompleted"] as? Bool ?? false,
                                 time: actionDict["time"] as? String,
                                 recurrence: recurrence
                             ))
@@ -405,7 +400,6 @@ enum AIAction {
         title: String,
         description: String?,
         priority: String,
-        mustBeCompleted: Bool,
         time: String?,
         recurrence: AIRecurrence?
     )

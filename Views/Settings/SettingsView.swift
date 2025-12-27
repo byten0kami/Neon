@@ -12,40 +12,53 @@ struct SettingsView: View {
     @State private var showingPurchaseAlert: Bool = false
     @State private var isModelDropdownExpanded: Bool = false
     @StateObject private var themeManager = ThemeManager.shared
+    @StateObject private var engine = TimelineEngine.shared
     @State private var isThemeDropdownExpanded: Bool = false
+    @State private var showingWeekStartPicker: Bool = false
     
     enum SaveStatus {
         case none, saving, saved, error
     }
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 24) {
-                // Header
-                header
-                
-                // Theme Section
-                themeSection
-                
-                // AI Engine Section
-                aiEngineSection
-                
-                // About Section
-                aboutSection
-                
-                Spacer(minLength: 100)
+        ZStack {
+            ScrollView {
+                VStack(spacing: 24) {
+                    // Header
+                    header
+                    
+                    // Theme Section
+                    themeSection
+                    
+                    // AI Engine Section
+                    aiEngineSection
+                    
+                    // About Section
+                    aboutSection
+                    
+                    Spacer(minLength: 100)
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 16)
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 16)
-        }
-        .background(
-            CyberpunkBackground()
-                .ignoresSafeArea()
-        )
-        .onAppear {
-            // Load existing key (masked)
-            if apiSettings.hasCustomAPIKey() {
-                apiKeyInput = "••••••••••••••••"
+            .background(
+                CyberpunkBackground()
+                    .ignoresSafeArea()
+            )
+            .onAppear {
+                // Load existing key (masked)
+                if apiSettings.hasCustomAPIKey() {
+                    apiKeyInput = "••••••••••••••••"
+                }
+            }
+            
+            // Overlays
+            if showingWeekStartPicker {
+                WeekStartPicker(
+                    weekStartOffset: $engine.weekStartOffset,
+                    isPresented: $showingWeekStartPicker
+                )
+                .zIndex(100)
             }
         }
     }
@@ -330,6 +343,36 @@ struct SettingsView: View {
             ZStack(alignment: .leading) {
                 VStack(spacing: 0) {
                     themeSelectionRow
+                    
+                    divider
+                    
+                    // 0 Day Picker Row
+                    settingsRow {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("0 Day")
+                                    .font(.custom(DesignSystem.monoFont, size: 20))
+                                    .foregroundColor(.white)
+                                Text("Start of week")
+                                    .font(.custom(DesignSystem.lightFont, size: 14))
+                                    .foregroundColor(DesignSystem.slate500)
+                            }
+                            Spacer()
+                            Button(action: { showingWeekStartPicker = true }) {
+                                HStack(spacing: 8) {
+                                    Text(weekStartString)
+                                        .font(.custom(DesignSystem.monoFont, size: 18))
+                                        .foregroundColor(themeManager.currentTheme.mainAccent)
+                                    Image(systemName: "slider.horizontal.3")
+                                        .foregroundColor(themeManager.currentTheme.mainAccent)
+                                }
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 8)
+                                .background(themeManager.currentTheme.mainAccent.opacity(0.1))
+                                .cornerRadius(8)
+                            }
+                        }
+                    }
                 }
                 .background(Color.black.opacity(0.7))
                 .cornerRadius(CardStyle.cornerRadius)
@@ -346,6 +389,14 @@ struct SettingsView: View {
                     .cornerRadius(CardStyle.cornerRadius)
             }
         }
+    }
+    
+    private var weekStartString: String {
+        let weekdayIndex = engine.calendar.firstWeekday - 1
+        if weekdayIndex >= 0 && weekdayIndex < engine.calendar.shortStandaloneWeekdaySymbols.count {
+            return engine.calendar.shortStandaloneWeekdaySymbols[weekdayIndex].uppercased()
+        }
+        return "MON"
     }
     
     private var themeSelectionRow: some View {

@@ -9,8 +9,17 @@ struct MonthCalendarView: View {
     
     // Grid configuration
     private let columns = Array(repeating: GridItem(.flexible()), count: 7)
-    private let calendar = Calendar.current
-    private let daysOfWeek = ["S", "M", "T", "W", "T", "F", "S"]
+    
+    // Derived dynamically from engine
+    private var calendar: Calendar { engine.calendar }
+    
+    // Dynamic days of week derived from calendar.firstWeekday
+    private var daysOfWeek: [String] {
+        let symbols = calendar.veryShortStandaloneWeekdaySymbols
+        let firstWeekdayIndex = calendar.firstWeekday - 1 // 1-based to 0-based
+        // Rotate symbols so the start day is first
+        return Array(symbols.suffix(from: firstWeekdayIndex) + symbols.prefix(upTo: firstWeekdayIndex))
+    }
     
     // MARK: - Computed Properties
     
@@ -28,17 +37,19 @@ struct MonthCalendarView: View {
         
         // Find the first day of the week for the month start
         let weekday = calendar.component(.weekday, from: monthStart)
-        let offset = weekday - 1 // 1-based (Sunday is 1)
+        
+        // Calculate offset (how many days to pad before the 1st)
+        let firstWeekday = calendar.firstWeekday
+        let offset = ((weekday - firstWeekday) + 7) % 7
         
         var dates: [Date] = []
         
         // Add padding days from previous month
         if let startPadding = calendar.date(byAdding: .day, value: -offset, to: monthStart) {
-            // Helper to generate dates
             var currentDate = startPadding
             // Generate until we reach the end of the 6-row grid (42 days) to keep UI stable
             
-            while currentDate < monthEnd || calendar.component(.weekday, from: currentDate) != 1 {
+            while currentDate < monthEnd || dates.count < 42 {
                 dates.append(currentDate)
                 currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
             }
@@ -49,6 +60,8 @@ struct MonthCalendarView: View {
     
     private var selectedDayTasks: [TimelineItem] {
         engine.items(for: selectedDate)
+            .filter { $0.priority != .ai }
+            .sorted { $0.effectiveTime < $1.effectiveTime }
     }
     
     // MARK: - Body
@@ -58,6 +71,8 @@ struct MonthCalendarView: View {
             // Background
             DesignSystem.backgroundPrimary.ignoresSafeArea()
             
+            // Use CompositingGroup to ensure the view renders as a single layer during transitions
+            // This prevents the "numbers coming up from bottom" visual artifact
             VStack(spacing: 0) {
                 // Custom Header (Neon Style)
                 HStack {
@@ -82,15 +97,19 @@ struct MonthCalendarView: View {
                     Spacer()
                     
                     // Close Button (Aligned with StatusHeader position)
-                    Button(action: { isPresented = false }) {
-                        Image(systemName: "xmark.circle.fill") // Or just calendar if acting as toggle
-                            .font(.system(size: 24))
+                    Button(action: {
+                        withAnimation {
+                            isPresented = false
+                        }
+                    }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 20))
                             .foregroundColor(DesignSystem.red)
                             .shadow(color: DesignSystem.red.opacity(0.5), radius: 4)
                     }
                 }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 20)
+                .padding(.horizontal, 32) // Match StatusHeader horizontal padding (16 + 16)
+                .padding(.vertical, 16)   // Match StatusHeader vertical padding
                 .background(DesignSystem.backgroundSecondary.opacity(0.8))
                 .overlay(
                     Rectangle()
@@ -100,14 +119,16 @@ struct MonthCalendarView: View {
                 )
                 
                 // Days of Week Header
-                HStack {
-                    ForEach(Array(daysOfWeek.enumerated()), id: \.offset) { _, day in
+                // Use LazyVGrid to align perfectly with the calendar grid
+                LazyVGrid(columns: columns, spacing: 12) {
+                    ForEach(daysOfWeek, id: \.self) { day in
                         Text(day)
                             .font(.custom(DesignSystem.monoFont, size: 12))
                             .foregroundColor(DesignSystem.slate500)
                             .frame(maxWidth: .infinity)
                     }
                 }
+                .padding(.horizontal)
                 .padding(.vertical, 12)
                 
                 // Calendar Grid
@@ -162,12 +183,15 @@ struct MonthCalendarView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
+        .compositingGroup() // Ensure whole view transitions as one
         .gesture(
             DragGesture()
                 .onEnded { value in
                     // Swipe up to close (negative translation.height)
                     if value.translation.height < -50 {
-                        isPresented = false
+                        withAnimation {
+                            isPresented = false
+                        }
                     }
                 }
         )
@@ -196,7 +220,7 @@ struct DayCell: View {
         VStack(spacing: 4) {
             Text("\(calendar.component(.day, from: date))")
                 .font(.custom(
-                    isSelected ? DesignSystem.displayFont : DesignSystem.monoFont,
+                    DesignSystem.displayFont, // Use displayFont for Neon numbers
                     size: 14
                 ))
                 .foregroundColor(textColor)
@@ -232,5 +256,3 @@ struct DayCell: View {
         }
     }
 }
-
-

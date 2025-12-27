@@ -236,7 +236,7 @@ struct ExpandableChatPanel: View {
     /// Helper to identify actions for removal
     private func actionIdentity(_ action: AIAction) -> String {
         switch action {
-        case .createTimelineItem(let title, _, _, _, _, _): return "timeline-\(title)"
+        case .createTimelineItem(let title, _, _, _, _): return "timeline-\(title)"
         case .addFact(let content, _, _): return "fact-\(content)"
         case .updateFact(let id, _): return "update-\(id)"
         }

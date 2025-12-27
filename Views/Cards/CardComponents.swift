@@ -66,6 +66,7 @@ struct CardScanlineEffect: View {
 struct CardBackground: View {
     let accentColor: Color
     var isCompleted: Bool = false
+    var isSkipped: Bool = false
     
     var body: some View {
         ZStack(alignment: .leading) {
@@ -73,12 +74,21 @@ struct CardBackground: View {
             Rectangle()
                 .fill(DesignSystem.backgroundSecondary)
             
+            // Tinted fill (12% opacity)
+            Rectangle()
+                .fill(accentColor.opacity(0.12))
+            
 
             
             // Scanline overlay - ONLY for completed cards (archived look)
-            if isCompleted {
+            if isCompleted && !isSkipped {
                 CardScanlineEffect(color: accentColor)
                     .clipped()
+            }
+            
+            // Skipped effect (Diagonal stripes or dimming?)
+            if isSkipped {
+                Color.black.opacity(0.3)
             }
             
             // Left accent border
@@ -182,6 +192,7 @@ struct CardActionButton: View {
 struct TimelineConnector: View {
     let color: Color
     var isCompleted: Bool = false
+    var isSkipped: Bool = false
     
     var body: some View {
         ZStack(alignment: .center) {
@@ -194,10 +205,18 @@ struct TimelineConnector: View {
             }
             
             // Dot (centered at x=35)
-            Circle()
-                .fill(isCompleted ? DesignSystem.slate600 : color)
-                .frame(width: CardStyle.dotSize, height: CardStyle.dotSize)
-                .shadow(color: isCompleted ? .clear : color.opacity(0.6), radius: 4)
+            // Dot or Cross
+            if isSkipped {
+                Image(systemName: "xmark.circle.fill")
+                    .font(.system(size: CardStyle.dotSize))
+                    .foregroundColor(DesignSystem.slate600)
+                    .background(Color.black.clipShape(Circle())) // visual box behind
+            } else {
+                Circle()
+                    .fill(isCompleted ? DesignSystem.slate600 : color)
+                    .frame(width: CardStyle.dotSize, height: CardStyle.dotSize)
+                    .shadow(color: isCompleted ? .clear : color.opacity(0.6), radius: 4)
+            }
         }
         .frame(width: 70)
     }

@@ -22,7 +22,7 @@ struct CardPreviewBubble: View {
     @ViewBuilder
     private func cardPreview(for action: AIAction) -> some View {
         switch action {
-        case .createTimelineItem(let title, _, let priority, _, let time, let recurrence):
+        case .createTimelineItem(let title, _, let priority, let time, let recurrence):
             previewCard(
                 title: title,
                 priority: priority,

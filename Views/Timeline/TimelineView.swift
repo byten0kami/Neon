@@ -14,6 +14,7 @@ struct TimelineView: View {
     let onCompleteItem: (TimelineItem) -> Void
     let onDeleteItem: (TimelineItem) -> Void
     let onDeferItem: (TimelineItem) -> Void
+    let onSkipItem: (TimelineItem) -> Void
     
     var body: some View {
         ZStack {
@@ -56,7 +57,8 @@ struct TimelineView: View {
                 isGhost: isGhost,
                 onComplete: { onCompleteItem(item) },
                 onDefer: { onDeferItem(item) },
-                onDelete: { onDeleteItem(item) }
+                onDelete: { onDeleteItem(item) },
+                onSkip: { onSkipItem(item) }
             ),
             onTap: {
                 selectedItem = item

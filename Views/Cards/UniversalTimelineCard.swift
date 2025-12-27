@@ -21,7 +21,11 @@ struct UniversalTimelineCard: View {
         HStack(alignment: .center, spacing: 0) {
             // 1. Timeline Connector (optional)
             if showConnector {
-                TimelineConnector(color: displayColor, isCompleted: config.isCompleted)
+                TimelineConnector(
+                    color: displayColor,
+                    isCompleted: config.isCompleted,
+                    isSkipped: config.isSkipped
+                )
             }
             
             // 2. Card Content
@@ -60,16 +64,34 @@ struct UniversalTimelineCard: View {
                 // Right side: Time with clock icon
                 if let time = config.time {
                     HStack(spacing: 4) {
-                        Image(systemName: config.isDeferred ? "arrow.clockwise" : "clock")
+                        Image(systemName: config.isSkipped ? "xmark" : (config.isCompleted ? "checkmark" : (config.isDeferred ? "arrow.clockwise" : "clock")))
                             .font(.system(size: 14))
-                            .foregroundColor(config.isDeferred ? DesignSystem.amber : .white) // Amber if deferred
-                            .shadow(color: config.accentColor.opacity(0.8), radius: 5) // Glow
+                            .foregroundColor(
+                                config.isSkipped ? DesignSystem.red :
+                                (config.isCompleted ? DesignSystem.green :
+                                (config.isDeferred ? DesignSystem.amber : .white))
+                            )
+                            .shadow(
+                                color: config.isSkipped ? DesignSystem.red.opacity(0.8) :
+                                (config.isCompleted ? DesignSystem.green.opacity(0.8) :
+                                config.accentColor.opacity(0.8)),
+                                radius: 5
+                            )
                         
                         Text(time)
                             .font(.custom(DesignSystem.monoFont, size: 16))
                             .fontWeight(.bold)
-                            .foregroundColor(config.isDeferred ? DesignSystem.amber : .white) // Amber if deferred
-                            .shadow(color: config.accentColor.opacity(0.8), radius: 5) // Glow
+                            .foregroundColor(
+                                config.isSkipped ? DesignSystem.red :
+                                (config.isCompleted ? DesignSystem.green :
+                                (config.isDeferred ? DesignSystem.amber : .white))
+                            )
+                            .shadow(
+                                color: config.isSkipped ? DesignSystem.red.opacity(0.8) :
+                                (config.isCompleted ? DesignSystem.green.opacity(0.8) :
+                                config.accentColor.opacity(0.8)),
+                                radius: 5
+                            )
                     }
                 }
             }
@@ -105,6 +127,7 @@ struct UniversalTimelineCard: View {
                     .padding(.vertical, 4) // Less margin on underline
                     
                 HStack(spacing: 12) {
+                    Spacer()
                     ForEach(config.actions.indices, id: \.self) { index in
                         let action = config.actions[index]
                         CardActionButton(
@@ -120,7 +143,11 @@ struct UniversalTimelineCard: View {
         }
         .padding(CardStyle.padding)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(CardBackground(accentColor: displayColor, isCompleted: config.isCompleted))
+        .background(CardBackground(
+            accentColor: displayColor,
+            isCompleted: config.isCompleted,
+            isSkipped: config.isSkipped
+        ))
         .padding(.trailing, showConnector ? 16 : 0)
     }
     

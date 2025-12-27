@@ -19,6 +19,7 @@ struct CardConfig {
     let isCompleted: Bool
     let isOverdue: Bool
     let isDeferred: Bool
+    let isSkipped: Bool
     
     // Optional Features
     let recurrence: String?
@@ -36,6 +37,7 @@ struct CardConfig {
         isCompleted: Bool = false,
         isOverdue: Bool = false,
         isDeferred: Bool = false,
+        isSkipped: Bool = false,
         recurrence: String? = nil,
         actions: [TimelineCardAction] = []
     ) {
@@ -48,6 +50,7 @@ struct CardConfig {
         self.isCompleted = isCompleted
         self.isOverdue = isOverdue
         self.isDeferred = isDeferred
+        self.isSkipped = isSkipped
         self.recurrence = recurrence
         self.actions = actions
     }
@@ -100,7 +103,8 @@ struct CardConfig {
         isGhost: Bool = false,
         onComplete: @escaping () -> Void,
         onDefer: @escaping () -> Void,
-        onDelete: @escaping () -> Void
+        onDelete: @escaping () -> Void,
+        onSkip: @escaping () -> Void
     ) -> CardConfig {
         // Get theme-aware priority style from current theme
         let style = ThemeManager.shared.priorityTagStyle(for: item.priority)
@@ -116,22 +120,40 @@ struct CardConfig {
         // Build actions based on mustBeCompleted flag
         var actions: [TimelineCardAction] = []
         if !item.isCompleted {
-            actions = [
-                TimelineCardAction(
-                    title: "Done",
-                    color: style.color,
-                    icon: "checkmark",
-                    isFilled: true,
-                    action: onComplete
-                ),
-                TimelineCardAction(
-                    title: item.mustBeCompleted ? "Defer" : "Skip",
-                    color: DesignSystem.slate500,
-                    icon: item.mustBeCompleted ? "clock.arrow.circlepath" : "arrow.turn.up.right",
+            // ACTION 1: DONE (Always available)
+            let doneAction = TimelineCardAction(
+                title: "Done",
+                color: style.color,
+                icon: "checkmark",
+                isFilled: true,
+                action: onComplete
+            )
+            
+            // ACTION 2: SKIP (Always available now)
+            let skipAction = TimelineCardAction(
+                title: "Skip",
+                color: DesignSystem.slate500,
+                icon: "arrow.turn.up.right",
+                isFilled: false,
+                action: onSkip
+            )
+            
+            // ACTION 3: DEFER (Only if Overdue)
+            if item.isOverdue {
+                let deferAction = TimelineCardAction(
+                    title: "Defer",
+                    color: DesignSystem.amber,
+                    icon: "clock.arrow.circlepath",
                     isFilled: false,
-                    action: item.mustBeCompleted ? onDefer : onDelete
+                    action: onDefer
                 )
-            ]
+                
+                // Order: [Defer] [Skip] [Done] (Right aligned)
+                actions = [deferAction, skipAction, doneAction]
+            } else {
+                // Order: [Skip] [Done] (Right aligned)
+                actions = [skipAction, doneAction]
+            }
         }
         
         return CardConfig(
@@ -144,6 +166,7 @@ struct CardConfig {
             isCompleted: item.isCompleted,
             isOverdue: item.isOverdue,
             isDeferred: item.isDeferred,
+            isSkipped: item.isSkipped,
             recurrence: item.recurrenceText?.uppercased(),
             actions: actions
         )

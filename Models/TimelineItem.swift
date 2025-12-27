@@ -31,15 +31,10 @@ struct TimelineItem: Identifiable, Codable, Sendable {
     // MARK: - Lifecycle
     
     var isCompleted: Bool = false
+    var isSkipped: Bool = false     // Completed but skipped (cancelled/dismissed)
     var completedAt: Date?
     var isArchived: Bool = false        // Soft delete for Masters
     var createdAt: Date
-    
-    // MARK: - Time Debt Flag
-    
-    /// If true: Missed instances roll over to Today (stacking debt).
-    /// If false: Missed instances stay in the past (history holes).
-    var mustBeCompleted: Bool = false
     
     // MARK: - Master Config (Only on Masters)
     
@@ -70,10 +65,10 @@ struct TimelineItem: Identifiable, Codable, Sendable {
         scheduledTime: Date,
         deferredUntil: Date? = nil,
         isCompleted: Bool = false,
+        isSkipped: Bool = false,
         completedAt: Date? = nil,
         isArchived: Bool = false,
         createdAt: Date = Date(),
-        mustBeCompleted: Bool = false,
         recurrence: RecurrenceRule? = nil,
         effectiveEndDate: Date? = nil,
         deferredCount: Int = 0,
@@ -88,10 +83,10 @@ struct TimelineItem: Identifiable, Codable, Sendable {
         self.scheduledTime = scheduledTime
         self.deferredUntil = deferredUntil
         self.isCompleted = isCompleted
+        self.isSkipped = isSkipped
         self.completedAt = completedAt
         self.isArchived = isArchived
         self.createdAt = createdAt
-        self.mustBeCompleted = mustBeCompleted
         self.recurrence = recurrence
         self.effectiveEndDate = effectiveEndDate
         self.deferredCount = deferredCount
@@ -149,9 +144,9 @@ struct TimelineItem: Identifiable, Codable, Sendable {
             priority: master.priority,
             category: master.category,
             scheduledTime: date,
-            mustBeCompleted: master.mustBeCompleted,
             recurrence: nil  // Ghosts don't have recurrence
         )
+        ghost.isSkipped = false
         ghost.effectiveEndDate = nil
         return ghost
     }
@@ -163,7 +158,6 @@ struct TimelineItem: Identifiable, Codable, Sendable {
         priority: ItemPriority = .normal,
         category: String = "task",
         startTime: Date,
-        mustBeCompleted: Bool = false,
         recurrence: RecurrenceRule
     ) -> TimelineItem {
         var item = TimelineItem(
@@ -172,7 +166,6 @@ struct TimelineItem: Identifiable, Codable, Sendable {
             priority: priority,
             category: category,
             scheduledTime: startTime,
-            mustBeCompleted: mustBeCompleted,
             recurrence: recurrence
         )
         
@@ -196,16 +189,14 @@ struct TimelineItem: Identifiable, Codable, Sendable {
         description: String? = nil,
         priority: ItemPriority = .normal,
         category: String = "task",
-        scheduledTime: Date,
-        mustBeCompleted: Bool = false
+        scheduledTime: Date
     ) -> TimelineItem {
         TimelineItem(
             title: title,
             description: description,
             priority: priority,
             category: category,
-            scheduledTime: scheduledTime,
-            mustBeCompleted: mustBeCompleted
+            scheduledTime: scheduledTime
         )
     }
 }
