@@ -7,43 +7,44 @@ final class ItemPriorityTests: XCTestCase {
     // MARK: - Comparable Tests
     
     func test_comparable_aiSortsFirst() {
-        XCTAssertLessThan(ItemPriority.ai, ItemPriority.critical)
         XCTAssertLessThan(ItemPriority.ai, ItemPriority.high)
         XCTAssertLessThan(ItemPriority.ai, ItemPriority.normal)
         XCTAssertLessThan(ItemPriority.ai, ItemPriority.low)
     }
     
-    func test_comparable_criticalSortsSecond() {
-        XCTAssertGreaterThan(ItemPriority.critical, ItemPriority.ai)
-        XCTAssertLessThan(ItemPriority.critical, ItemPriority.high)
-        XCTAssertLessThan(ItemPriority.critical, ItemPriority.normal)
-        XCTAssertLessThan(ItemPriority.critical, ItemPriority.low)
+    func test_comparable_highSortsSecond() {
+        XCTAssertGreaterThan(ItemPriority.high, ItemPriority.ai)
+        XCTAssertLessThan(ItemPriority.high, ItemPriority.normal)
+        XCTAssertLessThan(ItemPriority.high, ItemPriority.low)
     }
     
     func test_comparable_sortOrderCorrect() {
-        let unsorted: [ItemPriority] = [.low, .normal, .critical, .ai, .high]
+        let unsorted: [ItemPriority] = [.low, .normal, .ai, .high]
         let sorted = unsorted.sorted()
         
-        XCTAssertEqual(sorted, [.ai, .critical, .high, .normal, .low])
+        XCTAssertEqual(sorted, [.ai, .high, .normal, .low])
     }
     
     func test_sortOrder_values() {
         XCTAssertEqual(ItemPriority.ai.sortOrder, 0)
-        XCTAssertEqual(ItemPriority.critical.sortOrder, 1)
-        XCTAssertEqual(ItemPriority.high.sortOrder, 2)
-        XCTAssertEqual(ItemPriority.normal.sortOrder, 3)
-        XCTAssertEqual(ItemPriority.low.sortOrder, 4)
+        XCTAssertEqual(ItemPriority.high.sortOrder, 1)
+        XCTAssertEqual(ItemPriority.normal.sortOrder, 2)
+        XCTAssertEqual(ItemPriority.low.sortOrder, 3)
     }
     
     // MARK: - String Conversion Tests
     
-    func test_initFromString_critical() {
-        XCTAssertEqual(ItemPriority(from: "critical"), .critical)
-        XCTAssertEqual(ItemPriority(from: "CRITICAL"), .critical)
-        XCTAssertEqual(ItemPriority(from: "asap"), .critical)
-        XCTAssertEqual(ItemPriority(from: "ASAP"), .critical)
-        XCTAssertEqual(ItemPriority(from: "urgent"), .critical)
-        XCTAssertEqual(ItemPriority(from: "Urgent"), .critical)
+    func test_initFromString_high() {
+        XCTAssertEqual(ItemPriority(from: "high"), .high)
+        XCTAssertEqual(ItemPriority(from: "HIGH"), .high)
+        XCTAssertEqual(ItemPriority(from: "High"), .high)
+        // "critical", "asap", "urgent" now map to .high
+        XCTAssertEqual(ItemPriority(from: "critical"), .high)
+        XCTAssertEqual(ItemPriority(from: "CRITICAL"), .high)
+        XCTAssertEqual(ItemPriority(from: "asap"), .high)
+        XCTAssertEqual(ItemPriority(from: "ASAP"), .high)
+        XCTAssertEqual(ItemPriority(from: "urgent"), .high)
+        XCTAssertEqual(ItemPriority(from: "Urgent"), .high)
     }
     
     func test_initFromString_ai() {
@@ -53,12 +54,6 @@ final class ItemPriorityTests: XCTestCase {
         XCTAssertEqual(ItemPriority(from: "Insight"), .ai)
         XCTAssertEqual(ItemPriority(from: "suggestion"), .ai)
         XCTAssertEqual(ItemPriority(from: "SUGGESTION"), .ai)
-    }
-    
-    func test_initFromString_high() {
-        XCTAssertEqual(ItemPriority(from: "high"), .high)
-        XCTAssertEqual(ItemPriority(from: "HIGH"), .high)
-        XCTAssertEqual(ItemPriority(from: "High"), .high)
     }
     
     func test_initFromString_low() {
@@ -77,7 +72,6 @@ final class ItemPriorityTests: XCTestCase {
     // MARK: - Display Tests
     
     func test_displayName_correctStrings() {
-        XCTAssertEqual(ItemPriority.critical.displayName, "CRITICAL")
         XCTAssertEqual(ItemPriority.ai.displayName, "AI")
         XCTAssertEqual(ItemPriority.high.displayName, "HIGH")
         XCTAssertEqual(ItemPriority.normal.displayName, "NORMAL")
@@ -93,8 +87,7 @@ final class ItemPriorityTests: XCTestCase {
     // MARK: - CaseIterable Tests
     
     func test_allCases_containsAllPriorities() {
-        XCTAssertEqual(ItemPriority.allCases.count, 5)
-        XCTAssertTrue(ItemPriority.allCases.contains(.critical))
+        XCTAssertEqual(ItemPriority.allCases.count, 4)
         XCTAssertTrue(ItemPriority.allCases.contains(.ai))
         XCTAssertTrue(ItemPriority.allCases.contains(.high))
         XCTAssertTrue(ItemPriority.allCases.contains(.normal))
@@ -104,7 +97,7 @@ final class ItemPriorityTests: XCTestCase {
     // MARK: - Codable Tests
     
     func test_codable_encodeDecode() throws {
-        let original = ItemPriority.critical
+        let original = ItemPriority.high
         
         let encoder = JSONEncoder()
         let data = try encoder.encode(original)

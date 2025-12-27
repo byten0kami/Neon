@@ -158,6 +158,7 @@ struct CardActionButton: View {
     var color: Color = DesignSystem.cyan
     var icon: String? = nil  // SF Symbol name
     var isFilled: Bool = false
+    var stretch: Bool = false // Add stretch option
     var action: () -> Void
     
     // Get font from current theme
@@ -171,19 +172,58 @@ struct CardActionButton: View {
                         .font(.system(size: 12, weight: .bold))
                 }
                 Text(label)
-                    .font(.custom(tagFont, size: 12))
+                    .font(.custom(tagFont, size: 18)) // 50% larger (12 * 1.5 = 18)
                     .fontWeight(.bold)
             }
             .foregroundColor(color)
-            .padding(.horizontal, CardStyle.buttonPaddingH)
+            .padding(.horizontal, 8) // Reduced padding from 16 to 8
             .padding(.vertical, CardStyle.buttonPaddingV)
-            .frame(height: CardStyle.buttonHeight)
+            .frame(height: CardStyle.buttonHeight + 4) // Slightly taller for larger text
+            .frame(maxWidth: stretch ? .infinity : nil) // Optional stretch
             .background(isFilled ? color.opacity(0.15) : Color.clear)
             .overlay(
                 RoundedRectangle(cornerRadius: CardStyle.cornerRadius)
                     .stroke(color, lineWidth: 1)
             )
             .cornerRadius(CardStyle.cornerRadius)
+            .contentShape(Rectangle()) // Ensure tap target covers the whole button
+        }
+        .buttonStyle(.borderless)
+    }
+}
+
+// MARK: - Card Action Icon Button
+
+/// Reusable action button for cards - Icon only
+struct CardActionIconButton: View {
+    var color: Color = DesignSystem.cyan
+    var icon: String? = nil  // SF Symbol name
+    var isFilled: Bool = false
+    var stretchAxis: Axis? = nil // Axis to stretch along
+    var isPanelMode: Bool = false // If true, removes borders/radius for panel usage
+    var action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            ZStack {
+                if let iconName = icon {
+                    Image(systemName: iconName)
+                        .font(.system(size: 14, weight: .bold))
+                }
+            }
+            .foregroundColor(color)
+            .frame(
+                maxWidth: (isPanelMode || stretchAxis == .horizontal) ? .infinity : (CardStyle.buttonHeight + 8),
+                maxHeight: (isPanelMode || stretchAxis == .vertical) ? .infinity : CardStyle.buttonHeight
+            )
+            .background(isFilled ? color.opacity(0.15) : Color.clear)
+            .overlay(
+                // Only show individual border if NOT in panel mode
+                RoundedRectangle(cornerRadius: isPanelMode ? 0 : CardStyle.cornerRadius)
+                    .stroke(color, lineWidth: isPanelMode ? 0 : 1)
+            )
+            .cornerRadius(isPanelMode ? 0 : CardStyle.cornerRadius)
+            .contentShape(Rectangle()) // Ensure tap target covers the whole button
         }
         .buttonStyle(.borderless)
     }

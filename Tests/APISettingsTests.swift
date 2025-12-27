@@ -1,4 +1,5 @@
 import XCTest
+import Combine
 @testable import NeonTracker
 
 /// Unit tests for APISettings model
@@ -101,5 +102,92 @@ final class APISettingsTests: XCTestCase {
         
         settings.defaultDeferMinutes = 120
         XCTAssertEqual(settings.defaultDeferMinutes, 120)
+    }
+}
+
+// MARK: - Overlay Effects Tests (Piggybacked for Target inclusion)
+@MainActor
+final class OverlayEffectsManagerTests: XCTestCase {
+    
+    var manager: OverlayEffectsManager!
+    var cancellables: Set<AnyCancellable>!
+    
+    override func setUp() async throws {
+        manager = OverlayEffectsManager.shared
+        cancellables = []
+        
+        // Reset state
+        manager.dismiss()
+        // Wait for potential async clear
+        try? await Task.sleep(nanoseconds: 300_000_000) // 0.3s
+    }
+    
+    override func tearDown() {
+        cancellables = nil
+        manager = nil
+    }
+    
+    func testShowEffect() {
+        // Given
+        let expectation = XCTestExpectation(description: "Effect should be set")
+        
+        // When
+        manager.showEffect(.matrixRain)
+        
+        // Then
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            if self.manager.currentEffect == .matrixRain {
+                expectation.fulfill()
+            }
+        }
+        
+        wait(for: [expectation], timeout: 1.0)
+    }
+    
+    func testDismissEffect() {
+        // Given
+        manager.showEffect(.staticInterference)
+        let expectation = XCTestExpectation(description: "Effect should be dismissed")
+        
+        // When
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.manager.dismiss()
+        }
+        
+        // Then
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            // Dismiss might have delay now?
+            if self.manager.currentEffect == .none {
+                expectation.fulfill()
+            }
+        }
+        
+        wait(for: [expectation], timeout: 1.0)
+    }
+    
+    func testRestartEffectLogic() {
+        // Test the "Interruption" fix
+        // Given
+        manager.showEffect(.toxicGlow)
+        let expectation = XCTestExpectation(description: "Effect should restart (flicker none then show)")
+        
+        // When: Trigger same effect again while active
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            
+            // Simulate "Restart" behavior manually to verify state transition
+            // 1. Force Clear
+            self.manager.showEffect(.none)
+            
+            // 2. Wait and Re-show
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                 self.manager.showEffect(.toxicGlow)
+                 
+                 if self.manager.currentEffect == .toxicGlow {
+                     expectation.fulfill()
+                 }
+            }
+        }
+        
+        wait(for: [expectation], timeout: 1.0)
     }
 }

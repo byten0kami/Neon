@@ -92,7 +92,7 @@ final class TimelineItemTests: XCTestCase {
         let master = TimelineItem.master(
             title: "Recurring",
             startTime: Date(),
-            recurrence: .weekly()
+            recurrence: .weekly(on: Set([2])) // Monday
         )
         
         let ghost = TimelineItem.ghost(from: master, for: Date())

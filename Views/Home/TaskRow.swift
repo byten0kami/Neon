@@ -52,10 +52,9 @@ struct TaskRow: View {
     
     private var priorityColor: Color {
         switch item.priority {
-        case .critical: return DesignSystem.red
         case .ai: return DesignSystem.purple
-        case .high: return DesignSystem.amber
-        case .normal: return DesignSystem.lime
+        case .high: return DesignSystem.red
+        case .normal: return DesignSystem.amber
         case .low: return DesignSystem.cyan
         }
     }

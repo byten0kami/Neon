@@ -43,7 +43,15 @@ class TimelineEngine: ObservableObject {
         self.weekStartOffset = offset
         
         load()
+        materializeToday() // Check for today's ghosts immediately
         requestNotificationPermission()
+        
+        // Listen for significant time changes (midnight)
+        NotificationCenter.default.addObserver(forName: .NSCalendarDayChanged, object: nil, queue: .main) { [weak self] _ in
+            Task { @MainActor in
+                self?.materializeToday()
+            }
+        }
     }
     
     private func updateCalendar() {
@@ -196,6 +204,39 @@ class TimelineEngine: ObservableObject {
         masters.append(master)
         save()
         print("[TimelineEngine] Added master: \(master.title)")
+        
+        // Immediately materialize if it triggers today
+        materializeToday()
+    }
+    
+    // MARK: - Auto-Materialization
+    
+    /// Ensures that all recurring tasks for Today are real instances, not ghosts.
+    func materializeToday() {
+        let today = Date()
+        let dayStart = calendar.startOfDay(for: today)
+        
+        // 1. Fetch existing instance seriesIDs for today
+        // (We only care about recurring masters being materialized)
+        let todayInstances = instances.filter {
+            let instanceDay = calendar.startOfDay(for: $0.effectiveTime)
+            return instanceDay == dayStart && !$0.isArchived && $0.seriesId != nil
+        }
+        let existingSeriesIds = Set(todayInstances.compactMap { $0.seriesId })
+        
+        // 2. Project ghosts for today
+        let ghosts = projectGhosts(for: today, excluding: existingSeriesIds)
+        
+        if !ghosts.isEmpty {
+            print("[TimelineEngine] Materializing \(ghosts.count) ghosts for Today")
+            for ghost in ghosts {
+                 instances.append(ghost)
+                 if ghost.effectiveTime > Date() {
+                     scheduleNotification(for: ghost)
+                 }
+            }
+            save()
+        }
     }
     
     /// Add a new one-off item
@@ -409,7 +450,7 @@ class TimelineEngine: ObservableObject {
         let meds = TimelineItem.master(
             title: "Take Medication",
             description: "Morning dose",
-            priority: .critical,
+            priority: .high,
             startTime: calendar.date(bySettingHour: 8, minute: 0, second: 0, of: now) ?? now,
             recurrence: .daily()
         )
@@ -462,7 +503,7 @@ class TimelineEngine: ObservableObject {
         // Overdue debt item
         let overdueDebt = TimelineItem.oneOff(
             title: "Overdue Critical Task",
-            priority: .critical,
+            priority: .high,
             scheduledTime: now.addingTimeInterval(-3600 * 24) // Yesterday
         )
         

@@ -2,6 +2,7 @@ import SwiftUI
 
 /// Main content view with tab navigation
 struct ContentView: View {
+    @ObservedObject private var overlayManager = OverlayEffectsManager.shared
     @State private var selectedTab: TabItem = .home
     @State private var showChatPanel = false
     @State private var showCalendar = false
@@ -55,7 +56,25 @@ struct ContentView: View {
             .ignoresSafeArea(.container, edges: .bottom)
             .zIndex(10)
             
-            // 4. Overlays Layer (Covers everything including Tab Bar)
+            // 4. Ambient Overlay Effects (Global, over TabBar)
+            switch overlayManager.currentEffect {
+            case .nyanCat:
+                NyanCatView().transition(.opacity).zIndex(15)
+            case .toxicGlow:
+                ToxicGlowView().transition(.opacity).zIndex(15)
+            case .matrixRain:
+                MatrixRainView().transition(.opacity).zIndex(15)
+            case .securityScan:
+                SecurityScanView().transition(.opacity).zIndex(15)
+            case .staticInterference:
+                StaticInterferenceView().transition(.opacity).zIndex(15)
+            case .confetti:
+                EmptyView() 
+            case .none:
+                EmptyView()
+            }
+
+            // 5. Overlays Layer (Modals)
             
             // Calendar Overlay
             if showCalendar {

@@ -108,7 +108,7 @@ class AIService {
     - For "remind me at X" → create one-off at time X
     - For "every morning" → create recurring with daily frequency
     - For "for X days" or "course" → use recurrence.endCondition.count
-    - For medication/pills/critical → set priority: "critical"
+    - For medication/pills/important → set priority: "high"
     - ALWAYS include specific times when scheduling
     
     ## RESPONSE FORMAT

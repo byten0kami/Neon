@@ -7,7 +7,6 @@ import SwiftUI
 struct HomeView: View {
     @StateObject private var brain = AIBrain.shared
     @StateObject private var engine = TimelineEngine.shared
-    @StateObject private var overlayManager = OverlayEffectsManager.shared
     
     @State private var stability: Int = 72
     @State private var selectedItem: TimelineItem?
@@ -79,10 +78,7 @@ struct HomeView: View {
             .blur(radius: selectedItem != nil ? 5 : 0) // Blur background when overlay active
             
             // Overlay Effects
-            if overlayManager.currentEffect == .nyanCat {
-                NyanCatView()
-                    .transition(.opacity)
-            }
+            // Overlay Effects moved to ContentView for root access
             
             // Edit Overlay
             if let item = selectedItem {

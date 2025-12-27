@@ -39,15 +39,6 @@ struct StalkerTheme: Theme {
     // MARK: - Priority Tag Styles
     func priorityTagStyle(for priority: ItemPriority) -> PriorityTagStyle {
         switch priority {
-        case .critical:
-            // Rust danger warning: orange/red
-            return PriorityTagStyle(
-                text: "FATAL",
-                color: Self.rustOrange,
-                textColor: .black,
-                backgroundColor: Self.rustOrange,
-                borderRadius: 2
-            )
         case .ai:
             return PriorityTagStyle(
                 text: "SIGNAL",
@@ -55,23 +46,32 @@ struct StalkerTheme: Theme {
                 borderRadius: 2
             )
         case .high:
+            // Rust danger warning: orange/red inverted
+            return PriorityTagStyle(
+                text: "FATAL",
+                color: Self.rustOrange,
+                textColor: .black,
+                backgroundColor: Self.rustOrange,
+                borderRadius: 2
+            )
+        case .normal:
             return PriorityTagStyle(
                 text: "HAZARD",
                 color: Self.biohazardYellow,
                 borderRadius: 2
             )
-        case .normal:
+        case .low:
             return PriorityTagStyle(
-                text: "SCAV",
+                text: "NOMINAL",
                 color: Self.oliveDrab,
                 borderRadius: 2
             )
-        case .low:
-            return PriorityTagStyle(
-                text: "STASH",
-                color: Self.fadedCyan,
-                borderRadius: 2
-            )
         }
+    }
+    
+    // MARK: - Ambient Effects
+    var ambientEffect: ThemeAmbientEffect {
+        // Periodic radiation/acid bursts
+        .periodic(effect: .toxicGlow, minInterval: 30, maxInterval: 60)
     }
 }

@@ -10,6 +10,7 @@ struct UniversalTimelineCard: View {
     var showConnector: Bool = true
     
     @ObservedObject private var themeManager = ThemeManager.shared
+    @ObservedObject private var apiSettings = APISettingsStore.shared
     @State private var blinkOpacity: Double = 1.0
     
     // Get fonts from current theme
@@ -42,12 +43,85 @@ struct UniversalTimelineCard: View {
         }
     }
     
+    // Helper to calculate actions excluding AI
+    private var separateActions: (main: [TimelineCardAction], ai: TimelineCardAction?) {
+        let ai = config.actions.first(where: { $0.icon == "brain" || $0.icon == "brain.head.profile" })
+        var main = config.actions.filter { $0.icon != "brain" && $0.icon != "brain.head.profile" }
+        
+        // Sort Order: SKIP -> DEFER -> DONE
+        // We use weights based on action title or common identifiers.
+        // Assuming Titles: "Skip", "Defer", "Done" (or icon names if titles vary)
+        main.sort { a, b in
+            func weight(_ action: TimelineCardAction) -> Int {
+                // Check icon names first as they are more stable in code
+                if let icon = action.icon {
+                    if icon.contains("xmark") { return 0 } // Skip
+                    if icon.contains("arrow.clockwise") || icon.contains("clock") { return 1 } // Defer
+                    if icon.contains("checkmark") { return 2 } // Done
+                }
+                // Fallback to title
+                let t = action.title.lowercased()
+                if t.contains("skip") { return 0 }
+                if t.contains("defer") { return 1 }
+                if t.contains("done") { return 2 }
+                return 10
+            }
+            return weight(a) < weight(b)
+        }
+        
+        return (main, ai)
+    }
+    
     private var cardContent: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            
-            // Content Area (Tappable)
+        HStack(spacing: 0) {
+            // MAIN CONTENT AREA
             VStack(alignment: .leading, spacing: 6) {
-                // Header: Badge + Recurrence Flag on left, Time with clock icon on right
+                // Header, Title, Description
+                mainInfoContent
+                
+                // Bottom/Classic actions rendered in main VStack
+                if apiSettings.settings.cardLayoutMode != .side {
+                    actionsByStrategy
+                }
+            }
+            .padding(CardStyle.padding)
+            
+            // Side panel layout (rendered outside main VStack)
+            if apiSettings.settings.cardLayoutMode == .side {
+                actionsByStrategy
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(CardBackground(
+            accentColor: displayColor,
+            isCompleted: config.isCompleted,
+            isSkipped: config.isSkipped
+        ))
+        .padding(.trailing, showConnector ? 16 : 0)
+    }
+    
+    /// Actions rendered via selected layout strategy
+    @ViewBuilder
+    private var actionsByStrategy: some View {
+        let mode = apiSettings.settings.cardLayoutMode
+        let actions = separateActions.main
+        let isCompleted = config.isCompleted
+        
+        switch mode {
+        case .classic:
+            ClassicTextLayout().actionsView(actions: actions, isCompleted: isCompleted)
+        case .side:
+            SideIconLayout().actionsView(actions: actions, isCompleted: isCompleted)
+        case .bottom:
+            BottomIconLayout().actionsView(actions: actions, isCompleted: isCompleted)
+        }
+    }
+    
+    // MARK: - Sub-Components
+    
+    private var mainInfoContent: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            // Header: Badge + Recurrence Flag + AI Button on left, Time with clock icon on right
             HStack(alignment: .center, spacing: 8) {
                 // Left side: Badge and recurrence flag
                 PriorityTag(text: config.badgeText, color: config.accentColor, style: config.priorityTagStyle)
@@ -63,6 +137,25 @@ struct UniversalTimelineCard: View {
                         .foregroundColor(config.accentColor)
                 }
                 
+                // AI Button (Moved from actions)
+                if let aiAction = separateActions.ai {
+                     Button(action: aiAction.action) {
+                         Image(systemName: aiAction.icon ?? "brain")
+                             .font(.system(size: 11, weight: .bold)) // Match Tag Font Size
+                             .foregroundColor(aiAction.color)
+                             .padding(.horizontal, 8) // Match Tag Padding
+                             .padding(.vertical, 4)   // Match Tag Padding
+                             // Remove background fill as requested ("neon border and icon inside")
+                             .background(Color.clear) 
+                             .overlay(
+                                RoundedRectangle(cornerRadius: CardStyle.cornerRadius)
+                                    .stroke(aiAction.color, lineWidth: 1)
+                             )
+                             .cornerRadius(CardStyle.cornerRadius)
+                     }
+                     .buttonStyle(PlainButtonStyle())
+                }
+                
                 Spacer()
                 
                 // Right side: Time with clock icon
@@ -74,8 +167,8 @@ struct UniversalTimelineCard: View {
                             .foregroundColor(config.isDeferred ? DesignSystem.amber : .white)
                             .shadow(
                                 color: config.isSkipped ? DesignSystem.red.opacity(0.8) :
-                                (config.isCompleted ? DesignSystem.green.opacity(0.8) :
-                                config.accentColor.opacity(0.8)),
+                                    (config.isCompleted ? DesignSystem.green.opacity(0.8) :
+                                        config.accentColor.opacity(0.8)),
                                 radius: 5
                             )
                         
@@ -86,8 +179,8 @@ struct UniversalTimelineCard: View {
                             .foregroundColor(config.isDeferred ? DesignSystem.amber : .white)
                             .shadow(
                                 color: config.isSkipped ? DesignSystem.red.opacity(0.8) :
-                                (config.isCompleted ? DesignSystem.green.opacity(0.8) :
-                                config.accentColor.opacity(0.8)),
+                                    (config.isCompleted ? DesignSystem.green.opacity(0.8) :
+                                        config.accentColor.opacity(0.8)),
                                 radius: 5
                             )
                     }
@@ -108,46 +201,15 @@ struct UniversalTimelineCard: View {
                     .font(.custom(theme.bodyFont, size: theme.bodyFontSize))
                     .foregroundColor(DesignSystem.slate400)
             }
-            
-            }
-            .contentShape(Rectangle())
-            .onTapGesture {
-                if !config.isCompleted { onTap?() }
-            }
-            
-            // Action Buttons (Decorators)
-            // Only show if actions exist and task is not completed
-            if !config.actions.isEmpty && !config.isCompleted {
-                // Delimiter
-                Rectangle()
-                    .fill(displayColor.opacity(0.3))
-                    .frame(height: 1)
-                    .padding(.vertical, 4) // Less margin on underline
-                    
-                HStack(spacing: 12) {
-                    Spacer()
-                    ForEach(config.actions.indices, id: \.self) { index in
-                        let action = config.actions[index]
-                        CardActionButton(
-                            label: action.title,
-                            color: action.color,
-                            icon: action.icon,
-                            isFilled: action.isFilled,
-                            action: action.action
-                        )
-                    }
-                }
-            }
         }
-        .padding(CardStyle.padding)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(CardBackground(
-            accentColor: displayColor,
-            isCompleted: config.isCompleted,
-            isSkipped: config.isSkipped
-        ))
-        .padding(.trailing, showConnector ? 16 : 0)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            if !config.isCompleted { onTap?() }
+        }
     }
+    
+    // Layout implementations moved to CardLayoutStrategy.swift
+
     
     private func startBlinkAnimation() {
         withAnimation(

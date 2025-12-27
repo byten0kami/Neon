@@ -42,13 +42,6 @@ struct MercenaryTheme: Theme {
     // MARK: - Priority Tag Styles
     func priorityTagStyle(for priority: ItemPriority) -> PriorityTagStyle {
         switch priority {
-        case .critical:
-            return PriorityTagStyle(
-                text: "LETHAL",
-                color: Self.hotPink,
-                hasGlow: true,
-                glowRadius: 6
-            )
         case .ai:
             return PriorityTagStyle(
                 text: "CMD",
@@ -78,5 +71,11 @@ struct MercenaryTheme: Theme {
                 glowRadius: 4
             )
         }
+    }
+    
+    // MARK: - Ambient Effects
+    var ambientEffect: ThemeAmbientEffect {
+        // Occasional HUD glitches (5-10 mins) - usually when low stability but here random
+        .periodic(effect: .staticInterference, minInterval: 300, maxInterval: 600)
     }
 }

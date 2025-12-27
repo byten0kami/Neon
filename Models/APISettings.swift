@@ -14,6 +14,24 @@ struct APISettings: Codable {
     /// Default defer/snooze time in minutes
     var defaultDeferMinutes: Int
     
+    /// Card button layout preference
+    enum CardLayoutMode: String, Codable, CaseIterable {
+        case classic  // Text + Icon buttons at bottom (Legacy)
+        case side     // Icon-only buttons on right side
+        case bottom   // Icon-only buttons at bottom
+        
+        var displayName: String {
+            switch self {
+            case .classic: return "Classic Text"
+            case .side: return "Side Icons"
+            case .bottom: return "Bottom Icons"
+            }
+        }
+    }
+    
+    /// Selected card interaction layout
+    var cardLayoutMode: CardLayoutMode = .classic
+    
     /// Available AI models with tooltip information
     static let availableModels: [(id: String, name: String, description: String, tooltip: String)] = [
         ("google/gemini-2.0-flash-001", "Gemini 2.0 Flash", "Fast & efficient",
@@ -31,7 +49,8 @@ struct APISettings: Codable {
         APISettings(
             useCustomKey: false,
             selectedModel: "google/gemini-2.0-flash-001",
-            defaultDeferMinutes: 60
+            defaultDeferMinutes: 60,
+            cardLayoutMode: .classic
         )
     }
 }

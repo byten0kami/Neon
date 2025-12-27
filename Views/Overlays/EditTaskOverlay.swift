@@ -183,9 +183,8 @@ struct PriorityButton: View {
     
     private var color: Color {
         switch priority {
-        case .critical: return DesignSystem.red
-        case .high: return DesignSystem.amber
-        case .normal: return DesignSystem.lime
+        case .high: return DesignSystem.red
+        case .normal: return DesignSystem.amber
         case .low: return DesignSystem.cyan
         case .ai: return DesignSystem.purple
         }

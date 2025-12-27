@@ -3,6 +3,7 @@ import XCTest
 
 /// Unit tests for TimelineEngine (TDD)
 /// These tests are written BEFORE implementation to drive development
+@MainActor
 final class TimelineEngineTests: XCTestCase {
     
     var engine: TimelineEngine!

@@ -25,6 +25,10 @@ protocol Theme: Identifiable, Sendable {
     
     // MARK: - Priority Styling
     func priorityTagStyle(for priority: ItemPriority) -> PriorityTagStyle
+    
+    // MARK: - Ambient Effects
+    /// Optional ambient visual effect for this theme
+    var ambientEffect: ThemeAmbientEffect { get }
 }
 
 // MARK: - Theme Default Implementations
@@ -39,5 +43,8 @@ extension Theme {
     var bodyFont: String { DesignSystem.lightFont }
     var bodyFontSize: CGFloat { 14 }
     var tagFont: String { DesignSystem.monoFont }
+    
+    // Default to no ambient effect
+    var ambientEffect: ThemeAmbientEffect { .none }
 }
 

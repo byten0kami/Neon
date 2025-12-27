@@ -409,6 +409,49 @@ struct SettingsView: View {
                             }
                         }
                     }
+                    
+                    divider
+                    
+                    // Card Layout Row
+                    settingsRow {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Card Actions")
+                                    .font(.custom(DesignSystem.monoFont, size: 20))
+                                    .foregroundColor(.white)
+                                Text("Button layout style")
+                                    .font(.custom(DesignSystem.lightFont, size: 14))
+                                    .foregroundColor(DesignSystem.slate500)
+                            }
+                            Spacer()
+                            
+                            Menu {
+                                ForEach(APISettings.CardLayoutMode.allCases, id: \.self) { mode in
+                                    Button(action: { apiSettings.setCardLayoutMode(mode) }) {
+                                        HStack {
+                                            Text(mode.displayName)
+                                            if apiSettings.settings.cardLayoutMode == mode {
+                                                Image(systemName: "checkmark")
+                                            }
+                                        }
+                                    }
+                                }
+                            } label: {
+                                HStack(spacing: 8) {
+                                    Text(apiSettings.settings.cardLayoutMode.displayName)
+                                        .font(.custom(DesignSystem.monoFont, size: 18))
+                                        .foregroundColor(themeManager.currentTheme.mainAccent)
+                                    Image(systemName: "chevron.up.chevron.down")
+                                        .font(.system(size: 14))
+                                        .foregroundColor(themeManager.currentTheme.mainAccent)
+                                }
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 8)
+                                .background(themeManager.currentTheme.mainAccent.opacity(0.1))
+                                .cornerRadius(8)
+                            }
+                        }
+                    }
                 }
                 .background(Color.black.opacity(0.7))
                 .cornerRadius(CardStyle.cornerRadius)

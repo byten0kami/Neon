@@ -71,20 +71,13 @@ struct NyanTheme: Theme {
     // MARK: - Typography (Playful Pixel Fonts)
     var timeFont: String { "Silkscreen-Regular" }
     var titleFont: String { "Silkscreen-Regular" }
-    var bodyFont: String { "Handjet-Light" }
+    var bodyFont: String { "Handjet-Regular" }
     var bodyFontSize: CGFloat { 20 } // Handjet is visually small, bumping size
     var tagFont: String { "Silkscreen-Regular" }
     
     // MARK: - Priority Tag Styles
     func priorityTagStyle(for priority: ItemPriority) -> PriorityTagStyle {
         switch priority {
-        case .critical:
-            return PriorityTagStyle(
-                text: "MEOW!",
-                color: Self.rainbowPink,
-                hasGlow: true,
-                glowRadius: 6
-            )
         case .ai:
             return PriorityTagStyle(
                 text: "NYAN",
@@ -94,25 +87,31 @@ struct NyanTheme: Theme {
             )
         case .high:
             return PriorityTagStyle(
-                text: "PURR",
-                color: Self.rainbowOrange,
+                text: "MEOW!",
+                color: Self.rainbowPink,
                 hasGlow: true,
-                glowRadius: 4
+                glowRadius: 6
             )
         case .normal:
             return PriorityTagStyle(
-                text: "PAWS",
-                color: Self.rainbowYellow,
+                text: "PURR",
+                color: Self.rainbowOrange,
                 hasGlow: true,
                 glowRadius: 4
             )
         case .low:
             return PriorityTagStyle(
                 text: "ZZZ",
-                color: Self.rainbowGreen,
+                color: Self.rainbowYellow,
                 hasGlow: true,
-                glowRadius: 2
+                glowRadius: 4
             )
         }
+    }
+    
+    // MARK: - Ambient Effects
+    var ambientEffect: ThemeAmbientEffect {
+        // Randomly fly by every 3-5 minutes
+        .periodic(effect: .nyanCat, minInterval: 180, maxInterval: 300)
     }
 }

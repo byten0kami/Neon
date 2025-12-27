@@ -40,13 +40,6 @@ struct CorporateTheme: Theme {
     // MARK: - Priority Tag Styles
     func priorityTagStyle(for priority: ItemPriority) -> PriorityTagStyle {
         switch priority {
-        case .critical:
-            return PriorityTagStyle(
-                text: "ASAP",
-                color: Self.crimson,
-                useSystemFont: true,
-                borderRadius: 6
-            )
         case .ai:
             return PriorityTagStyle(
                 text: "AI",
@@ -57,24 +50,30 @@ struct CorporateTheme: Theme {
         case .high:
             return PriorityTagStyle(
                 text: "PRIO",
-                color: Self.burntOrange,
+                color: Self.crimson,
                 useSystemFont: true,
                 borderRadius: 6
             )
         case .normal:
             return PriorityTagStyle(
                 text: "TASK",
-                color: Self.steelBlue,
+                color: Self.burntOrange,
                 useSystemFont: true,
                 borderRadius: 6
             )
         case .low:
             return PriorityTagStyle(
                 text: "INFO",
-                color: Self.coolGrey,
+                color: Self.steelBlue,
                 useSystemFont: true,
                 borderRadius: 6
             )
         }
+    }
+    
+    // MARK: - Ambient Effects
+    var ambientEffect: ThemeAmbientEffect {
+        // Frequent security scans (1-3 mins)
+        .periodic(effect: .securityScan, minInterval: 60, maxInterval: 180)
     }
 }

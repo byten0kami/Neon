@@ -51,6 +51,11 @@ class APISettingsStore: ObservableObject {
         settings.defaultDeferMinutes = minutes
     }
     
+    /// Set card layout mode
+    func setCardLayoutMode(_ mode: APISettings.CardLayoutMode) {
+        settings.cardLayoutMode = mode
+    }
+    
     /// Get the effective API key (user's custom key if enabled)
     func getEffectiveAPIKey() -> String? {
         guard settings.useCustomKey else { return nil }

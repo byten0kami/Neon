@@ -5,10 +5,9 @@ import Foundation
 /// Unified priority enum for TimelineItem
 /// All items are TASKs, styled by priority color
 enum ItemPriority: String, Codable, Comparable, Sendable, CaseIterable {
-    case critical   // 🔴 Red - Urgent, must-do-now
     case ai         // 🟣 Purple - AI-generated (sorted first)
-    case high       // 🟡 Amber - High priority
-    case normal     // 🟢 Lime - Standard priority
+    case high       // 🔴 Red - High priority
+    case normal     // 🟡 Amber - Standard priority
     case low        // 🔵 Cyan - Low priority
     
     // MARK: - Comparable
@@ -21,10 +20,9 @@ enum ItemPriority: String, Codable, Comparable, Sendable, CaseIterable {
     var sortOrder: Int {
         switch self {
         case .ai: return 0      // AI first
-        case .critical: return 1 // Critical second
-        case .high: return 2
-        case .normal: return 3
-        case .low: return 4
+        case .high: return 1
+        case .normal: return 2
+        case .low: return 3
         }
     }
     
@@ -32,7 +30,6 @@ enum ItemPriority: String, Codable, Comparable, Sendable, CaseIterable {
     
     var displayName: String {
         switch self {
-        case .critical: return "CRITICAL"
         case .ai: return "AI"
         case .high: return "HIGH"
         case .normal: return "NORMAL"
@@ -51,9 +48,8 @@ enum ItemPriority: String, Codable, Comparable, Sendable, CaseIterable {
     /// Convert from strings (for AI parsing)
     init(from string: String) {
         switch string.lowercased() {
-        case "critical", "asap", "urgent": self = .critical
+        case "critical", "asap", "urgent", "high": self = .high
         case "ai", "insight", "suggestion": self = .ai
-        case "high": self = .high
         case "low": self = .low
         default: self = .normal
         }

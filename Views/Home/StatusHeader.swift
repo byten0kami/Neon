@@ -35,6 +35,17 @@ struct StatusHeader: View {
             
             Spacer()
             
+            // Effect Demo Button
+            Button(action: {
+                OverlayEffectsManager.shared.forceTriggerEffect()
+            }) {
+                Image(systemName: "wand.and.stars")
+                    .foregroundColor(DesignSystem.purple)
+                    .font(.system(size: 20))
+                    .shadow(color: DesignSystem.purple.opacity(0.5), radius: 2)
+            }
+            .padding(.trailing, 8)
+
             // Calendar Button
             Button(action: onCalendarTap) {
                 Image(systemName: "calendar")

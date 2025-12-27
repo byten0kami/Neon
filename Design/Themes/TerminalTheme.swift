@@ -13,7 +13,7 @@ struct TerminalTheme: Theme {
     private static let consoleGreen = Color(hex: "00FF41") // Matrix Green
     private static let amberMonitor = Color(hex: "FFB000")
     private static let dimGrey = Color(hex: "666666")
-    private static let criticalRed = Color(hex: "FF0000")
+    private static let criticalRed = Color(hex: "DE2312")
     private static let phosphorWhite = Color(hex: "E6E6E6") // White Phosphor
     private static let artifactPurple = Color(hex: "9932CC")
     
@@ -40,7 +40,13 @@ struct TerminalTheme: Theme {
     // MARK: - Priority Tag Styles
     func priorityTagStyle(for priority: ItemPriority) -> PriorityTagStyle {
         switch priority {
-        case .critical:
+        case .ai:
+            return PriorityTagStyle(
+                text: "SYS",
+                color: aiAccent,
+                borderRadius: 0
+            )
+        case .high:
             // Inverted: red bg, black text
             return PriorityTagStyle(
                 text: "CRIT",
@@ -49,22 +55,10 @@ struct TerminalTheme: Theme {
                 backgroundColor: Self.criticalRed,
                 borderRadius: 0
             )
-        case .ai:
-            return PriorityTagStyle(
-                text: "SYS",
-                color: aiAccent,
-                borderRadius: 0
-            )
-        case .high:
+        case .normal:
             return PriorityTagStyle(
                 text: "WARN",
                 color: Self.amberMonitor,
-                borderRadius: 0
-            )
-        case .normal:
-            return PriorityTagStyle(
-                text: "EXEC",
-                color: Self.consoleGreen,
                 borderRadius: 0
             )
         case .low:
@@ -74,5 +68,11 @@ struct TerminalTheme: Theme {
                 borderRadius: 0
             )
         }
+    }
+    
+    // MARK: - Ambient Effects
+    var ambientEffect: ThemeAmbientEffect {
+        // Random matrix rain every 2-5 minutes
+        .periodic(effect: .matrixRain, minInterval: 120, maxInterval: 300)
     }
 }
