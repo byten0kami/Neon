@@ -59,9 +59,13 @@ class TimelineEngine: ObservableObject {
             result.append(contentsOf: debt)
         }
         
-        // 5. Sort: Debt first (critical overdue), then by time
+        // 5. Sort: AI first, then Debt (overdue), then by time
         return result.sorted { item1, item2 in
-            // Critical overdue items first
+            // AI always first
+            if item1.priority == .ai && item2.priority != .ai { return true }
+            if item2.priority == .ai && item1.priority != .ai { return false }
+            
+            // Critical overdue items (Debt) next
             let isDebt1 = item1.isOverdue && item1.mustBeCompleted
             let isDebt2 = item2.isOverdue && item2.mustBeCompleted
             
@@ -69,15 +73,7 @@ class TimelineEngine: ObservableObject {
                 return isDebt1
             }
             
-            // Critical priority items next
-            if item1.priority == .critical && item2.priority != .critical {
-                return true
-            }
-            if item2.priority == .critical && item1.priority != .critical {
-                return false
-            }
-            
-            // Then by effective time
+            // Everything else by effective time (Critical is just another priority now)
             return item1.effectiveTime < item2.effectiveTime
         }
     }

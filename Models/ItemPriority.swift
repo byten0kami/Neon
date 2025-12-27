@@ -6,7 +6,7 @@ import Foundation
 /// All items are TASKs, styled by priority color
 enum ItemPriority: String, Codable, Comparable, Sendable, CaseIterable {
     case critical   // 🔴 Red - Urgent, must-do-now
-    case ai         // 🟣 Purple - AI-generated (sorted after critical)
+    case ai         // 🟣 Purple - AI-generated (sorted first)
     case high       // 🟡 Amber - High priority
     case normal     // 🟢 Lime - Standard priority
     case low        // 🔵 Cyan - Low priority
@@ -20,8 +20,8 @@ enum ItemPriority: String, Codable, Comparable, Sendable, CaseIterable {
     /// Sort order (lower = higher priority)
     var sortOrder: Int {
         switch self {
-        case .critical: return 0
-        case .ai: return 1
+        case .ai: return 0      // AI first
+        case .critical: return 1 // Critical second
         case .high: return 2
         case .normal: return 3
         case .low: return 4

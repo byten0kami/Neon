@@ -26,9 +26,9 @@ struct GlitchEffect: View {
                 warningOverlay
             }
         }
-        .onAppear {
-            startGlitchAnimation()
-        }
+        .task { await loopOffsets() }
+        .task { await loopOpacity() }
+        .task { await loopWarning() }
     }
     
     private var rgbSeparation: some View {
@@ -95,9 +95,9 @@ struct GlitchEffect: View {
         .transition(.opacity)
     }
     
-    private func startGlitchAnimation() {
-        // Random glitch offsets
-        Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+    private func loopOffsets() async {
+        while true {
+            try? await Task.sleep(nanoseconds: 100_000_000) // 0.1s
             if Double.random(in: 0...1) < intensity * 0.3 {
                 withAnimation(.easeInOut(duration: 0.05)) {
                     offset1 = CGFloat.random(in: -10...10) * intensity
@@ -110,22 +110,25 @@ struct GlitchEffect: View {
                 }
             }
         }
-        
-        // Random opacity flicker
-        Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in
+    }
+    
+    private func loopOpacity() async {
+        while true {
+            try? await Task.sleep(nanoseconds: 200_000_000) // 0.2s
             if Double.random(in: 0...1) < intensity * 0.2 {
                 withAnimation(.easeInOut(duration: 0.1)) {
                     opacity = Double.random(in: 0.5...1.0)
                 }
             }
         }
-        
+    }
+    
+    private func loopWarning() async {
         // Show warning if high intensity
         if intensity > 0.6 {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                withAnimation {
-                    showWarning = true
-                }
+            try? await Task.sleep(nanoseconds: 2_000_000_000) // 2s
+            withAnimation {
+                showWarning = true
             }
         }
     }

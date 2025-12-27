@@ -67,8 +67,9 @@ struct TypingBubble: View {
             Spacer()
         }
         .padding(.vertical, 4)
-        .onAppear {
-            Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { _ in
+        .task {
+            while true {
+                try? await Task.sleep(nanoseconds: 300_000_000) // 0.3s
                 withAnimation { dotCount = (dotCount + 1) % 4 }
             }
         }

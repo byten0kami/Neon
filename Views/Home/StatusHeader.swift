@@ -4,6 +4,7 @@ import SwiftUI
 /// Date/time displays on NOW indicator in timeline
 struct StatusHeader: View {
     let stability: Int
+    let onCalendarTap: () -> Void
     
     private var isLowStability: Bool {
         stability < 50
@@ -35,14 +36,11 @@ struct StatusHeader: View {
             Spacer()
             
             // Status Icons
-            HStack(spacing: 12) {
-                Image(systemName: "lock.fill")
-                    .foregroundColor(DesignSystem.green)
-                    .shadow(color: DesignSystem.green.opacity(0.5), radius: 2)
-                
-                Image(systemName: "wifi")
-                    .foregroundColor(DesignSystem.cyan)
-                    .shadow(color: DesignSystem.cyan.opacity(0.5), radius: 2)
+            Button(action: onCalendarTap) {
+                Image(systemName: "calendar")
+                    .foregroundColor(DesignSystem.red)
+                    .font(.system(size: 20))
+                    .shadow(color: DesignSystem.red.opacity(0.5), radius: 2)
             }
         }
         .font(.custom(DesignSystem.monoFont, size: 10))
@@ -86,8 +84,8 @@ struct StatusHeader: View {
 
 #Preview {
     VStack(spacing: 20) {
-        StatusHeader(stability: 72)
-        StatusHeader(stability: 35)
+        StatusHeader(stability: 72, onCalendarTap: {})
+        StatusHeader(stability: 35, onCalendarTap: {})
     }
     .background(DesignSystem.backgroundPrimary)
 }

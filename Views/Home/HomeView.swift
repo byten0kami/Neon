@@ -11,6 +11,7 @@ struct HomeView: View {
     
     @State private var stability: Int = 72
     @State private var selectedItem: TimelineItem?
+    @State private var showingCalendar = false
     
     private var isLowStability: Bool {
         stability < 50
@@ -37,7 +38,14 @@ struct HomeView: View {
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
-                StatusHeader(stability: stability)
+                StatusHeader(
+                    stability: stability,
+                    onCalendarTap: {
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            showingCalendar = true
+                        }
+                    }
+                )
                 
                 TimelineView(
                     selectedItem: $selectedItem,
@@ -65,6 +73,12 @@ struct HomeView: View {
                 NyanCatView()
                     .transition(.opacity)
             }
+            
+            if showingCalendar {
+                MonthCalendarView(isPresented: $showingCalendar)
+                    .transition(.move(edge: .top))
+                    .zIndex(100)
+            }
         }
         .background(
             ZStack {
@@ -81,6 +95,7 @@ struct HomeView: View {
                 selectedItem = nil
             })
         }
+
     }
     
     // MARK: - Actions
