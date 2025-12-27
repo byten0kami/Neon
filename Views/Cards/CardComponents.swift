@@ -48,6 +48,8 @@ struct CardScanlineEffect: View {
     
     var body: some View {
         Canvas { context, size in
+            guard size.width > 0 && size.height > 0 else { return }
+            
             let lineSpacing: CGFloat = 3
             var y: CGFloat = 0
             

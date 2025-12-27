@@ -5,7 +5,9 @@ import SwiftUI
 struct ToxicGlowView: View {
     var body: some View {
         GeometryReader { geometry in
-            AcidLayer(width: geometry.size.width, height: geometry.size.height)
+            if geometry.size.width > 0 && geometry.size.height > 0 {
+                AcidLayer(width: geometry.size.width, height: geometry.size.height)
+            }
         }
         .ignoresSafeArea(.all)
         .allowsHitTesting(false)
@@ -243,6 +245,8 @@ struct MatrixRainView: View {
                 }
             }
             .onAppear {
+                guard geometry.size.width > 0 && geometry.size.height > 0 else { return }
+                
                 let colWidth: CGFloat = 16
                 let count = Int(geometry.size.width / colWidth) + 5
                 
@@ -254,6 +258,7 @@ struct MatrixRainView: View {
                 }
             }
             .onReceive(timer) { _ in
+                guard geometry.size.width > 0 && geometry.size.height > 0 else { return }
                 updateColumns(in: geometry.size)
             }
         }
@@ -306,6 +311,7 @@ struct SecurityScanView: View {
                     .offset(y: scanY)
             }
             .onAppear {
+                guard geometry.size.height > 0 else { return }
                 scanY = -50
                 withAnimation(.linear(duration: 2.0)) {
                     scanY = geometry.size.height + 50
@@ -323,6 +329,9 @@ struct StaticInterferenceView: View {
         GeometryReader { geometry in
             TimelineView(.animation) { context in
                 Canvas { context, size in
+                    // Safety check to prevent NaN or zero-size related crashes/errors
+                    guard size.width > 0 && size.height > 0 else { return }
+                    
                     for _ in 0..<1500 {
                         let rect = CGRect(
                             x: CGFloat.random(in: 0...size.width),

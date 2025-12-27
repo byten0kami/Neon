@@ -9,13 +9,15 @@ struct TimelineRailPast: View {
     
     var body: some View {
         GeometryReader { geometry in
-            ZStack {
-                Rectangle()
-                    .fill(themeManager.currentTheme.pastRailGradient)
-                    .frame(width: 2)
+            if geometry.size.height > 0 {
+                ZStack {
+                    Rectangle()
+                        .fill(themeManager.currentTheme.pastRailGradient)
+                        .frame(width: 2)
+                }
+                .frame(maxHeight: .infinity)
+                .position(x: 35, y: geometry.size.height / 2)
             }
-            .frame(maxHeight: .infinity)
-            .position(x: 35, y: geometry.size.height / 2)
         }
     }
 }
@@ -40,30 +42,31 @@ struct TimelineRailFuture: View {
     
     var body: some View {
         GeometryReader { geometry in
-            
-            let gradient = themeManager.currentTheme.railGradient
-            
-            // Return the view content
-            return ZStack {
-                // Outer glow layer
-                Rectangle()
-                    .fill(gradient.opacity(0.15 * glowIntensity))
-                    .frame(width: 12)
-                    .blur(radius: 8)
+            if geometry.size.height > 0 {
+                let gradient = themeManager.currentTheme.railGradient
                 
-                // Middle glow layer
-                Rectangle()
-                    .fill(gradient.opacity(0.3 * glowIntensity))
-                    .frame(width: 6)
-                    .blur(radius: 4)
-                
-                // Core line
-                Rectangle()
-                    .fill(gradient)
-                    .frame(width: 2)
+                // Return the view content
+                ZStack {
+                    // Outer glow layer
+                    Rectangle()
+                        .fill(gradient.opacity(0.15 * glowIntensity))
+                        .frame(width: 12)
+                        .blur(radius: 8)
+                    
+                    // Middle glow layer
+                    Rectangle()
+                        .fill(gradient.opacity(0.3 * glowIntensity))
+                        .frame(width: 6)
+                        .blur(radius: 4)
+                    
+                    // Core line
+                    Rectangle()
+                        .fill(gradient)
+                        .frame(width: 2)
+                }
+                .frame(height: geometry.size.height)
+                .position(x: 35, y: geometry.size.height / 2)
             }
-            .frame(height: geometry.size.height)
-            .position(x: 35, y: geometry.size.height / 2)
         }
         .onAppear {
             withAnimation(
@@ -83,21 +86,23 @@ struct TimelineRailFuture: View {
 struct TimelineRails: View {
     var body: some View {
         GeometryReader { geometry in
-            let center = geometry.size.height / 2
-            
-            ZStack {
-                // Top Rail (Past) - Goes UP from center
-                // We offset it so its bottom is at the center
-                TimelineRailPast()
-                    .frame(height: 3000) // Long enough to cover scroll
-                    .position(x: 35, y: center - 1500) // Center of 3000 is 1500. We want Bottom (3000) at Center.
-                    // Y = Center - (Height/2) = Center - 1500. Correct.
+            if geometry.size.height > 0 {
+                let center = geometry.size.height / 2
                 
-                // Bottom Rail (Future) - Goes DOWN from center
-                TimelineRailFuture()
-                    .frame(height: 3000) // Long enough to cover scroll
-                    .position(x: 35, y: center + 1500) // Center of 3000 is 1500. We want Top (0) at Center.
-                    // Y = Center + (Height/2) = Center + 1500. Correct.
+                ZStack {
+                    // Top Rail (Past) - Goes UP from center
+                    // We offset it so its bottom is at the center
+                    TimelineRailPast()
+                        .frame(height: 3000) // Long enough to cover scroll
+                        .position(x: 35, y: center - 1500) // Center of 3000 is 1500. We want Bottom (3000) at Center.
+                        // Y = Center - (Height/2) = Center - 1500. Correct.
+                    
+                    // Bottom Rail (Future) - Goes DOWN from center
+                    TimelineRailFuture()
+                        .frame(height: 3000) // Long enough to cover scroll
+                        .position(x: 35, y: center + 1500) // Center of 3000 is 1500. We want Top (0) at Center.
+                        // Y = Center + (Height/2) = Center + 1500. Correct.
+                }
             }
         }
     }
