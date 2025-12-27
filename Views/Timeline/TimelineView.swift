@@ -15,6 +15,7 @@ struct TimelineView: View {
     let onDeleteItem: (TimelineItem) -> Void
     let onDeferItem: (TimelineItem) -> Void
     let onSkipItem: (TimelineItem) -> Void
+    let onAIChat: (TimelineItem) -> Void
     
     var body: some View {
         ZStack {
@@ -22,28 +23,39 @@ struct TimelineView: View {
             TimelineRails()
             
             // 2. Scrolling Content
-            ScrollView {
-                VStack(spacing: 0) {
-                    
-                    // --- PAST (Completed) ---
-                    ForEach(completedItems.reversed(), id: \.id) { item in
-                        itemView(for: item)
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(spacing: 0) {
+                        
+                        // --- PAST (Completed) ---
+                        ForEach(completedItems.reversed(), id: \.id) { item in
+                            itemView(for: item)
+                        }
+                        
+                        // --- NOW ---
+                        NowCard()
+                            .padding(.vertical, 0)
+                            .id("NOW")
+                        
+                        // --- FUTURE (Pending/Ghosts + Debt at top) ---
+                        ForEach(pendingItems, id: \.id) { item in
+                            itemView(for: item)
+                        }
+                        
+                        // Bottom padding
+                        Color.clear.frame(height: 100)
                     }
-                    
-                    // --- NOW ---
-                    NowCard()
-                        .padding(.vertical, 0)
-                        .id("NOW")
-                    
-                    // --- FUTURE (Pending/Ghosts + Debt at top) ---
-                    ForEach(pendingItems, id: \.id) { item in
-                        itemView(for: item)
-                    }
-                    
-                    // Bottom padding
-                    Color.clear.frame(height: 100)
+                    .padding(.vertical, 20)
                 }
-                .padding(.vertical, 20)
+                .onAppear {
+                    // Scroll to NOW when view appears
+                    // Slight delay to ensure layout is ready
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        withAnimation {
+                            proxy.scrollTo("NOW", anchor: .top)
+                        }
+                    }
+                }
             }
         }
     }
@@ -58,7 +70,8 @@ struct TimelineView: View {
                 onComplete: { onCompleteItem(item) },
                 onDefer: { onDeferItem(item) },
                 onDelete: { onDeleteItem(item) },
-                onSkip: { onSkipItem(item) }
+                onSkip: { onSkipItem(item) },
+                onAIChat: { onAIChat(item) }
             ),
             onTap: {
                 selectedItem = item

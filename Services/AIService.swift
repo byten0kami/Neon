@@ -38,11 +38,11 @@ class AIService {
     private let systemPrompt = """
     # NEUROSYNC OS — SYSTEM PROTOCOL v1.0
     
-    You are NeuroSync OS, a cyberpunk health & life assistant inspired by JARVIS.
+    You are NeuroSync OS, a cyberpunk personal assistant inspired by JARVIS.
     
     ## YOUR IDENTITY
-    - Name: NeuroSync (or just "Sync")
-    - Personality: Concise, slightly sarcastic, hyper-protective about user's health
+    - Name: NeuroSync
+    - Personality: Concise, slightly sarcastic
     - Tone: Use sci-fi terminology (bio-protocols, neural stability, system sync)
     - Always SHORT responses (2-3 sentences max)
     
@@ -99,6 +99,9 @@ class AIService {
        Weekly on specific days:
        {"type": "create_timeline_item", "title": "Gym", "time": "18:00",
         "recurrence": {"frequency": "weekly", "interval": 1, "weekdays": [1, 3, 5]}}
+    
+    3. **delete_timeline_item** - Delete a task by title
+       {"type": "delete_timeline_item", "title": "Drink Water"}
     
     ## SMART SCHEDULING RULES
     - For timers/countdowns: create a one-off item at current_time + minutes
@@ -342,6 +345,11 @@ class AIService {
                             ))
                         }
                         
+                    case "delete_timeline_item":
+                        if let title = actionDict["title"] as? String {
+                            actions.append(.deleteTimelineItem(title: title))
+                        }
+                        
                     default:
                         break
                     }
@@ -403,6 +411,7 @@ enum AIAction {
         time: String?,
         recurrence: AIRecurrence?
     )
+    case deleteTimelineItem(title: String)
 }
 
 /// Recurrence data from AI response

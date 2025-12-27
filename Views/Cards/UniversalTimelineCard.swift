@@ -9,7 +9,11 @@ struct UniversalTimelineCard: View {
     var onTap: (() -> Void)? = nil
     var showConnector: Bool = true
     
+    @ObservedObject private var themeManager = ThemeManager.shared
     @State private var blinkOpacity: Double = 1.0
+    
+    // Get fonts from current theme
+    private var theme: any Theme { themeManager.currentTheme }
     
     // Computed property to determine the display color
     // Completed tasks are usually grayed out (Slate)
@@ -55,7 +59,7 @@ struct UniversalTimelineCard: View {
                         .padding(.vertical, 2)
                         .background(config.accentColor.opacity(0.1))
                         .cornerRadius(4)
-                        .font(.custom(DesignSystem.monoFont, size: 12))
+                        .font(.custom(theme.tagFont, size: 12))
                         .foregroundColor(config.accentColor)
                 }
                 
@@ -66,11 +70,8 @@ struct UniversalTimelineCard: View {
                     HStack(spacing: 4) {
                         Image(systemName: config.isSkipped ? "xmark" : (config.isCompleted ? "checkmark" : (config.isDeferred ? "arrow.clockwise" : "clock")))
                             .font(.system(size: 14))
-                            .foregroundColor(
-                                config.isSkipped ? DesignSystem.red :
-                                (config.isCompleted ? DesignSystem.green :
-                                (config.isDeferred ? DesignSystem.amber : .white))
-                            )
+                            // User requested white text/icon with colored glow for skipped/completed
+                            .foregroundColor(config.isDeferred ? DesignSystem.amber : .white)
                             .shadow(
                                 color: config.isSkipped ? DesignSystem.red.opacity(0.8) :
                                 (config.isCompleted ? DesignSystem.green.opacity(0.8) :
@@ -79,13 +80,10 @@ struct UniversalTimelineCard: View {
                             )
                         
                         Text(time)
-                            .font(.custom(DesignSystem.monoFont, size: 16))
+                            .font(.custom(theme.timeFont, size: 16))
                             .fontWeight(.bold)
-                            .foregroundColor(
-                                config.isSkipped ? DesignSystem.red :
-                                (config.isCompleted ? DesignSystem.green :
-                                (config.isDeferred ? DesignSystem.amber : .white))
-                            )
+                            // User requested white text/icon with colored glow for skipped/completed
+                            .foregroundColor(config.isDeferred ? DesignSystem.amber : .white)
                             .shadow(
                                 color: config.isSkipped ? DesignSystem.red.opacity(0.8) :
                                 (config.isCompleted ? DesignSystem.green.opacity(0.8) :
@@ -98,7 +96,7 @@ struct UniversalTimelineCard: View {
             
             // Title (white text for active, grey for completed)
             Text(config.title)
-                .font(.custom(DesignSystem.displayFont, size: 18))
+                .font(.custom(theme.titleFont, size: 18))
                 //.fontWeight(.bold)
                 .foregroundColor(config.isCompleted ? DesignSystem.slate500 : .white)
                 .shadow(color: config.isCompleted ? .clear : config.accentColor.opacity(0.6), radius: 6) // Glow for title
@@ -107,7 +105,7 @@ struct UniversalTimelineCard: View {
             // Description (grey text - slate400 to match reference)
             if let description = config.description, !description.isEmpty {
                 Text(description)
-                    .font(.custom(DesignSystem.lightFont, size: 14))
+                    .font(.custom(theme.bodyFont, size: theme.bodyFontSize))
                     .foregroundColor(DesignSystem.slate400)
             }
             

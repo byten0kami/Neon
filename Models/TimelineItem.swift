@@ -40,6 +40,9 @@ struct TimelineItem: Identifiable, Codable, Sendable {
     
     var recurrence: RecurrenceRule?
     
+    /// Display text for recurrence (copied to instances from master)
+    var recurrenceDisplayText: String?
+    
     // MARK: - Optimization: Effective End Date (The Sieve)
     
     /// Calculated from recurrence.endCondition.
@@ -88,6 +91,7 @@ struct TimelineItem: Identifiable, Codable, Sendable {
         self.isArchived = isArchived
         self.createdAt = createdAt
         self.recurrence = recurrence
+        self.recurrenceDisplayText = recurrence?.displayText
         self.effectiveEndDate = effectiveEndDate
         self.deferredCount = deferredCount
         self.completedCount = completedCount
@@ -129,7 +133,7 @@ struct TimelineItem: Identifiable, Codable, Sendable {
     
     /// Human-readable recurrence text
     var recurrenceText: String? {
-        recurrence?.displayText
+        recurrenceDisplayText ?? recurrence?.displayText
     }
     
     // MARK: - Factory Methods
@@ -148,6 +152,8 @@ struct TimelineItem: Identifiable, Codable, Sendable {
         )
         ghost.isSkipped = false
         ghost.effectiveEndDate = nil
+        // Copy recurrence display text from master
+        ghost.recurrenceDisplayText = master.recurrence?.displayText
         return ghost
     }
     

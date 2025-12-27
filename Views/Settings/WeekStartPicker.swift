@@ -65,27 +65,12 @@ struct WeekStartPicker: View {
                         .padding(.vertical, 14)
                         .background(accentColor)
                         .cornerRadius(CardStyle.cornerRadius)
+                        .shadow(color: accentColor.opacity(0.5), radius: 10)
                 }
                 .padding(.horizontal, 24)
                 .padding(.bottom, 24)
             }
-            .background(Color.black.opacity(0.95))
-            .cornerRadius(CardStyle.cornerRadius)
-            // Custom Card Border (Thick Left, Thin Overlay)
-            .overlay(
-                ZStack(alignment: .leading) {
-                    // Thin bezel all around
-                    RoundedRectangle(cornerRadius: CardStyle.cornerRadius)
-                        .stroke(accentColor.opacity(0.5), lineWidth: 1)
-                    
-                    // Thick left border
-                    Rectangle()
-                        .fill(accentColor)
-                        .frame(width: CardStyle.borderWidth)
-                        .cornerRadius(CardStyle.cornerRadius)
-                }
-            )
-            .shadow(color: accentColor.opacity(0.15), radius: 20)
+            .background(CardBackground(accentColor: accentColor))
             .padding(.horizontal, 20)
         }
     }
@@ -103,20 +88,21 @@ struct DayButton: View {
             Text(symbol)
                 .font(.custom(DesignSystem.monoFont, size: 18))
                 .fontWeight(.bold)
-                .foregroundColor(isSelected ? .black : .white)
+                .foregroundColor(isSelected ? .black : accentColor)
                 .frame(maxWidth: .infinity)
                 .frame(height: 38)
                 .background(
-                    isSelected ? accentColor : Color.white.opacity(0.05)
+                    isSelected ? accentColor : accentColor.opacity(0.1)
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: CardStyle.cornerRadius)
                         .stroke(
-                            isSelected ? accentColor : DesignSystem.slate600,
+                            isSelected ? accentColor : accentColor.opacity(0.5),
                             lineWidth: 1
                         )
                 )
                 .cornerRadius(CardStyle.cornerRadius)
+                .shadow(color: accentColor.opacity(isSelected ? 0.6 : 0.2), radius: isSelected ? 8 : 4)
         }
     }
 }

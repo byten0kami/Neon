@@ -68,6 +68,13 @@ struct NyanTheme: Theme {
         )
     }
     
+    // MARK: - Typography (Playful Pixel Fonts)
+    var timeFont: String { "Silkscreen-Regular" }
+    var titleFont: String { "Silkscreen-Regular" }
+    var bodyFont: String { "Handjet-Light" }
+    var bodyFontSize: CGFloat { 20 } // Handjet is visually small, bumping size
+    var tagFont: String { "Silkscreen-Regular" }
+    
     // MARK: - Priority Tag Styles
     func priorityTagStyle(for priority: ItemPriority) -> PriorityTagStyle {
         switch priority {

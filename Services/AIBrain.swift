@@ -59,6 +59,9 @@ class AIBrain: ObservableObject {
                 timeString: time,
                 aiRecurrence: aiRecurrence
             )
+            
+        case .deleteTimelineItem(let title):
+            deleteTimelineItem(title: title)
         }
     }
     
@@ -85,6 +88,8 @@ class AIBrain: ObservableObject {
             // Convert AIRecurrence to RecurrenceRule
             let frequency: RecurrenceRule.Frequency
             switch aiRecurrence.frequency.lowercased() {
+            case "minutely": frequency = .minutely
+            case "hourly": frequency = .hourly
             case "weekly": frequency = .weekly
             case "monthly": frequency = .monthly
             case "yearly": frequency = .yearly
@@ -137,6 +142,28 @@ class AIBrain: ObservableObject {
             TimelineEngine.shared.addOneOff(item)
             print("[AIBrain] Created one-off item: \(title)")
         }
+    }
+    
+    /// Delete a TimelineItem by title (searches both masters and instances)
+    private func deleteTimelineItem(title: String) {
+        let engine = TimelineEngine.shared
+        let searchTitle = title.lowercased()
+        
+        // Search instances first
+        if let instance = engine.instances.first(where: { $0.title.lowercased().contains(searchTitle) }) {
+            engine.delete(id: instance.id)
+            print("[AIBrain] Deleted instance: \(instance.title)")
+            return
+        }
+        
+        // Search masters (recurring tasks)
+        if let master = engine.masters.first(where: { $0.title.lowercased().contains(searchTitle) && !$0.isArchived }) {
+            engine.delete(id: master.id) // This archives the master
+            print("[AIBrain] Archived master: \(master.title)")
+            return
+        }
+        
+        print("[AIBrain] No item found matching: \(title)")
     }
     
     /// Parse date string (ISO format or simple YYYY-MM-DD)

@@ -104,7 +104,8 @@ struct CardConfig {
         onComplete: @escaping () -> Void,
         onDefer: @escaping () -> Void,
         onDelete: @escaping () -> Void,
-        onSkip: @escaping () -> Void
+        onSkip: @escaping () -> Void,
+        onAIChat: @escaping () -> Void
     ) -> CardConfig {
         // Get theme-aware priority style from current theme
         let style = ThemeManager.shared.priorityTagStyle(for: item.priority)
@@ -148,11 +149,29 @@ struct CardConfig {
                     action: onDefer
                 )
                 
-                // Order: [Defer] [Skip] [Done] (Right aligned)
-                actions = [deferAction, skipAction, doneAction]
+                // ACTION 4: AI (Always available)
+                let aiAction = TimelineCardAction(
+                    title: "AI",
+                    color: ThemeManager.shared.currentTheme.aiAccent,
+                    icon: "brain",
+                    isFilled: false,
+                    action: onAIChat
+                )
+                
+                // Order: [AI] [Defer] [Skip] [Done] (Right aligned)
+                actions = [aiAction, deferAction, skipAction, doneAction]
             } else {
-                // Order: [Skip] [Done] (Right aligned)
-                actions = [skipAction, doneAction]
+                // ACTION 4: AI (Always available)
+                let aiAction = TimelineCardAction(
+                    title: "AI",
+                    color: ThemeManager.shared.currentTheme.aiAccent,
+                    icon: "brain",
+                    isFilled: false,
+                    action: onAIChat
+                )
+                
+                // Order: [AI] [Skip] [Done] (Right aligned)
+                actions = [aiAction, skipAction, doneAction]
             }
         }
         

@@ -31,7 +31,10 @@ class TimelineEngine: ObservableObject {
     // MARK: - Initialization
     
     private init() {
-        let offset = UserDefaults.standard.object(forKey: weekStartKey) as? Int ?? 0 // Default 0 = Monday
+        let offset = UserDefaults.standard.object(forKey: weekStartKey) as? Int ?? {
+            let weekday = Locale.current.calendar.firstWeekday
+            return (weekday - 2 + 7) % 7
+        }()
         var cal = Calendar.current
         cal.timeZone = TimeZone.current
         cal.firstWeekday = ((offset + 1) % 7) + 1
@@ -269,8 +272,8 @@ class TimelineEngine: ObservableObject {
         print("[TimelineEngine] Item not found for skipping: \(id)")
     }
     
-    /// Defer an item by a number of hours
-    func `defer`(id: UUID, byHours hours: Int = 1) {
+    /// Defer an item by a number of minutes
+    func `defer`(id: UUID, byMinutes minutes: Int = 60) {
         if let index = instances.firstIndex(where: { $0.id == id }) {
             let current = instances[index].deferredUntil ?? instances[index].scheduledTime
             
@@ -280,7 +283,7 @@ class TimelineEngine: ObservableObject {
             let now = Date()
             let baseTime = current < now ? now : current
             
-            let newTime = calendar.date(byAdding: .hour, value: hours, to: baseTime) ?? baseTime
+            let newTime = calendar.date(byAdding: .minute, value: minutes, to: baseTime) ?? baseTime
             
             instances[index].deferredUntil = newTime
             instances[index].deferredCount += 1

@@ -3,6 +3,8 @@ import SwiftUI
 /// Expandable chat panel that slides up from bottom
 struct ExpandableChatPanel: View {
     @Binding var isPresented: Bool
+    var contextItem: TimelineItem? = nil  // Optional task context from AI button
+    
     @StateObject private var brain = AIBrain.shared
     @StateObject private var knowledge = AIKnowledgeBase.shared
     @ObservedObject private var themeManager = ThemeManager.shared
@@ -34,10 +36,10 @@ struct ExpandableChatPanel: View {
             // Input
             inputArea
         }
-        .frame(height: UIScreen.main.bounds.height * 0.6)
         .background(CardBackground(accentColor: themeManager.currentTheme.aiAccent))
         .padding(.horizontal, 8)
-        .padding(.bottom, 90)
+        .padding(.top, 60)  // Space for status header (matches calendar)
+        .padding(.bottom, 90)  // Space for tab bar (matches calendar)
         .onAppear {
             loadGreeting()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -186,7 +188,19 @@ struct ExpandableChatPanel: View {
     // MARK: - Actions
     
     private func loadGreeting() {
-        greeting = quirkyGreetings.randomElement() ?? quirkyGreetings[0]
+        if let item = contextItem {
+            // Context-aware greeting for task editing
+            let contextGreetings = [
+                "Ah, '\(item.title)'. What modifications do you need?",
+                "Task: '\(item.title)'. Ready to edit. What's the change?",
+                "I see '\(item.title)'. Reschedule? Update? Delete? Your call.",
+                "'\(item.title)' selected. What needs fixing?",
+                "Context loaded: '\(item.title)'. Awaiting instructions."
+            ]
+            greeting = contextGreetings.randomElement() ?? contextGreetings[0]
+        } else {
+            greeting = quirkyGreetings.randomElement() ?? quirkyGreetings[0]
+        }
         messages.append(ChatMessage(role: .assistant, content: greeting))
     }
     
@@ -237,6 +251,7 @@ struct ExpandableChatPanel: View {
     private func actionIdentity(_ action: AIAction) -> String {
         switch action {
         case .createTimelineItem(let title, _, _, _, _): return "timeline-\(title)"
+        case .deleteTimelineItem(let title): return "delete-\(title)"
         case .addFact(let content, _, _): return "fact-\(content)"
         case .updateFact(let id, _): return "update-\(id)"
         }

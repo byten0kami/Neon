@@ -20,6 +20,54 @@
 	<string>1</string>
 	<key>OPENROUTER_API_KEY</key>
 	<string>$(OPENROUTER_API_KEY)</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Anta-Regular.ttf</string>
+		<string>Asimovian-Regular.ttf</string>
+		<string>Audiowide-Regular.ttf</string>
+		<string>Electrolize-Regular.ttf</string>
+		<string>Geo-Italic.ttf</string>
+		<string>Geo-Regular.ttf</string>
+		<string>Handjet-Bold.ttf</string>
+		<string>Handjet-ExtraLight.ttf</string>
+		<string>Handjet-Light.ttf</string>
+		<string>Handjet-Medium.ttf</string>
+		<string>Handjet-Regular.ttf</string>
+		<string>Handjet-SemiBold.ttf</string>
+		<string>Handjet-Thin.ttf</string>
+		<string>Iceberg-Regular.ttf</string>
+		<string>Iceland-Regular.ttf</string>
+		<string>KellySlab-Regular.ttf</string>
+		<string>MajorMonoDisplay-Regular.ttf</string>
+		<string>Megrim-Regular.ttf</string>
+		<string>Offside-Regular.ttf</string>
+		<string>Orbitron-Bold.ttf</string>
+		<string>Orbitron-Medium.ttf</string>
+		<string>Orbitron-Regular.ttf</string>
+		<string>Quantico-Bold.ttf</string>
+		<string>Quantico-BoldItalic.ttf</string>
+		<string>Quantico-Italic.ttf</string>
+		<string>Quantico-Regular.ttf</string>
+		<string>Rajdhani-Bold.ttf</string>
+		<string>Rajdhani-Medium.ttf</string>
+		<string>Rajdhani-Regular.ttf</string>
+		<string>Rajdhani-SemiBold.ttf</string>
+		<string>Rationale-Regular.ttf</string>
+		<string>ShareTechMono-Regular.ttf</string>
+		<string>Silkscreen-Bold.ttf</string>
+		<string>Silkscreen-Regular.ttf</string>
+		<string>SyneMono-Regular.ttf</string>
+		<string>TurretRoad-Bold.ttf</string>
+		<string>TurretRoad-ExtraBold.ttf</string>
+		<string>TurretRoad-ExtraLight.ttf</string>
+		<string>TurretRoad-Light.ttf</string>
+		<string>TurretRoad-Medium.ttf</string>
+		<string>TurretRoad-Regular.ttf</string>
+		<string>UbuntuMono-Bold.ttf</string>
+		<string>UbuntuMono-BoldItalic.ttf</string>
+		<string>UbuntuMono-Italic.ttf</string>
+		<string>UbuntuMono-Regular.ttf</string>
+	</array>
 	<key>UILaunchScreen</key>
 	<dict/>
 </dict>

@@ -3,9 +3,10 @@ import SwiftUI
 struct MonthCalendarView: View {
     @Binding var isPresented: Bool
     @StateObject private var engine = TimelineEngine.shared
+    @ObservedObject private var themeManager = ThemeManager.shared
     
-    @State private var currentMonth: Date = Date()
-    @State private var selectedDate: Date = Date()
+    @Binding var currentMonth: Date
+    @Binding var selectedDate: Date
     
     // Grid configuration
     private let columns = Array(repeating: GridItem(.flexible()), count: 7)
@@ -26,7 +27,7 @@ struct MonthCalendarView: View {
     private var monthYearString: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMM yyyy"
-        return formatter.string(from: currentMonth)
+        return formatter.string(from: currentMonth).uppercased()
     }
     
     private var daysInMonth: [Date] {
@@ -64,145 +65,159 @@ struct MonthCalendarView: View {
             .sorted { $0.effectiveTime < $1.effectiveTime }
     }
     
-    // MARK: - Body
-    
-    var body: some View {
-        ZStack {
-            // Background
-            DesignSystem.backgroundPrimary.ignoresSafeArea()
-            
-            // Use CompositingGroup to ensure the view renders as a single layer during transitions
-            // This prevents the "numbers coming up from bottom" visual artifact
-            VStack(spacing: 0) {
-                // Custom Header (Neon Style)
-                HStack {
-                    // Month Navigation & Title
-                    HStack(spacing: 16) {
-                        Button(action: { changeMonth(by: -1) }) {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 16, weight: .bold))
-                        }
-                        
-                        Text(monthYearString.uppercased())
-                            .font(.custom(DesignSystem.displayFont, size: 24))
-                            .tracking(2)
-                        
-                        Button(action: { changeMonth(by: 1) }) {
-                            Image(systemName: "chevron.right")
-                                .font(.system(size: 16, weight: .bold))
-                        }
-                    }
-                    .foregroundColor(DesignSystem.cyan)
-                    
-                    Spacer()
-                    
-                    // Close Button (Aligned with StatusHeader position)
-                    Button(action: {
-                        withAnimation {
-                            isPresented = false
-                        }
-                    }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 20))
-                            .foregroundColor(DesignSystem.red)
-                            .shadow(color: DesignSystem.red.opacity(0.5), radius: 4)
-                    }
-                }
-                .padding(.horizontal, 32) // Match StatusHeader horizontal padding (16 + 16)
-                .padding(.vertical, 16)   // Match StatusHeader vertical padding
-                .background(DesignSystem.backgroundSecondary.opacity(0.8))
-                .overlay(
-                    Rectangle()
-                        .frame(height: 1)
-                        .foregroundColor(DesignSystem.cyan.opacity(0.3)),
-                    alignment: .bottom
-                )
-                
-                // Days of Week Header
-                // Use LazyVGrid to align perfectly with the calendar grid
-                LazyVGrid(columns: columns, spacing: 12) {
-                    ForEach(daysOfWeek, id: \.self) { day in
-                        Text(day)
-                            .font(.custom(DesignSystem.monoFont, size: 12))
-                            .foregroundColor(DesignSystem.slate500)
-                            .frame(maxWidth: .infinity)
-                    }
-                }
-                .padding(.horizontal)
-                .padding(.vertical, 12)
-                
-                // Calendar Grid
-                LazyVGrid(columns: columns, spacing: 12) {
-                    ForEach(daysInMonth, id: \.self) { date in
-                        DayCell(
-                            date: date,
-                            isSelected: calendar.isDate(date, inSameDayAs: selectedDate),
-                            isCurrentMonth: calendar.isDate(date, equalTo: currentMonth, toGranularity: .month),
-                            hasItems: !engine.items(for: date).isEmpty
-                        )
-                        .onTapGesture {
-                            selectedDate = date
-                        }
-                    }
-                }
-                .padding(.horizontal)
-                .padding(.bottom, 16)
-                
-                Divider()
-                    .background(DesignSystem.slate800)
-                
-                // Task List for Selected Day
-                ScrollView {
-                    VStack(spacing: 0) {
-                        if selectedDayTasks.isEmpty {
-                            VStack(spacing: 12) {
-                                Image(systemName: "calendar.badge.clock")
-                                    .font(.system(size: 40))
-                                    .foregroundColor(DesignSystem.slate700)
-                                Text("NO OPERATIONS SCHEDULED")
-                                    .font(.custom(DesignSystem.monoFont, size: 14))
-                                    .foregroundColor(DesignSystem.slate500)
-                                    .tracking(1)
-                            }
-                            .padding(.top, 60)
-                        } else {
-                            ForEach(selectedDayTasks) { item in
-                                TaskRow(item: item)
-                                    .padding(.horizontal)
-                                    .padding(.vertical, 12)
-                                
-                                Divider()
-                                    .background(DesignSystem.slate800.opacity(0.5))
-                                    .padding(.leading, 16)
-                            }
-                        }
-                    }
-                    .padding(.vertical)
-                }
-                .background(DesignSystem.backgroundSecondary)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
-        }
-        .compositingGroup() // Ensure whole view transitions as one
-        .gesture(
-            DragGesture()
-                .onEnded { value in
-                    // Swipe up to close (negative translation.height)
-                    if value.translation.height < -50 {
-                        withAnimation {
-                            isPresented = false
-                        }
-                    }
-                }
-        )
-    }
-    
     // MARK: - Actions
     
     private func changeMonth(by value: Int) {
         if let newMonth = calendar.date(byAdding: .month, value: value, to: currentMonth) {
             currentMonth = newMonth
         }
+    }
+    
+    private func goToToday() {
+        let now = Date()
+        currentMonth = now
+        selectedDate = now
+    }
+    
+    // MARK: - Body
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            // Calendar Header (Inside Frame)
+            HStack {
+                // Month Navigation
+                HStack(spacing: 16) {
+                    Button(action: { changeMonth(by: -1) }) {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 16, weight: .bold))
+                    }
+                    
+                    Text(monthYearString)
+                        .font(.custom(DesignSystem.displayFont, size: 20))
+                        .tracking(2)
+                    
+                    Button(action: { changeMonth(by: 1) }) {
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 16, weight: .bold))
+                    }
+                }
+                .foregroundColor(themeManager.currentTheme.mainAccent)
+                
+                Spacer()
+                
+                // Controls Row: Today + Close
+                HStack(spacing: 12) {
+                    // TODAY Button
+                    Button(action: goToToday) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "arrow.counterclockwise")
+                            Text("TODAY")
+                        }
+                        .font(.custom(DesignSystem.monoFont, size: 12))
+                        .foregroundColor(themeManager.currentTheme.mainAccent)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(
+                            RoundedRectangle(cornerRadius: 4)
+                                .stroke(themeManager.currentTheme.mainAccent, lineWidth: 1)
+                        )
+                    }
+                    
+                    // CLOSE Button
+                    Button(action: { isPresented = false }) {
+                        Image(systemName: "xmark")
+                            .foregroundColor(DesignSystem.red)
+                            .font(.system(size: 20))
+                            .shadow(color: DesignSystem.red.opacity(0.5), radius: 2)
+                    }
+                }
+            }
+            .padding(16)
+            .background(DesignSystem.backgroundSecondary.opacity(0.3))
+            
+            // Days of Week Header
+            // Use LazyVGrid to align perfectly with the calendar grid
+            LazyVGrid(columns: columns, spacing: 12) {
+                ForEach(Array(daysOfWeek.enumerated()), id: \.offset) { _, day in
+                    Text(day)
+                        .font(.custom(DesignSystem.monoFont, size: 12))
+                        .foregroundColor(DesignSystem.slate500)
+                        .frame(maxWidth: .infinity)
+                }
+            }
+            .padding(.horizontal)
+            .padding(.top, 8)
+            .padding(.bottom, 12)
+            
+            // Calendar Grid
+            LazyVGrid(columns: columns, spacing: 12) {
+                ForEach(daysInMonth, id: \.self) { date in
+                    DayCell(
+                        date: date,
+                        isSelected: calendar.isDate(date, inSameDayAs: selectedDate),
+                        isCurrentMonth: calendar.isDate(date, equalTo: currentMonth, toGranularity: .month),
+                        hasItems: !engine.items(for: date).isEmpty,
+                        accentColor: themeManager.currentTheme.mainAccent
+                    )
+                    .onTapGesture {
+                        selectedDate = date
+                    }
+                }
+            }
+            .padding(.horizontal)
+            .padding(.bottom, 16)
+            .drawingGroup() // Fix: flatten the grid to prevent independent animation of numbers
+            
+            Divider()
+                .background(DesignSystem.slate800)
+            
+            // Task List for Selected Day
+            ScrollView {
+                VStack(spacing: 0) {
+                    if selectedDayTasks.isEmpty {
+                        VStack(spacing: 12) {
+                            Image(systemName: "calendar.badge.clock")
+                                .font(.system(size: 40))
+                                .foregroundColor(DesignSystem.slate700)
+                            Text("NO OPERATIONS SCHEDULED")
+                                .font(.custom(DesignSystem.monoFont, size: 14))
+                                .foregroundColor(DesignSystem.slate500)
+                                .tracking(1)
+                        }
+                        .padding(.top, 60)
+                    } else {
+                        ForEach(selectedDayTasks) { item in
+                            TaskRow(item: item)
+                                .padding(.horizontal)
+                                .padding(.vertical, 12)
+                            
+                            Divider()
+                                .background(DesignSystem.slate800.opacity(0.5))
+                                .padding(.leading, 16)
+                        }
+                    }
+                }
+                .padding(.vertical)
+            }
+            .background(DesignSystem.backgroundSecondary)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .background(CardBackground(accentColor: themeManager.currentTheme.mainAccent))
+        .padding(.horizontal, 8)
+        .padding(.top, 8)  // Cover status header area
+        .padding(.bottom, 90)  // Space for tab bar (matches chat panel)
+        .compositingGroup() // Ensure whole view transitions as one
+        .gesture(
+            DragGesture()
+                .onEnded { value in
+                    // Swipe down to close (positive translation.height)
+                    if value.translation.height > 50 {
+                        withAnimation {
+                            isPresented = false
+                        }
+                    }
+                }
+        )
     }
 }
 
@@ -213,6 +228,7 @@ struct DayCell: View {
     let isSelected: Bool
     let isCurrentMonth: Bool
     let hasItems: Bool
+    let accentColor: Color
     
     private let calendar = Calendar.current
     
@@ -229,16 +245,16 @@ struct DayCell: View {
                     ZStack {
                         if isSelected {
                             Circle()
-                                .stroke(DesignSystem.cyan, lineWidth: 1)
-                                .background(Circle().fill(DesignSystem.cyan.opacity(0.2)))
-                                .shadow(color: DesignSystem.cyan.opacity(0.5), radius: 4)
+                                .stroke(accentColor, lineWidth: 1)
+                                .background(Circle().fill(accentColor.opacity(0.2)))
+                                .shadow(color: accentColor.opacity(0.5), radius: 4)
                         }
                     }
                 )
             
             // Indicator dot
             Circle()
-                .fill(hasItems ? (isSelected ? DesignSystem.cyan : DesignSystem.purple) : Color.clear)
+                .fill(hasItems ? (isSelected ? accentColor : DesignSystem.purple) : Color.clear)
                 .frame(width: 4, height: 4)
                 .shadow(color: hasItems ? DesignSystem.purple.opacity(0.5) : .clear, radius: 2)
         }

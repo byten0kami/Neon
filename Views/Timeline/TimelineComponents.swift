@@ -172,26 +172,28 @@ struct NowCard: View {
             VStack(alignment: .leading, spacing: 2) {
                 HStack {
                     Text("[NOW]")
-                        .font(.custom(DesignSystem.monoFont, size: 16))
+                        .font(.custom(themeManager.currentTheme.bodyFont, size: 16))
                         .tracking(4)
                         .foregroundColor(themeManager.currentTheme.mainAccent)
                     
                     Spacer()
                     
+                    // Date uses bodyFont (description theme font)
                     Text(dateString)
-                        .font(.custom(DesignSystem.monoFont, size: 16))
+                        .font(.custom(themeManager.currentTheme.bodyFont, size: 16))
                         .tracking(2)
                         .foregroundColor(themeManager.currentTheme.mainAccent.opacity(0.8))
                 }
                 
                 HStack(alignment: .lastTextBaseline, spacing: 2) {
+                    // Time uses timeFont (theme time font)
                     Text(timeString)
-                        .font(.custom(DesignSystem.monoFont, size: 44))
+                        .font(.custom(themeManager.currentTheme.timeFont, size: 44))
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                     
                     Text(secondsString)
-                        .font(.custom(DesignSystem.monoFont, size: 24))
+                        .font(.custom(themeManager.currentTheme.timeFont, size: 24))
                         .fontWeight(.bold)
                         .foregroundColor(DesignSystem.slate500)
                 }

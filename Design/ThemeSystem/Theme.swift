@@ -16,6 +16,13 @@ protocol Theme: Identifiable, Sendable {
     var railGradient: LinearGradient { get }
     var pastRailGradient: LinearGradient { get }
     
+    // MARK: - Typography
+    var timeFont: String { get }    // Technical text, time, data
+    var titleFont: String { get }   // Large headings, task titles
+    var bodyFont: String { get }    // Body text, descriptions
+    var bodyFontSize: CGFloat { get } // Font size for body text
+    var tagFont: String { get }     // Tags, buttons, labels
+    
     // MARK: - Priority Styling
     func priorityTagStyle(for priority: ItemPriority) -> PriorityTagStyle
 }
@@ -25,4 +32,12 @@ protocol Theme: Identifiable, Sendable {
 extension Theme {
     /// By default, past rail mirrors future rail
     var pastRailGradient: LinearGradient { railGradient }
+    
+    /// Default fonts - themes can override these
+    var timeFont: String { DesignSystem.monoFont }
+    var titleFont: String { DesignSystem.displayFont }
+    var bodyFont: String { DesignSystem.lightFont }
+    var bodyFontSize: CGFloat { 14 }
+    var tagFont: String { DesignSystem.monoFont }
 }
+

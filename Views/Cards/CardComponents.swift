@@ -129,9 +129,10 @@ struct PriorityTag: View {
         let hasGlow = style?.hasGlow ?? false
         let glowRadius = style?.glowRadius ?? 0
         let useSystemFont = style?.useSystemFont ?? false
+        let tagFont = ThemeManager.shared.currentTheme.tagFont
         
         Text(effectiveText)
-            .font(useSystemFont ? .system(size: 11, weight: .bold) : .custom(DesignSystem.monoFont, size: 11))
+            .font(useSystemFont ? .system(size: 11, weight: .bold) : .custom(tagFont, size: 11))
             .fontWeight(.bold)
             .foregroundColor(textColor)
             .padding(.horizontal, 8)
@@ -159,6 +160,9 @@ struct CardActionButton: View {
     var isFilled: Bool = false
     var action: () -> Void
     
+    // Get font from current theme
+    private var tagFont: String { ThemeManager.shared.currentTheme.tagFont }
+    
     var body: some View {
         Button(action: action) {
             HStack(spacing: 6) {
@@ -167,7 +171,7 @@ struct CardActionButton: View {
                         .font(.system(size: 12, weight: .bold))
                 }
                 Text(label)
-                    .font(.custom(DesignSystem.monoFont, size: 12))
+                    .font(.custom(tagFont, size: 12))
                     .fontWeight(.bold)
             }
             .foregroundColor(color)

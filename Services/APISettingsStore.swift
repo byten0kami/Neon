@@ -46,6 +46,11 @@ class APISettingsStore: ObservableObject {
         settings.selectedModel = model
     }
     
+    /// Set default defer time in minutes
+    func setDefaultDeferMinutes(_ minutes: Int) {
+        settings.defaultDeferMinutes = minutes
+    }
+    
     /// Get the effective API key (user's custom key if enabled)
     func getEffectiveAPIKey() -> String? {
         guard settings.useCustomKey else { return nil }

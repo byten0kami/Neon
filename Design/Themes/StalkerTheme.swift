@@ -30,6 +30,12 @@ struct StalkerTheme: Theme {
         )
     }
     
+    // MARK: - Typography (Rugged Utilitarian)
+    var timeFont: String { "Quantico-Regular" }
+    var titleFont: String { "Quantico-Bold" }
+    var bodyFont: String { "Quantico-Regular" }
+    var tagFont: String { "Quantico-Regular" }
+    
     // MARK: - Priority Tag Styles
     func priorityTagStyle(for priority: ItemPriority) -> PriorityTagStyle {
         switch priority {

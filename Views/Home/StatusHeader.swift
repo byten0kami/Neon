@@ -35,7 +35,7 @@ struct StatusHeader: View {
             
             Spacer()
             
-            // Status Icons
+            // Calendar Button
             Button(action: onCalendarTap) {
                 Image(systemName: "calendar")
                     .foregroundColor(DesignSystem.red)

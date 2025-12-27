@@ -31,6 +31,9 @@ struct CardPreviewBubble: View {
                 action: action
             )
             
+        case .deleteTimelineItem(let title):
+            deletePreviewCard(title: title, action: action)
+            
         case .addFact(_, _, _):
             // Facts are auto-executed, no preview needed
             EmptyView()
@@ -122,5 +125,66 @@ struct CardPreviewBubble: View {
         .padding(CardStyle.padding)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(CardBackground(accentColor: accentColor))
+    }
+    
+    /// Delete confirmation card
+    private func deletePreviewCard(title: String, action: AIAction) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            // Header
+            HStack(spacing: 8) {
+                Text("DELETE")
+                    .font(.custom(DesignSystem.headlineFont, size: 11))
+                    .foregroundColor(DesignSystem.red)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 3)
+                    .background(
+                        Rectangle()
+                            .stroke(DesignSystem.red, lineWidth: 1)
+                    )
+                
+                Spacer()
+                
+                Image(systemName: "trash")
+                    .font(.system(size: 16))
+                    .foregroundColor(DesignSystem.red)
+            }
+            
+            // Title
+            Text(title)
+                .font(.custom(DesignSystem.displayFont, size: 18))
+                .foregroundColor(.white)
+                .strikethrough(true, color: DesignSystem.red.opacity(0.6))
+                .padding(.top, 4)
+            
+            // Separator
+            Rectangle()
+                .fill(DesignSystem.red.opacity(0.3))
+                .frame(height: 1)
+                .padding(.vertical, 4)
+            
+            // Action buttons
+            HStack(spacing: 12) {
+                CardActionButton(
+                    label: "Delete",
+                    color: DesignSystem.red,
+                    icon: "trash",
+                    isFilled: true
+                ) {
+                    onAccept(action)
+                }
+                
+                CardActionButton(
+                    label: "Keep",
+                    color: DesignSystem.slate500,
+                    icon: "xmark",
+                    isFilled: false
+                ) {
+                    onDeny(action)
+                }
+            }
+        }
+        .padding(CardStyle.padding)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(CardBackground(accentColor: DesignSystem.red))
     }
 }

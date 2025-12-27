@@ -40,6 +40,52 @@ targets:
       properties:
         OPENROUTER_API_KEY: $(OPENROUTER_API_KEY)
         UILaunchScreen: {}
+        UIAppFonts:
+          - Anta-Regular.ttf
+          - Asimovian-Regular.ttf
+          - Audiowide-Regular.ttf
+          - Electrolize-Regular.ttf
+          - Geo-Italic.ttf
+          - Geo-Regular.ttf
+          - Handjet-Bold.ttf
+          - Handjet-ExtraLight.ttf
+          - Handjet-Light.ttf
+          - Handjet-Medium.ttf
+          - Handjet-Regular.ttf
+          - Handjet-SemiBold.ttf
+          - Handjet-Thin.ttf
+          - Iceberg-Regular.ttf
+          - Iceland-Regular.ttf
+          - KellySlab-Regular.ttf
+          - MajorMonoDisplay-Regular.ttf
+          - Megrim-Regular.ttf
+          - Offside-Regular.ttf
+          - Orbitron-Bold.ttf
+          - Orbitron-Medium.ttf
+          - Orbitron-Regular.ttf
+          - Quantico-Bold.ttf
+          - Quantico-BoldItalic.ttf
+          - Quantico-Italic.ttf
+          - Quantico-Regular.ttf
+          - Rajdhani-Bold.ttf
+          - Rajdhani-Medium.ttf
+          - Rajdhani-Regular.ttf
+          - Rajdhani-SemiBold.ttf
+          - Rationale-Regular.ttf
+          - ShareTechMono-Regular.ttf
+          - Silkscreen-Bold.ttf
+          - Silkscreen-Regular.ttf
+          - SyneMono-Regular.ttf
+          - TurretRoad-Bold.ttf
+          - TurretRoad-ExtraBold.ttf
+          - TurretRoad-ExtraLight.ttf
+          - TurretRoad-Light.ttf
+          - TurretRoad-Medium.ttf
+          - TurretRoad-Regular.ttf
+          - UbuntuMono-Bold.ttf
+          - UbuntuMono-BoldItalic.ttf
+          - UbuntuMono-Italic.ttf
+          - UbuntuMono-Regular.ttf
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.neurosync.tracker

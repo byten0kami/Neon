@@ -11,6 +11,9 @@ struct APISettings: Codable {
     /// Selected AI model identifier
     var selectedModel: String
     
+    /// Default defer/snooze time in minutes
+    var defaultDeferMinutes: Int
+    
     /// Available AI models with tooltip information
     static let availableModels: [(id: String, name: String, description: String, tooltip: String)] = [
         ("google/gemini-2.0-flash-001", "Gemini 2.0 Flash", "Fast & efficient",
@@ -27,7 +30,8 @@ struct APISettings: Codable {
     static var `default`: APISettings {
         APISettings(
             useCustomKey: false,
-            selectedModel: "google/gemini-2.0-flash-001"
+            selectedModel: "google/gemini-2.0-flash-001",
+            defaultDeferMinutes: 60
         )
     }
 }

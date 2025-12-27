@@ -31,6 +31,12 @@ struct CorporateTheme: Theme {
         )
     }
     
+    // MARK: - Typography (Clean Corporate Sans-Serif)
+    var timeFont: String { "Rajdhani-SemiBold" }
+    var titleFont: String { "Rajdhani-Bold" }
+    var bodyFont: String { "Rajdhani-Regular" }
+    var tagFont: String { "Rajdhani-SemiBold" }
+    
     // MARK: - Priority Tag Styles
     func priorityTagStyle(for priority: ItemPriority) -> PriorityTagStyle {
         switch priority {

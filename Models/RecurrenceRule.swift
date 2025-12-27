@@ -9,6 +9,8 @@ struct RecurrenceRule: Codable, Hashable, Sendable {
     // MARK: - Frequency
     
     enum Frequency: String, Codable, Sendable {
+        case minutely
+        case hourly
         case daily
         case weekly
         case monthly
@@ -124,6 +126,16 @@ struct RecurrenceRule: Codable, Hashable, Sendable {
         let start = calendar.startOfDay(for: startDate)
         
         switch frequency {
+        case .minutely:
+            // Calculate minutes since start
+            let minutes = calendar.dateComponents([.minute], from: startDate, to: date).minute ?? 0
+            return minutes >= 0 && minutes % interval == 0
+            
+        case .hourly:
+            // Calculate hours since start
+            let hours = calendar.dateComponents([.hour], from: start, to: targetDay).hour ?? 0
+            return hours >= 0 && hours % interval == 0
+            
         case .daily:
             let days = calendar.dateComponents([.day], from: start, to: targetDay).day ?? 0
             return days >= 0 && days % interval == 0
@@ -180,6 +192,10 @@ extension RecurrenceRule {
     /// Human-readable description
     var displayText: String {
         switch frequency {
+        case .minutely:
+            return interval == 1 ? "Every minute" : "Every \(interval) min"
+        case .hourly:
+            return interval == 1 ? "Hourly" : "Every \(interval) hours"
         case .daily:
             return interval == 1 ? "Daily" : "Every \(interval) days"
         case .weekly:

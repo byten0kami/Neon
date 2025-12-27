@@ -2,7 +2,7 @@ import Foundation
 
 /// Type-safe theme identifiers
 /// Add new cases here when creating new themes
-enum ThemeID: String, CaseIterable, Sendable {
+enum ThemeID: String, CaseIterable, Sendable, Codable {
     case mercenary
     case corporate
     case terminal

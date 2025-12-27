@@ -6,6 +6,7 @@ enum TabItem: String, CaseIterable {
     case protocols
     case history
     case settings
+    case smpl
     
     var title: String {
         switch self {
@@ -13,6 +14,7 @@ enum TabItem: String, CaseIterable {
         case .protocols: return "BIO-KERNEL"
         case .history: return "SYSTEM LOGS"
         case .settings: return "CONFIGURATION"
+        case .smpl: return "FONT SAMPLER"
         }
     }
     
@@ -22,6 +24,7 @@ enum TabItem: String, CaseIterable {
         case .protocols: return "PROTO"
         case .history: return "LOGS"
         case .settings: return "CFG"
+        case .smpl: return "SMPL"
         }
     }
     
@@ -31,6 +34,7 @@ enum TabItem: String, CaseIterable {
         case .protocols: return "cylinder.split.1x2.fill"
         case .history: return "clock.arrow.circlepath"
         case .settings: return "gearshape.fill"
+        case .smpl: return "textformat"
         }
     }
     
@@ -40,6 +44,7 @@ enum TabItem: String, CaseIterable {
         case .protocols: return DesignSystem.purple
         case .history: return DesignSystem.amber
         case .settings: return DesignSystem.slate400
+        case .smpl: return DesignSystem.lime
         }
     }
 }

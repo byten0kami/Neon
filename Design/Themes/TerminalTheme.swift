@@ -10,11 +10,11 @@ struct TerminalTheme: Theme {
     let description = "Netrunner Console"
     
     // MARK: - Theme Colors
-    private static let consoleGreen = Color(hex: "00FF00")
+    private static let consoleGreen = Color(hex: "00FF41") // Matrix Green
     private static let amberMonitor = Color(hex: "FFB000")
     private static let dimGrey = Color(hex: "666666")
     private static let criticalRed = Color(hex: "FF0000")
-    private static let aiTurquoise = Color(hex: "00CED1")
+    private static let phosphorWhite = Color(hex: "E6E6E6") // White Phosphor
     private static let artifactPurple = Color(hex: "9932CC")
     
     // MARK: - Core Visual
@@ -30,6 +30,12 @@ struct TerminalTheme: Theme {
             endPoint: .bottom
         )
     }
+    
+    // MARK: - Typography (All Monospace for Terminal)
+    var timeFont: String { "ShareTechMono-Regular" }
+    var titleFont: String { "ShareTechMono-Regular" }
+    var bodyFont: String { "ShareTechMono-Regular" }
+    var tagFont: String { "ShareTechMono-Regular" }
     
     // MARK: - Priority Tag Styles
     func priorityTagStyle(for priority: ItemPriority) -> PriorityTagStyle {

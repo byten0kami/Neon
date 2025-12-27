@@ -373,6 +373,42 @@ struct SettingsView: View {
                             }
                         }
                     }
+                    
+                    divider
+                    
+                    // Defer Time Picker Row
+                    settingsRow {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Defer Time")
+                                    .font(.custom(DesignSystem.monoFont, size: 20))
+                                    .foregroundColor(.white)
+                                Text("Default snooze duration")
+                                    .font(.custom(DesignSystem.lightFont, size: 14))
+                                    .foregroundColor(DesignSystem.slate500)
+                            }
+                            Spacer()
+                            Menu {
+                                Button("15 min") { apiSettings.setDefaultDeferMinutes(15) }
+                                Button("30 min") { apiSettings.setDefaultDeferMinutes(30) }
+                                Button("1 hour") { apiSettings.setDefaultDeferMinutes(60) }
+                                Button("2 hours") { apiSettings.setDefaultDeferMinutes(120) }
+                                Button("4 hours") { apiSettings.setDefaultDeferMinutes(240) }
+                            } label: {
+                                HStack(spacing: 8) {
+                                    Text(deferTimeString)
+                                        .font(.custom(DesignSystem.monoFont, size: 18))
+                                        .foregroundColor(themeManager.currentTheme.mainAccent)
+                                    Image(systemName: "clock.arrow.circlepath")
+                                        .foregroundColor(themeManager.currentTheme.mainAccent)
+                                }
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 8)
+                                .background(themeManager.currentTheme.mainAccent.opacity(0.1))
+                                .cornerRadius(8)
+                            }
+                        }
+                    }
                 }
                 .background(Color.black.opacity(0.7))
                 .cornerRadius(CardStyle.cornerRadius)
@@ -397,6 +433,18 @@ struct SettingsView: View {
             return engine.calendar.shortStandaloneWeekdaySymbols[weekdayIndex].uppercased()
         }
         return "MON"
+    }
+    
+    private var deferTimeString: String {
+        let minutes = apiSettings.settings.defaultDeferMinutes
+        switch minutes {
+        case 15: return "15 min"
+        case 30: return "30 min"
+        case 60: return "1 hour"
+        case 120: return "2 hours"
+        case 240: return "4 hours"
+        default: return "\(minutes) min"
+        }
     }
     
     private var themeSelectionRow: some View {

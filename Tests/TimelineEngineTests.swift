@@ -215,8 +215,8 @@ final class TimelineEngineTests: XCTestCase {
         let savedItem = engine.instances.first { $0.id == item.id }
         XCTAssertTrue(savedItem!.isOverdue)
         
-        // When: We defer by 1 hour
-        engine.defer(id: item.id, byHours: 1)
+        // When: We defer by 60 minutes (1 hour)
+        engine.defer(id: item.id, byMinutes: 60)
         
         // Then:
         // 1. deferredUntil should be > Now

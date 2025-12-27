@@ -33,6 +33,12 @@ struct MercenaryTheme: Theme {
         )
     }
     
+    // MARK: - Typography (Flashy Neon Style)
+    var timeFont: String { "Audiowide-Regular" }
+    var titleFont: String { "Audiowide-Regular" }
+    var bodyFont: String { "TurretRoad-Bold" }
+    var tagFont: String { "Audiowide-Regular" }
+    
     // MARK: - Priority Tag Styles
     func priorityTagStyle(for priority: ItemPriority) -> PriorityTagStyle {
         switch priority {
